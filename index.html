@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="canonical" href="https://vacansee.github.io/app" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <title>Vacansee</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="RPI,Rensselaer Polytechnic Institute,room,planning,reservation,hours,map,schedule">
+  <!-- <link rel="icon" ... -->
+
+
+</head>
+<body>
+ 
+  <h1>Vacansee @ RPI</h1>
+  <p>
+    Source at <a href="https://github.com/Vacansee/app">Vacansee/app</a>
+  </p>
+  <img id="icons" src="img/icons.png">
+
+  <script>
+      if (navigator.serviceWorker) { // check for service worker support
+        navigator.serviceWorker.register('sw.js')
+      }
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

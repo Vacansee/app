@@ -1,0 +1,16 @@
+{
+  "name": "Vacansee @ RPI",
+  "short_name": "Vacansee",
+  "description": "",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "start_url": "./",
+  "display": "standalone", 
+  "icons": [
+      {
+        "src": "img/icons.png",
+        "type": "image/png",
+        "sizes": "600x600"
+      }
+  ]
+}
