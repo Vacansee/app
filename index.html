@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href="https://vacansee.github.io/app" />
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="styles/main.css">
 
   <title>Vacansee</title>
   <meta name="description" content="">
@@ -21,13 +21,13 @@
   <p>
     Source at <a href="https://github.com/Vacansee/app">Vacansee/app</a>
   </p>
-  <img id="icons" src="img/icons.png">
+  <img id="icons" src="assets/icons/icons.png">
 
   <script>
       if (navigator.serviceWorker) { // check for service worker support
         navigator.serviceWorker.register('sw.js')
+          .then((reg) => console.log('Service worker registered:', reg))
+          .catch((err) => console.log('Service worker couldn\'t be registered:', err))
       }
   </script>
-  <script src="js/main.js"></script>
-</body>
-</html>
+  <script src="scripts/main.js"></script> 
