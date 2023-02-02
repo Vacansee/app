@@ -1,11 +1,12 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    background-color: #fff;
+    color: rgb(0, 0, 0);
+    background-color: #ebeff0;
     margin: 0;
     padding: 2em;
     height: 90vh;
 }
+
 #icons {
     float: right;
     height: 30vh;
@@ -20,14 +21,34 @@ body {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-family: 'Viga';
+    color: rgb(19, 80, 93);
+    font-size: 3em;
     font-weight: bold;
     margin: 0;
     padding: 0;
 }
+
 p {
     width: 80vw;
 }
+
 a {
     color: #369;
+}
+
+.mapdiv {
+    width: 100%;
+    margin: auto;
+}
+
+.mapdiv path {
+    fill: rgb(166, 181, 184);
+    stroke: rgb(117, 145, 151);
+    stroke-width: 8px;
+    transition: fill 0.3s;
+}
+
+.mapdiv :hover {
+    fill: rgb(19, 80, 93);
 }
