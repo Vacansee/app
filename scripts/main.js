@@ -1,8 +1,8 @@
 console.log('Sourced main.js');
 
-setTimeout(function() { // await 2s start animation
+setTimeout(function() { // await 1s start animation
 	buildings.style.transition = "transform .2s, width .4s";
-}, 2000);
+}, 1000);
 
 const threshold = 4/5
 var initX = lastX = window.innerWidth
@@ -18,6 +18,7 @@ if (initRatio < threshold) { // switch to portrait
 	buildings.style.width = initY; 
 }
 else buildings.style.width = initX;
+buildings.style.opacity = 1
 
 
 /*              === DESIGN OBJECTIVES ===

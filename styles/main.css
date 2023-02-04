@@ -28,7 +28,8 @@ html, body {
 #buildings {
     position: absolute;
     /* startup properties (replaced): */
-    transition: width 1s; 
+    opacity: 0;
+    transition: width 1s, opacity .8s; 
     width: 50px;
 }
 
