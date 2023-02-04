@@ -19,14 +19,11 @@
 
 <body>
 
-  <h1>Vacansee @ RPI</h1>
-  <p>
-    Source at <a href="https://github.com/Vacansee/app">Vacansee/app</a>
-  </p>
-
-  <div class="mapdiv">
-
-    <svg viewBox="0 0 9000 5954" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <div class="on-top">
+    <h1>Vacansee</h1>
+  </div>
+  <div id="map">
+    <svg viewBox="100 200 9000 5250" id="buildings">
       <path id="CBIS"
         d="M3901.6,3602.61l23.833,6.959l2.956,16.37l9.763,2.041l12.909,8.932l4.464,14.278l1.97,10.907l18.006,6.11l20.497,9.464l12.259,5.328l27.357,-4.94l22.467,-0.236l19.387,13.386l13.228,10.793l15.702,-6.656l16.893,-10.493l71.878,2.005l-8.47,120.066l739.683,34.422l30.322,1.405l-2.415,39.75l100.717,4.538l13.582,-685.094l-96.171,-1.439l-2.568,58.781l-41.726,-1.91l5.293,-106.244l-102.664,-5.89l0.812,35.545l-83.738,-5.586l-5.275,356.397l-712.57,-19.834l-1.131,-16.798l-114.698,0.104l-2.541,17.345l20.437,-1.772l-30.448,91.966Z" />
       <path id="EMPAC"
@@ -123,18 +120,17 @@
         d="M4974.9,5044.66l113.495,4.133l2.116,-9.165l45.127,4.438l1.838,-53.109l-160.256,-8.375l-2.32,62.078Z" />
       <path id="Big-Apple-Pizzeria" d="M4668.69,5007.27l79.992,6.18l4.2,-54.412l-79.989,-6.164l-4.203,54.396Z" />
     </svg>
-
   </div>
 
-  <body>
+<body>
 
 
 
     <script>
-      if (navigator.serviceWorker) { // check for service worker support
-        navigator.serviceWorker.register('sw.js')
-          .then((reg) => console.log('Service worker registered:', reg))
-          .catch((err) => console.log('Service worker couldn\'t be registered:', err))
-      }
+      // if (navigator.serviceWorker) { // check for service worker support
+      //   navigator.serviceWorker.register('sw.js')
+      //     .then((reg) => console.log('Service worker registered:', reg))
+      //     .catch((err) => console.log('Service worker couldn\'t be registered:', err))
+      // }
     </script>
     <script src="scripts/main.js"></script>

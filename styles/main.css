@@ -1,54 +1,46 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(0, 0, 0);
-    background-color: #ebeff0;
-    margin: 0;
-    padding: 2em;
-    height: 90vh;
+html, body {
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   background-color: #ebeff0;
+   overflow: hidden;
+   height: 100%;  
 }
 
-#icons {
-    float: right;
-    height: 30vh;
+.on-top {
+    position: absolute;
+    z-index: 2;
 }
 
-.titleBar {
-    position: fixed;
-    left: env(titlebar-area-x, 0);
-    top: env(titlebar-area-y, 0);
-    width: env(titlebar-area-width, 100%);
-    height: env(titlebar-area-height, 40px);
-}
-
-h1 {
+ h1 {
     font-family: 'Viga';
     color: rgb(19, 80, 93);
-    font-size: 3em;
     font-weight: bold;
-    margin: 0;
-    padding: 0;
+    font-size: 2em;
+    margin: 0 5px;
 }
 
-p {
-    width: 80vw;
+#map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 
-a {
-    color: #369;
+#buildings {
+    position: absolute;
+    /* startup properties (replaced): */
+    transition: width 1s; 
+    width: 50px;
 }
 
-.mapdiv {
-    width: 100%;
-    margin: auto;
-}
-
-.mapdiv path {
-    fill: rgb(166, 181, 184);
-    stroke: rgb(117, 145, 151);
+#buildings path {
+    fill: #a6b5b8;
+    stroke: #759197;
     stroke-width: 8px;
-    transition: fill 0.3s;
+    transition-duration: .3s;
 }
 
-.mapdiv :hover {
-    fill: rgb(19, 80, 93);
+#buildings :hover {
+    fill: #759197;
+    stroke: #13505d;
+    stroke-width: 18px;
 }

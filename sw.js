@@ -14,8 +14,11 @@ self.addEventListener('install', async e => {
   return self.skipWaiting()
 })
 
-self.addEventListener('activate', e => {
-  self.clients.claim()    // associates sw w/ site
+self.addEventListener('activate', async e => {
+  const a = await self.caches.keys();
+  const 
+  ... TODO ...
+  return self.clients.claim()    // associates sw w/ site
 })
 
 self.addEventListener('fetch', async e => { // intercept file fetch requests
@@ -32,7 +35,7 @@ async function cacheFirst(req) {
   const cached = await cache.match(req)  // cached files matching req
 
   // if cached is null (e.g. missing), load over network instead:
-  if (cached == null) console.log('Failed to retrieve ' + req.url)
+  if (cached == null) console.log('Failed to retrieve ' + req.url + ' from cache')
   else console.log('Fetching ' + req.url + ' from cache')
   return cached || fetch(req)
 }
