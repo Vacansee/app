@@ -1,24 +1,24 @@
-console.log('Sourced main.js');
+console.log('Sourced main.js')
 
 setTimeout(function() { // await 1s start animation
-	buildings.style.transition = "transform .2s, width .4s";
-}, 1000);
+	map.style.transition = "transform .2s, width .4s"
+}, 1000)
 
 const threshold = 4/5
-var initX = lastX = window.innerWidth
-var initY = lastY = window.innerHeight
-var initRatio = lastRatio = initX / initY
+var initX = largestX = lastX = window.innerWidth
+var initY = largestY = lastY = window.innerHeight
+var initRatio = largestRatio = lastRatio = initX / initY
 
-var buildings = document.getElementById("buildings");
+var map = document.getElementById("map")
 
 
 // default: landscape
 if (initRatio < threshold) { // switch to portrait
-	buildings.style.transform = "rotate(90deg)";	
-	buildings.style.width = initY; 
+	map.style.transform = "rotate(90deg)"
+	map.style.width = initY 
 }
-else buildings.style.width = initX;
-buildings.style.opacity = 1
+else map.style.width = initX
+map.style.opacity = 1
 
 
 /*              === DESIGN OBJECTIVES ===
@@ -36,23 +36,56 @@ function resizeCheck() {
 
 	if (ratio < threshold) { // portrait mode
 		if (lastRatio >= threshold) {
-			buildings.style.transform = "rotate(90deg)"; 
-			buildings.style.width = initY; 
+			map.style.transform = "rotate(90deg)" 
+			map.style.width = y
 		}
-		else if (y > initY) buildings.style.width = y; 
+		else if (y > initY) map.style.width = y
 	}
 
 	if (ratio > threshold) { // landscape mode
 		if (lastRatio <= threshold) {
-			buildings.style.transform = "rotate(0deg)"; 
-			buildings.style.width = initX; 
+			map.style.transform = "rotate(0deg)"
+			map.style.width = x
 		}
-		else if (x > initX) buildings.style.width = x; 		
+		else if (x > initX) map.style.width = x
 	 }
 	
 	lastX = x
 	lastY = y
 	lastRatio = ratio
+}
+
+// move SVG path to bottom of parent
+function bringToFront(b) {  
+	let group = b.parentNode
+	group.appendChild(b)
+  }
+  
+
+var buildings = document.getElementById("buildings").children
+
+for (const b of buildings) {
+	nametag = document.getElementById("nametag")
+	// console.log(b.id)
+	b.addEventListener("mouseover", function() {
+		window.onmousemove = function(c) {
+			x = c.clientX
+			y = c.clientY
+			nametag.style.top = y - 50 + "px"
+			tagWidth = nametag.getBoundingClientRect().width
+			nametag.style.left = x - (tagWidth/1.8) + "px"
+
+		}
+		
+		bringToFront(b)
+		nametag.innerText=b.id		
+		nametag.style.opacity = 1
+	})
+	b.addEventListener("mouseleave", function() {
+		nametag.style.opacity = 0
+
+	})
+	
 }
  
  window.addEventListener("resize", resizeCheck)
