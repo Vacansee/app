@@ -10,6 +10,11 @@ var initY = largestY = lastY = window.innerHeight
 var initRatio = largestRatio = lastRatio = initX / initY
 
 var map = document.getElementById("map")
+var mapBox = document.getElementById("map-container")
+var drawer = document.getElementById("drawer")
+
+console.log(mapBox)
+
 
 
 // default: landscape
@@ -63,6 +68,17 @@ function bringToFront(b) {
   
 
 var buildings = document.getElementById("buildings").children
+var bg = document.getElementById("bg")
+
+bg.addEventListener("click", function() {
+	try {
+		sel = document.querySelector(".selected")
+		sel.classList.remove('selected')
+		mapBox.style.transform = "translateY(0px)"
+		drawer.style.transform = "translateY(200px)"
+	}	
+	catch { console.log("Nothing to deselect") }
+})
 
 for (const b of buildings) {
 	nametag = document.getElementById("nametag")
@@ -78,14 +94,29 @@ for (const b of buildings) {
 		}
 		
 		bringToFront(b)
-		nametag.innerText=b.id		
-		nametag.style.opacity = 1
+		nametag.innerText=b.id.replace(/-/g, ' ')
+		// Only show nametag on unselected buildings
+		if (!b.classList.contains("selected")) nametag.style.opacity = 1
+		
 	})
 	b.addEventListener("mouseleave", function() {
 		nametag.style.opacity = 0
-
 	})
-	
+	b.addEventListener("click", function() {
+		try {
+			last = document.querySelector(".selected")
+			last.classList.remove('selected')
+		}
+		catch { console.log("First element selected") }
+		finally { 
+			b.classList.add("selected")
+			mapBox.style.transform = "translateY(-100px)"
+			drawer.style.transform = "translateY(0px)"
+
+			nametag.style.opacity = 0 // hide nametag when building selected
+
+		}
+	})
 }
  
  window.addEventListener("resize", resizeCheck)

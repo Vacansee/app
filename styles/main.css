@@ -2,6 +2,7 @@ html, body {
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    background-color: #ebeff0;
    overflow: hidden;
+   margin: 0;
    height: 100%;  
 }
 
@@ -10,6 +11,7 @@ html, body {
     z-index: 2;
     width: 100%;
     height: 100%;
+    user-select: none;
     pointer-events: none;
 
 }
@@ -35,14 +37,29 @@ html, body {
     border-radius: 5px;
     box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
     transition-duration: .1s;
-    /* pointer-events: inherit; */
 }
 
-.map-container {
+#map-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform .5s;
     height: 100%;
+}
+
+#drawer {
+    width: 100%;
+    height: 200px;
+    position: absolute;
+    pointer-events: all;
+    bottom: 0;
+    transform: translateY(200px);
+    transition: transform .5s;
+    box-sizing: border-box;
+    background-color: white;
+    border: 3px solid #d3dbdc;
+    box-shadow: 0px -2px 25px rgba(0,0,0,0.08);
+    border-radius: 20px 20px 0px 0px;
 }
 
 #map {
@@ -58,18 +75,30 @@ html, body {
     fill: #a6b5b8;
     stroke: #759197;
     stroke-width: 8px;
-    transition-duration: .3s;
+    transition-duration: .2s;
 }
 
 #other path {
     fill: #d3dbdc;
     stroke: #bbc6c9;
     stroke-width: 8px;
-    transition-duration: .3s;
 }
+
 
 #buildings :hover {
     fill: #759197;
-    stroke: #13505d;
-    stroke-width: 18px;
+    stroke: #3d6e78;
+    stroke-width: 14px;
+}
+
+.selected {
+    fill: #3aeab5 !important;
+    stroke: #20c05b6f !important;
+    stroke-width: 25px !important;
+    /* filter: drop-shadow(0px 0px 45px rgba(32, 120, 91, 0.2)); */
+}
+
+
+#bg {
+    fill: #ebeff0;
 }
