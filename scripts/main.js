@@ -27,11 +27,9 @@ var initRatio = largestRatio = lastRatio = initX / initY
 var map = document.getElementById("map")
 var test = document.getElementById("test")
 var mapBox = document.getElementById("map-container")
-var drawer = document.getElementById("drawer")
-
-console.log(mapBox)
-
-
+var popup = document.getElementById("popup")
+nametag = document.getElementById("nametag")
+popupName = document.getElementById("popup-name")
 
 // default: landscape
 if (initRatio < threshold) { // switch to portrait
@@ -93,24 +91,26 @@ bg.addEventListener("click", function() {
 	try {
 		sel = document.querySelector(".selected")
 		sel.classList.remove('selected')
-		mapBox.style.transform = "translateY(0px)"
-		drawer.style.transform = "translateY(200px)"
-	}	
-	catch { console.log("Nothing to deselect") }
+		// mapBox.style.transform = "translateY(0px)"
+		mapBox.style.transform = "scale(1)"
+		popup.style.transform = "translateY(200px)"
+
+	} catch { /* pass*/ }
 })
 
+
+var isFirst = false
+
 for (const b of buildings) {
-	nametag = document.getElementById("nametag")
 	var randColor = colors[Math.floor(Math.random() * colors.length)];
 	b.style.fill = randColor
-	// console.log(b.id)
 	b.addEventListener("mouseover", function() {
 		window.onmousemove = function(c) {
 			x = c.clientX
 			y = c.clientY
 			nametag.style.top = y - 50 + "px"
 			tagWidth = nametag.getBoundingClientRect().width
-			nametag.style.left = x - (tagWidth/1.8) + "px"
+			nametag.style.left = x - (tagWidth/2.2) + "px"
 
 		}
 		
@@ -123,18 +123,34 @@ for (const b of buildings) {
 	b.addEventListener("mouseleave", function() {
 		nametag.style.opacity = 0
 	})
-	b.addEventListener("click", function() {
+	b.addEventListener("click", function(c) {
+		x = c.clientX
+		console.log(x)
+		y = c.clientY
+		console.log(y)
+		console.log(b.getBoundingClientRect())
 		try {
 			last = document.querySelector(".selected")
 			last.classList.remove('selected')
-		}
-		catch { console.log("First element selected") }
+		} catch { isFirst = true }
 		finally { 
 			b.classList.add("selected")
-			mapBox.style.transform = "translateY(-100px)"
-			drawer.style.transform = "translateY(0px)"
+			popupName.innerText=b.id.replace(/-/g, ' ') + " ›"
+			console.log(isFirst)
+			if (!isFirst) {
+				mapBox.style.transition = "all .5s"	
+				mapBox.style.transformOrigin = 'translate(' + x + 'px,' + y + 'px)'
+			} else {
+				mapBox.style.transition = "transform .5s, scale .5s, transform-origin 0s"
+			}
+			// mapBox.style.transform = "translateY(-100px)"
+			mapBox.style.transform = "scale(2)"
+			mapBox.style.transformOrigin = x + "px " + y + "px"
+			popup.style.transform = "translateY(0px)"
 
 			nametag.style.opacity = 0 // hide nametag when building selected
+
+			isFirst = false
 
 		}
 	})
