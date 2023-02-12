@@ -62,6 +62,19 @@ html, body {
     border-radius: 20px 20px 0px 0px;
 }
 
+.map-overlays { 
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    font-size: 120px;
+    z-index: 1;
+}
+
+.map-overlays-icons {
+    text-shadow: 0px 10px 0px rgba(59, 77, 111, 0.6), 0px 25px 40px rgba(0,0,0,0.2);
+}
+
+
 #map {
     position: absolute;
     /* startup properties (replaced): */

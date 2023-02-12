@@ -1,5 +1,20 @@
 console.log('Sourced main.js')
 
+const colors = [
+	"#fdfedc",
+	"#fef6c0",
+	"#feeea4",
+	"#fdd884",
+	"#fdc675",
+	"#fcad60",
+	"#f99a57",
+	"#f57948",
+	"#eb6045",
+	"#d7434b",
+	"#c9314b",
+	"#9e0041"
+]
+
 setTimeout(function() { // await 1s start animation
 	map.style.transition = "transform .2s, width .4s"
 }, 1000)
@@ -10,6 +25,7 @@ var initY = largestY = lastY = window.innerHeight
 var initRatio = largestRatio = lastRatio = initX / initY
 
 var map = document.getElementById("map")
+var test = document.getElementById("test")
 var mapBox = document.getElementById("map-container")
 var drawer = document.getElementById("drawer")
 
@@ -20,6 +36,7 @@ console.log(mapBox)
 // default: landscape
 if (initRatio < threshold) { // switch to portrait
 	map.style.transform = "rotate(90deg)"
+	test.style.transform = "rotate(-90deg)"
 	map.style.width = initY 
 }
 else map.style.width = initX
@@ -42,6 +59,7 @@ function resizeCheck() {
 	if (ratio < threshold) { // portrait mode
 		if (lastRatio >= threshold) {
 			map.style.transform = "rotate(90deg)" 
+			test.style.transform = "rotate(-90deg)"
 			map.style.width = y
 		}
 		else if (y > initY) map.style.width = y
@@ -50,6 +68,7 @@ function resizeCheck() {
 	if (ratio > threshold) { // landscape mode
 		if (lastRatio <= threshold) {
 			map.style.transform = "rotate(0deg)"
+			test.style.transform = "rotate(0deg)"
 			map.style.width = x
 		}
 		else if (x > initX) map.style.width = x
@@ -82,6 +101,8 @@ bg.addEventListener("click", function() {
 
 for (const b of buildings) {
 	nametag = document.getElementById("nametag")
+	var randColor = colors[Math.floor(Math.random() * colors.length)];
+	b.style.fill = randColor
 	// console.log(b.id)
 	b.addEventListener("mouseover", function() {
 		window.onmousemove = function(c) {
