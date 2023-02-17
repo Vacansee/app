@@ -7,7 +7,7 @@ const filesToCache = [
   'assets/icons/icons.png',
 ]
 
-self.addEventListener('install', async e => {
+self.addEventListener('install', asynsc e => {
   const cache = await caches.open(cacheName)    // waiting for file open
   await cache.addAll(filesToCache)    // writing to file
   console.log('Installed service worker successfully!')
