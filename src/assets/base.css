@@ -34,6 +34,19 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+
+  --background: #ffffff;
+  --title: #1f4045;
+
+  --carroad: #d4e5e2;
+  --walkpath: #7cacab;
+
+  --softborder: #d3d5dc;
+  --hardborder: #869395;
+
+  --buildfill: #d4e5e2;
+  --buildbord: #7cacab;
+
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,25 +63,21 @@
   }
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+html, body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  touch-action: none;
+  overflow: hidden;
+  transition: opacity 0.5s;
   margin: 0;
-  position: relative;
-  font-weight: normal;
+  height: 100%;
 }
 
-body {
-  min-height: 100vh;
-  color: var(--color-text);
-  background: var(--color-background);
-  transition: color 0.5s, background-color 0.5s;
-  line-height: 1.6;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.on-top {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  pointer-events: none;
 }
