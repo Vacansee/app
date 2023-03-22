@@ -1,29 +1,16 @@
-# app
+<h1 align="center">
+<img src="https://raw.githubusercontent.com/Vacansee/app/vue/src/assets/logo.png" height="128">
+<br>
+Vacansee
+</h1>
+<p align="center"><strong>It's Free Real Estate</strong></p>
 
-This template should help get you started developing with Vue 3 in Vite.
+**Vacansee** is a interactive heatmap that shows students what rooms and facilities are/will be available based on data scraped from schedules (SIS), booking services (EMS), and wifi telemetry (`rpi_wpa2`).
 
-## Recommended IDE Setup
+<br>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<h6 align="center">
 
-## Customize configuration
+Made with ❤️ for [RCOS @ RPI](https://github.com/rcos)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-pnpm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-pnpm dev
-```
-
-### Compile and Minify for Production
-
-```sh
-pnpm build
-```
+</h6>
