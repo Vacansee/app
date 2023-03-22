@@ -68,6 +68,7 @@ html, body {
   background-color: var(--background);
   touch-action: none;
   overflow: hidden;
+  position: relative;
   transition: opacity 0.5s;
   margin: 0;
   height: 100%;
