@@ -1,6 +1,6 @@
 <template>
   <div id="mapBox">
-    <svg viewBox="0 4 1024 1706" id="map">
+    <svg viewBox="0 0 1024 1706" id="map">
       <g id="bg">
         <g id="stair">
           <path d="M847.6 903.6h7.7M10.6 789.8l-43.3 1.2" />
@@ -354,6 +354,17 @@
 
 <script>
 export default {
+  props: ['unselected','currBuilding'],
+
+
+  watch: {
+    unselected(newVar, oldVar) {
+      if (newVar) 
+        setTimeout(this.windowEventHandler, 800);
+      else 
+        this.bringToFront(this.currBuilding);
+    }
+  },
   data() {
     return {
       threshold: 1,
@@ -391,12 +402,18 @@ export default {
       let randColor = colors[Math.floor(Math.random() * colors.length)]
       b.style.fill = randColor
     }
-
   },
   methods: {
+    bringToFront(b) {
+      let group = b.parentNode
+      group.appendChild(b)
+    },
     windowResizeTimeout() {
-      clearTimeout(this.doResize);
-      this.doResize = setTimeout(this.windowEventHandler, 300);
+      console.log(this.unselected)
+      if (this.unselected) {
+        clearTimeout(this.doResize);
+        this.doResize = setTimeout(this.windowEventHandler, 300);
+      }
     },
     windowEventHandler() {
       let x = window.innerWidth
@@ -420,10 +437,11 @@ export default {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  will-change: transform;
+  transform: translate(-50%, -50%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   justify-content: center;
   align-items: center;
-  transition: 500ms linear all;
+  transition: 800ms ease all;
 }
 
 #map {
@@ -431,6 +449,7 @@ export default {
   opacity: 0;
   transition: width linear 2s, height linear 2s, opacity .8s;
   width: 50px;
+  will-change: transform;
 }
 
 #buildings path {
@@ -439,6 +458,7 @@ export default {
   stroke: var(--buildbord);
   stroke-width: 1px;
   transition-duration: .2s;
+  will-change: transform;
 }
 
 #other path {
@@ -487,5 +507,12 @@ export default {
   stroke: var(--walkpath);
   stroke-width: 3px;
   stroke-dasharray: 1px;
+}
+
+.selected {
+  opacity: 1 !important;
+  fill: #3aeab5 !important;
+  stroke: #20c05b6f !important;
+  stroke-width: 2px !important;
 }
 </style>
