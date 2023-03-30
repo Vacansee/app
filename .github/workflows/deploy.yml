@@ -33,14 +33,14 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v2.2.4
         with:
-          version: latest
+          version: 8
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Build
         run: pnpm run build
       - name: Setup Pages
