@@ -47,6 +47,7 @@
   --buildfill: #d4e5e2;
   --buildbord: #7cacab;
 
+  --roomfill: #bbd3cf;
 }
 
 @media (prefers-color-scheme: dark) {

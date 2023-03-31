@@ -1,20 +1,25 @@
 <script setup>
 import MapItem from './homeitems/MapItem.vue'
 import PopUpItem from './homeitems/PopUpItem.vue'
+import FloorItem from './homeitems/FloorItem.vue'
 </script>
 
 <template>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ buildLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
-  <PopUpItem :buildLabel="buildLabel" />
+  <div id="selectionPage" >
+    <PopUpItem :buildLabel="buildLabel" />
+    <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
+</div>
 </template>
 
 <script>
 export default {
   components: {
     MapItem,
-    PopUpItem
+    PopUpItem,
+    FloorItem
   },
   data() {
     return {
@@ -72,7 +77,7 @@ export default {
         b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
 
-        mask.style.opacity = 0.2
+        mask.style.opacity = 0.8
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         popup.style.transform = "translateY(0px)"
@@ -120,5 +125,11 @@ export default {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   /*opacity: 0;*/
   transition-duration: .1s;
+}
+
+/*TODO: remove if we go calculation approach*/
+#selectionPage {
+  display: flex;
+  flex-direction: column;
 }
 </style>
