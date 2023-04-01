@@ -354,14 +354,12 @@
 
 <script>
 export default {
-  props: ['unselected','currBuilding'],
-
-
+  props: ['unselected', 'currBuilding'],
   watch: {
     unselected(newVar, oldVar) {
-      if (newVar) 
+      if (newVar)
         setTimeout(this.windowEventHandler, 800);
-      else 
+      else
         this.bringToFront(this.currBuilding);
     }
   },
@@ -387,16 +385,12 @@ export default {
       "#9e0041",
     ]
 
-    setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
-
     map.style.opacity = 1
+    setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
 
     window.addEventListener("resize", this.windowResizeTimeout)
 
-    if (window.innerWidth / window.innerHeight <= this.threshold)
-      map.style.transform = `scale(${window.innerHeight / 50})` + `rotate(90deg)`
-    else
-      map.style.transform = `scale(${window.innerWidth / 50}) rotate(0deg)`
+    this.windowEventHandler()
 
     for (const b of buildings.children) {
       let randColor = colors[Math.floor(Math.random() * colors.length)]
@@ -423,10 +417,8 @@ export default {
       if (ratio < this.threshold) { // portrait mode
         map.style.transform = `scale(${y / 50})` + `rotate(90deg)`
       }
-
-      if (ratio >= this.threshold) { // landscape mode
+      else // landscape mode
         map.style.transform = `scale(${x / 50})`
-      }
     }
   }
 }
