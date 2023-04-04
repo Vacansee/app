@@ -9,13 +9,14 @@ import FloorItem from './homeitems/FloorItem.vue'
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
   <div id="selectionPage" >
-    <PopUpItem :buildLabel="buildLabel" />
+    <PopUpItem :buildLabel="buildLabel" :roomsJSON="roomsJSON"/>
     <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
-</div>
+  </div>
 </template>
 
 <script>
 export default {
+  props: ['roomsJSON'],
   components: {
     MapItem,
     PopUpItem,

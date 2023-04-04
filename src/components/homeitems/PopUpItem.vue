@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
     <div id="popup">
 
@@ -5,14 +8,16 @@
         <div id="popup-head"> 
             <div id="popupbuild"> {{ buildLabel }} </div>
         </div>
-        <p id="popup-general"> </p>
+        <div id="popup-body"> 
+            {{ roomsJSON }}
+        </div>
     </div>
 
 </template>
 
 <script>
 export default {
-    props: ['buildLabel']
+    props: ['buildLabel', 'roomsJSON']
 }
 </script>
 
@@ -49,4 +54,11 @@ export default {
 #popupbuild {
     padding: 10px 20px;
 }
+
+#popup-body {
+    color: red;
+    margin-top: 50px;
+    margin-left: 25px;
+}
+
 </style>

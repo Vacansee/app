@@ -1,17 +1,14 @@
 <script setup>
-import TheAbout from '../components/TheAbout.vue'
 </script>
 
 <template>
-  <div class="about">
-    <TheAbout />
-  </div>
+	<div class="about">
+		Bren bren bren doing bren things.
+	</div>
 </template>
 
 <style>
-
-.about {
-  padding-left: 2rem;
-}
-
+	.about {
+	padding-left: 2rem;
+	}
 </style>
