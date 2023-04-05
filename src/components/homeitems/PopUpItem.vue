@@ -9,7 +9,7 @@
             <div id="popupbuild"> {{ buildLabel }} </div>
         </div>
         <div id="popup-body"> 
-            {{ roomsJSON }}
+            {{ roomData }}
         </div>
     </div>
 
@@ -17,7 +17,7 @@
 
 <script>
 export default {
-    props: ['buildLabel', 'roomsJSON']
+    props: ['buildLabel', 'roomData']
 }
 </script>
 

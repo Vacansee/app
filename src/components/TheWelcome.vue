@@ -9,7 +9,7 @@ import FloorItem from './homeitems/FloorItem.vue'
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
   <div id="selectionPage" >
-    <PopUpItem :buildLabel="buildLabel" :roomsJSON="roomsJSON"/>
+    <PopUpItem :buildLabel="buildLabel" :roomData="roomData"/>
     <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
   </div>
 </template>
@@ -30,7 +30,8 @@ export default {
       switch: 0,
       currBuilding: "",
       unselected: true,
-      buildLabel: ""
+      buildLabel: "",
+      roomData: null
     }
   },
   mounted() {
@@ -74,6 +75,7 @@ export default {
         this.unselected = false
         this.currBuilding = b
         this.buildLabel = b.id.replace(/-/g, ' ')
+        this.roomData = this.roomsJSON[this.buildLabel]
 
         b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
