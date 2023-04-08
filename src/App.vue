@@ -1,10 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Logo from '@/assets/logo.svg?component'
 </script>
 
 <template>
   <header v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    <img alt="Vacansee logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <Logo class="logo" width="125" height="125"/>
 
     <div class="wrapper">
       <nav>
