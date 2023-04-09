@@ -6,7 +6,7 @@
   
 <script>
 const getSvgFloor = async (floor) => {
-  const module = await import(`../flooritems/${floor}.svg`)
+  const module = await import(`../floors/${floor}.svg`)
   return module.default
 }
 

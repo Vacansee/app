@@ -1,14 +1,19 @@
 <script setup>
-import MapItem from './homeitems/MapItem.vue'
-import PopUpItem from './homeitems/PopUpItem.vue'
-import FloorItem from './homeitems/FloorItem.vue'
+import MapItem from '../components/home/MapItem.vue'
+import PopUpItem from '../components/home/PopUpItem.vue'
+import FloorItem from '../components/home/FloorItem.vue'
+import { useFetch } from '@vueuse/core';
+const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
+const { data, isFetching, error } = useFetch(URL).get().json();
 </script>
 
 <template>
+  <div v-if="isFetching" class="toast" id="nametag">Loading data...</div>
+  <div v-else-if="error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ buildLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
-  <PopUpItem :buildLabel="buildLabel" :roomData="roomData" />
+  <PopUpItem :buildLabel="buildLabel" :roomData="data" />
   <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
 </template>
 
@@ -73,7 +78,6 @@ export default {
         this.unselected = false
         this.currBuilding = b
         this.buildLabel = b.id.replace(/-/g, ' ')
-        this.roomData = this.roomsJSON[this.buildLabel]
 
         b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
@@ -111,6 +115,10 @@ export default {
   background: black !important;
   stroke: none !important;
   pointer-events: none;
+}
+
+.toast {
+  font-size: 18px !important;
 }
 
 #nametag {

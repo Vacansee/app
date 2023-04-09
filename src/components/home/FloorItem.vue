@@ -1,17 +1,17 @@
 <script setup>
-import ImportFloor from './ImportFloor.vue'
+import Floor from './Floor.vue'
 </script>
 
 <template>
   <div id='currFloor'>
-    <ImportFloor :floor="floor" />
+    <Floor :floor="floor" />
   </div>
 </template>
 
 <script>
 export default {
   components: {
-    ImportFloor
+    Floor
   },
   props: ['unselected', 'currBuilding', 'buildLabel'],
   watch: {
