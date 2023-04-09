@@ -17,15 +17,11 @@ export default {
   watch: {
     unselected(newVar, oldVar) {
       if (newVar) {
-        this.floor = "empty"
+        this.floor = ""
         currFloor.style.opacity = 0;
-        currFloor.style.pointerEvents = 'none';
       } else {
         this.floor = this.buildLabel + '1'
         currFloor.style.opacity = 1;
-        console.log(this.buildLabel + '1')
-        console.log(this.floor)
-        currFloor.style.pointerEvents = 'auto';
       }
     }
   },
@@ -33,7 +29,7 @@ export default {
     return {
       threshold: 1,
       doResize: "",
-      floor: "DCC1",
+      floor: "",
     }
   },
   mounted() {
@@ -48,7 +44,6 @@ export default {
       group.appendChild(f)
     },
     windowResizeTimeout() {
-      console.log(this.unselected)
       clearTimeout(this.doResize);
       this.doResize = setTimeout(this.windowEventHandler, 300);
     },

@@ -48,6 +48,9 @@
   --buildbord: #7cacab;
 
   --roomfill: #bbd3cf;
+  
+  --selectedfill: #3aeab5;
+  --selectedbord: #20c05b6f;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -3,8 +3,6 @@
 
 <template>
     <div id="popup">
-
-
         <div id="popup-head"> 
             <div id="popupbuild"> {{ buildLabel }} </div>
         </div>
@@ -24,7 +22,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    height: 150px;
+    height: 200px;
     position: absolute;
     pointer-events: all;
     display:inline-block;

@@ -8,10 +8,8 @@ import FloorItem from './homeitems/FloorItem.vue'
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ buildLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
-  <div id="selectionPage" >
-    <PopUpItem :buildLabel="buildLabel" :roomData="roomData"/>
-    <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
-  </div>
+  <PopUpItem :buildLabel="buildLabel" :roomData="roomData" />
+  <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
 </template>
 
 <script>
@@ -128,11 +126,5 @@ export default {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   /*opacity: 0;*/
   transition-duration: .1s;
-}
-
-/*TODO: remove if we go calculation approach*/
-#selectionPage {
-  display: flex;
-  flex-direction: column;
 }
 </style>

@@ -503,8 +503,8 @@ export default {
 
 .selected {
   opacity: 1 !important;
-  fill: #3aeab5 !important;
-  stroke: #20c05b6f !important;
+  fill: var(--selectedfill) !important;
+  stroke: var(--selectedbord) !important;
   stroke-width: 2px !important;
 }
 </style>

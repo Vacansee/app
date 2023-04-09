@@ -10,7 +10,9 @@ export default defineConfig({
   base: '/app/',
   plugins: [
     vue(),
-    svgLoader(),
+    svgLoader({
+      svgo: false
+    }),
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
@@ -23,7 +25,7 @@ export default defineConfig({
         background_color: '#ffffff',
         theme_color: '#b6c1cd',
 
-        display_override: [ 'window-controls-overlay' ],
+        display_override: ['window-controls-overlay'],
         display: 'standalone',
         icons: [
           {
