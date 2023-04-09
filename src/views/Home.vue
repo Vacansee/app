@@ -3,6 +3,7 @@ import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
 import { useFetch } from '@vueuse/core';
+
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
 const { data, isFetching, error } = useFetch(URL).get().json();
 </script>
@@ -10,16 +11,15 @@ const { data, isFetching, error } = useFetch(URL).get().json();
 <template>
   <div v-if="isFetching" class="toast" id="nametag">Loading data...</div>
   <div v-else-if="error" class="toast" id="nametag">Failed to retrieve data</div>
-  <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ buildLabel }}</div>
+  <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ bldgLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"> Mask moment! </div>
-  <PopUpItem :buildLabel="buildLabel" :roomData="data" />
-  <FloorItem :unselected="unselected" :currBuilding="currBuilding" :buildLabel="buildLabel" />
+  <PopUpItem :roomData="data" />
+  <FloorItem :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
 </template>
 
 <script>
 export default {
-  props: ['roomsJSON'],
   components: {
     MapItem,
     PopUpItem,
@@ -33,7 +33,7 @@ export default {
       switch: 0,
       currBuilding: "",
       unselected: true,
-      buildLabel: "",
+      bldgLabel: "",
       roomData: null
     }
   },
@@ -53,7 +53,7 @@ export default {
       // Only show nametag on unselected buildings
       if (this.unselected) {
         this.ntVisible = 1
-        this.buildLabel = b.id.replace(/-/g, ' ')
+        this.bldgLabel = b.id.replace(/-/g, ' ')
       }
     },
     nameTagDisappear() {
@@ -77,7 +77,9 @@ export default {
 
         this.unselected = false
         this.currBuilding = b
-        this.buildLabel = b.id.replace(/-/g, ' ')
+        this.bldgLabel = b.id.replace(/-/g, ' ')
+        this.$state.curBldgLabel = this.bldgLabel
+        console.log('Global var for label:', this.$state.curBldgLabel)
 
         b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
@@ -92,6 +94,7 @@ export default {
       try {
         let tmp = this.currBuilding
         this.currBuilding = ""
+        this.$state.curBldgLabel = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
         popup.style.transform = "translateY(19vh)"

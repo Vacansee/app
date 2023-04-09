@@ -30,6 +30,7 @@ export default {
             this.currRoom.removeAttribute("class", "selected");
           this.currRoom = null;
           this.roomLabel = "";
+          this.$state.curRoomLabel = ""
         }
         else
           this.svg = await getSvgFloor(floor)
@@ -86,6 +87,7 @@ export default {
         this.roomLabel = path.id.replace(/_/g, '')
         path.setAttribute("class", "selected");
       }
+      this.$state.curRoomLabel = this.roomLabel
     }
   }
 }

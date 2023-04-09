@@ -13,22 +13,24 @@ export default {
   components: {
     Floor
   },
-  props: ['unselected', 'currBuilding', 'buildLabel'],
+  props: ['unselected', 'currBuilding', 'bldgLabel'],
   watch: {
     unselected(newVar, oldVar) {
       if (newVar) {
         this.floor = ""
         currFloor.style.opacity = 0;
       } else {
-        this.floor = this.buildLabel + '1'
+        this.floor = this.bldgLabel + this.floorNum
         currFloor.style.opacity = 1;
       }
+      this.$state.curFloorNum = this.floorNum
     }
   },
   data() {
     return {
       threshold: 1,
       doResize: "",
+      floorNum: "3",
       floor: "",
     }
   },

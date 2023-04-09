@@ -4,18 +4,27 @@
 <template>
     <div id="popup">
         <div id="popup-head"> 
-            <div id="popupbuild"> {{ buildLabel }} </div>
+            <div id="popupbuild">
+                {{ $state.curBldgLabel }}
+                <span v-if="$state.curBldgLabel"> > Floor {{ $state.curFloorNum }}</span>
+                <span v-if="!noneSelected()"> > Room {{ $state.curRoomLabel }}</span>
+            </div>
         </div>
-        <div id="popup-body"> 
-            {{ roomData }}
-        </div>
+        <div v-if="noneSelected()" class="body body-none">No room selected</div>
+        <div v-else-if="noData()" class="body body-none">No classes in room</div>
+        <div v-else class="body"> {{ roomData[$state.curBldgLabel][$state.curRoomLabel] }} </div>
     </div>
 
 </template>
 
 <script>
+
 export default {
-    props: ['buildLabel', 'roomData']
+    props: ['roomData'],
+    methods: {
+        noneSelected() { return !this.$state.curRoomLabel },
+        noData() { return !this.roomData[this.$state.curBldgLabel].hasOwnProperty(this.$state.curRoomLabel) }
+    }
 }
 </script>
 
@@ -53,8 +62,13 @@ export default {
     padding: 10px 20px;
 }
 
-#popup-body {
+.body-none {
     color: red;
+    font-weight: 500;
+
+}
+
+.body {
     margin-top: 50px;
     margin-left: 25px;
 }
