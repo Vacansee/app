@@ -13,8 +13,8 @@ const { data, isFetching, error } = useFetch(URL).get().json();
   <div v-else-if="error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ bldgLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
-  <div id="mask"> Mask moment! </div>
-  <PopUpItem :roomData="data" />
+  <div id="mask"></div>
+  <PopUpItem :data="data" />
   <FloorItem :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
 </template>
 
@@ -34,7 +34,6 @@ export default {
       currBuilding: "",
       unselected: true,
       bldgLabel: "",
-      roomData: null
     }
   },
   mounted() {
@@ -97,7 +96,7 @@ export default {
         this.$state.curBldgLabel = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
-        popup.style.transform = "translateY(19vh)"
+        popup.style.transform = "translateY(250px)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         tmp.classList.remove("selected")

@@ -12,7 +12,17 @@
         </div>
         <div v-if="noneSelected()" class="body body-none">No room selected</div>
         <div v-else-if="noData()" class="body body-none">No classes in room</div>
-        <div v-else class="body"> {{ roomData[$state.curBldgLabel][$state.curRoomLabel] }} </div>
+        <div v-else class="body">
+            <span>{{ getBldg().meta.name }}ㅤㅤ</span>
+            <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
+            <span>Current time: {{ $state.curDate }}ㅤㅤ</span>
+            <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
+            <ul>
+                <li v-for="(item, index) in getData()">
+                    {{ item[0] }} at {{ index }}
+                </li>
+            </ul>
+        </div>
     </div>
 
 </template>
@@ -20,10 +30,17 @@
 <script>
 
 export default {
-    props: ['roomData'],
+    props: ['data'],
     methods: {
         noneSelected() { return !this.$state.curRoomLabel },
-        noData() { return !this.roomData[this.$state.curBldgLabel].hasOwnProperty(this.$state.curRoomLabel) }
+        getBldg() { return this.data[this.$state.curBldgLabel] },
+        noData() { return !this.getBldg().hasOwnProperty(this.$state.curRoomLabel) },
+        getData() { return this.getBldg()[this.$state.curRoomLabel] },
+        getPrinters() {
+            if (!this.getBldg().meta.hasOwnProperty("printers"))
+                return "none"
+            else return this.getBldg().meta.printers
+        }
     }
 }
 </script>
@@ -31,13 +48,13 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    height: 200px;
+    height: 250px;
     position: absolute;
     pointer-events: all;
     display:inline-block;
     bottom: 0;
     z-index: 6;
-    transform: translateY(19vh);
+    transform: translateY(250px);
     transition: transform .5s;
     box-sizing: border-box;
     background-color: white;
@@ -73,4 +90,7 @@ export default {
     margin-left: 25px;
 }
 
+ul {
+    columns: 3 auto;
+}
 </style>
