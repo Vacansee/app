@@ -3,8 +3,22 @@ import Floor from './Floor.vue'
 </script>
 
 <template>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
   <div id='currFloor'>
     <Floor :floor="floor" />
+  </div>
+
+  <div id='button-box'>
+    <button id="up" class="floor-button" type="button" @click="increaseFloor">
+      <i class="material-symbols-outlined">arrow_upward</i>
+    </button>
+
+    <button id="down" class="floor-button" type="button" @click="decreaseFloor">
+      <i class="material-symbols-outlined">arrow_downward</i>
+    </button>
+
   </div>
 </template>
 
@@ -19,9 +33,14 @@ export default {
       if (newVar) {
         this.floor = ""
         currFloor.style.opacity = 0;
+        up.style.opacity = 0;
+        down.style.opacity = 0;
+        this.floorNum = 1;
       } else {
         this.floor = this.bldgLabel + this.floorNum
         currFloor.style.opacity = 1;
+        up.style.opacity = 1;
+        down.style.opacity = 1;
       }
       this.$state.curFloorNum = this.floorNum
     }
@@ -30,7 +49,7 @@ export default {
     return {
       threshold: 1,
       doResize: "",
-      floorNum: "3",
+      floorNum: 1,
       floor: "",
     }
   },
@@ -58,6 +77,19 @@ export default {
         currFloor.style.transform = `scale(${(y - 150) / 60})` + `rotate(90deg)`
       else // landscape mode
         currFloor.style.transform = `scale(${x / 60})`
+    },
+    increaseFloor() {
+      // Check if at max floor
+      this.floorNum++;
+      this.$state.curFloorNum = this.floorNum;
+      this.floor = this.bldgLabel + this.floorNum
+    },
+    decreaseFloor() {
+      if (this.floorNum != 1) {
+        this.floorNum--;
+        this.$state.curFloorNum = this.floorNum;
+        this.floor = this.bldgLabel + this.floorNum
+      }
     }
   }
 }
@@ -75,5 +107,42 @@ export default {
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
+}
+
+#button-box {
+  position: absolute;
+  justify-content: center;
+  align-items: right;
+  right: 40px;
+  top: 40px;
+  width: 50px;
+  height: 130px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.floor-button {
+  position: flex;
+  background: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  padding: 0;
+  border: none;
+  opacity: 0;
+}
+
+.floor-button:hover {
+  background-color: var(--roomfill);
+}
+
+
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
 }
 </style>

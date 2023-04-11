@@ -5,7 +5,7 @@ import Logo from '@/assets/logo.svg?component'
 
 <template>
   <header v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    <Logo class="logo" width="125" height="125"/>
+    <Logo class="logo" width="75" height="75"/>
 
     <div class="wrapper">
       <nav>
@@ -44,10 +44,8 @@ header {
 nav {
   width: 100%;
   text-align: left;
-  margin-left: -1rem;
   font-size: 1rem;
   padding: 1rem 0;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {

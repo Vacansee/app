@@ -11,9 +11,6 @@
     "@vueuse/core": "^9.13.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "primeflex": "^3.3.0",
-    "primeicons": "^6.0.1",
-    "primevue": "^3.26.1",
     "vite-svg-loader": "^4.0.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
