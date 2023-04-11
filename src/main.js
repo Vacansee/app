@@ -21,13 +21,15 @@ app.use(Moment)
 app.component('Button', Button)
 app.component('Sidebar', Sidebar)
 
+// alert(Moment('2-1830', 'e-HHmm').isValid())
+
 app.config.globalProperties.$state = reactive({
 	// DATA: null,
 	curBldgLabel: '',
 	curRoomLabel: '',
 	curFloorNum: '1',
 	curDate: Moment.tz('America/New_York')
-			.format('d-HHmm')
+			.format('e:HHmm')
 })
 
 app.mount('#app')
