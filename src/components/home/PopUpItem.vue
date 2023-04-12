@@ -1,5 +1,5 @@
 <script setup>
-import moment from 'moment'
+import moment from 'moment-timezone'
 </script>
 
 <template>
@@ -16,12 +16,12 @@ import moment from 'moment'
         <div v-else class="body">
             <span>{{ getBldg().meta.name }}ㅤㅤ</span>
             <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
-            <span>Current time: {{ getRealDate($state.curDate) }}ㅤㅤ</span>
+            <span>Current time: {{ getRealDate(getTime()) }}ㅤㅤ</span>
             <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
             <span><b>{{ getActive() }}ㅤㅤ</b></span>
             <ul>
-                <li v-for="(item, index) in getData()">
-                    {{ item[0] }} at {{ index.split('-') }}
+                <li v-for="item in getTodaysClasses()">
+                    {{ item }}
                 </li>
             </ul>
         </div>
@@ -38,13 +38,12 @@ export default {
         getBldg() { return this.data[this.$state.curBldgLabel] },
         noData() { return !this.getBldg().hasOwnProperty(this.$state.curRoomLabel) },
         getData() { return this.getBldg()[this.$state.curRoomLabel] },
-        getRealDate(date) {
-            return moment(date, 'e:HHmm').format('hh:mm A')
-        },
+        getRealDate(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
+        getTime() { return moment.tz('America/New_York').format('e:HHmm') },
         getActive() {
             for (const key in this.getData())  {
                 if (key == 'meta') continue //skip
-                let now = this.$state.curDate
+                let now = this.getTime()
                 let [beg, end] = key.split('-')
                 if (beg <= now && end >= now) {
                     const tStart = moment(now, 'e:HHmm'), tEnd = moment(end, 'e:HHmm')
@@ -56,13 +55,22 @@ export default {
                     const diff = moment.duration(tEnd.diff(tStart))
                     return `Next class is in ${diff.hours()}h and ${diff.minutes()}m`
                 }
-                // if (beg > now) return `Next class is in ${this.getRealDate(beg.toString())}`
             }
         },
         getPrinters() {
             if (!this.getBldg().meta.hasOwnProperty("printers"))
                 return 'none'
             else return this.getBldg().meta.printers
+        },
+        getTodaysClasses() {
+            let classes = []
+            let roomData = this.getData() 
+            for (let time in roomData) {
+                if (time.split(':')[0] == this.getTime().split(':')[0]) {
+                    classes.push(roomData[time][0] + ' at ' + this.getRealDate(time))
+                }
+            }
+            return classes
         }
     }
 }
@@ -84,12 +92,11 @@ export default {
     border: 3px solid var(--softborder);
     border-bottom-style: none;
     box-shadow: 0px -2px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 3vh 3vh 0vh 0vh;
+    border-radius: 30px 30px 0vh 0vh;
 }
 
 #popup-head {
     width: 100vw;
-    border-radius: 3vh 3vh 0vh 0vh;
     height: 6vh;
     background-color: none;
     color: rgb(0, 0, 0);
@@ -113,7 +120,8 @@ export default {
     margin-left: 25px;
 }
 
-ul {
-    columns: 3 auto;
+li {
+    line-height: 1.5;
 }
+
 </style>
