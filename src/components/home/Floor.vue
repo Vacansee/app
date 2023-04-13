@@ -11,6 +11,7 @@ const getSvgFloor = async (floor) => {
 }
 
 export default {
+  inject: ["global"],
   props: {
     floor: String,
   },
@@ -30,7 +31,7 @@ export default {
             this.currRoom.removeAttribute("class", "selected");
           this.currRoom = null;
           this.roomLabel = "";
-          this.$state.curRoomLabel = ""
+          this.global.room = ""
         }
         else
           this.svg = await getSvgFloor(floor)
@@ -87,7 +88,7 @@ export default {
         this.roomLabel = path.id.replace(/_/g, '')
         path.setAttribute("class", "selected");
       }
-      this.$state.curRoomLabel = this.roomLabel
+      this.global.room = this.roomLabel
     }
   }
 }

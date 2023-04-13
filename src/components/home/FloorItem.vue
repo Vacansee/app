@@ -24,6 +24,7 @@ import Floor from './Floor.vue'
 
 <script>
 export default {
+  inject: ["global"],
   components: {
     Floor
   },
@@ -42,14 +43,14 @@ export default {
         up.style.opacity = 1;
         down.style.opacity = 1;
       }
-      this.$state.curFloorNum = this.floorNum
+      this.global.floor = this.floorNum
     }
   },
   data() {
     return {
       threshold: 1,
       doResize: "",
-      floorNum: 1,
+      floorNum: 3,
       floor: "",
     }
   },
@@ -81,13 +82,13 @@ export default {
     increaseFloor() {
       // Check if at max floor
       this.floorNum++;
-      this.$state.curFloorNum = this.floorNum;
+      this.global.floor = this.floorNum;
       this.floor = this.bldgLabel + this.floorNum
     },
     decreaseFloor() {
       if (this.floorNum != 1) {
         this.floorNum--;
-        this.$state.curFloorNum = this.floorNum;
+        this.global.floor = this.floorNum;
         this.floor = this.bldgLabel + this.floorNum
       }
     }

@@ -2,24 +2,21 @@
 import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
-import { useFetch } from '@vueuse/core';
-
-const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
-const { data, isFetching, error } = useFetch(URL).get().json();
 </script>
 
 <template>
-  <div v-if="isFetching" class="toast" id="nametag">Loading data...</div>
-  <div v-else-if="error" class="toast" id="nametag">Failed to retrieve data</div>
+  <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
+  <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ bldgLabel }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"></div>
-  <PopUpItem :data="data" />
+  <PopUpItem />
   <FloorItem :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
 </template>
 
 <script>
 export default {
+  inject: ['global'],
   components: {
     MapItem,
     PopUpItem,
@@ -77,8 +74,7 @@ export default {
         this.unselected = false
         this.currBuilding = b
         this.bldgLabel = b.id.replace(/-/g, ' ')
-        this.$state.curBldgLabel = this.bldgLabel
-        console.log('Global var for label:', this.$state.curBldgLabel)
+        this.global.bldg = this.bldgLabel
 
         b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
@@ -93,7 +89,7 @@ export default {
       try {
         let tmp = this.currBuilding
         this.currBuilding = ""
-        this.$state.curBldgLabel = ""
+        this.global.bldg = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
         popup.style.transform = "translateY(250px)"

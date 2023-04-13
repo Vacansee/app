@@ -6,24 +6,29 @@ import moment from 'moment-timezone'
     <div id="popup">
         <div id="popup-head"> 
             <div id="popupbuild">
-                {{ $state.curBldgLabel }}
-                <span v-if="$state.curBldgLabel"> > Floor {{ $state.curFloorNum }}</span>
-                <span v-if="!noneSelected()"> > Room {{ $state.curRoomLabel }}</span>
+                {{ global.bldg }}
+                <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
+                <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
             </div>
         </div>
-        <div v-if="noneSelected()" class="body body-none">No room selected</div>
-        <div v-else-if="noData()" class="body body-none">No classes in room</div>
-        <div v-else class="body">
+        <div v-if="global.bldg" class="body">
             <span>{{ getBldg().meta.name }}ㅤㅤ</span>
-            <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
-            <span>Current time: {{ getRealDate(getTime()) }}ㅤㅤ</span>
-            <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
-            <span><b>{{ getActive() }}ㅤㅤ</b></span>
-            <ul>
-                <li v-for="item in getTodaysClasses()">
-                    {{ item }}
-                </li>
-            </ul>
+            <span ref="mySpan">Current time: {{ getRealTime(this.global.time) }}ㅤㅤ</span>
+            <span>Building heat: <b>{{ getBldg().meta.heat }}</b>ㅤㅤ</span>
+            <p></p>
+            <div v-if="noneSelected()" class="warn">No room selected</div>
+            <div v-else-if="noData()" class="warn">No classes in room</div>
+            <div v-else >
+                <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
+                <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
+                <span>Active: {{ getData().meta.active }}ㅤㅤ</span>
+                <span><b>{{ getActive() }}ㅤㅤ</b></span>
+                <ul>
+                    <li v-for="item in getTodaysClasses()">
+                        {{ item }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -32,18 +37,18 @@ import moment from 'moment-timezone'
 <script>
 
 export default {
+    inject: ['global'],
     props: ['data'],
     methods: {
-        noneSelected() { return !this.$state.curRoomLabel },
-        getBldg() { return this.data[this.$state.curBldgLabel] },
-        noData() { return !this.getBldg().hasOwnProperty(this.$state.curRoomLabel) },
-        getData() { return this.getBldg()[this.$state.curRoomLabel] },
-        getRealDate(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
-        getTime() { return moment.tz('America/New_York').format('e:HHmm') },
+        noneSelected() { return !this.global.room },
+        getBldg() { return this.global.data[this.global.bldg] },
+        noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
+        getData() { return this.getBldg()[this.global.room] },
+        getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
         getActive() {
             for (const key in this.getData())  {
                 if (key == 'meta') continue //skip
-                let now = this.getTime()
+                let now = this.global.time
                 let [beg, end] = key.split('-')
                 if (beg <= now && end >= now) {
                     const tStart = moment(now, 'e:HHmm'), tEnd = moment(end, 'e:HHmm')
@@ -66,8 +71,8 @@ export default {
             let classes = []
             let roomData = this.getData() 
             for (let time in roomData) {
-                if (time.split(':')[0] == this.getTime().split(':')[0]) {
-                    classes.push(roomData[time][0] + ' at ' + this.getRealDate(time))
+                if (time.split(':')[0] == this.global.time.split(':')[0]) {
+                    classes.push(roomData[time][0] + ' at ' + this.getRealTime(time))
                 }
             }
             return classes
@@ -109,7 +114,7 @@ export default {
     padding: 10px 20px;
 }
 
-.body-none {
+.warn {
     color: red;
     font-weight: 500;
 
