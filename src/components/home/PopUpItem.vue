@@ -13,7 +13,7 @@ import moment from 'moment-timezone'
         </div>
         <div v-if="global.bldg" class="body">
             <span>{{ getBldg().meta.name }}ㅤㅤ</span>
-            <span ref="mySpan">Current time: {{ getRealTime(this.global.time) }}ㅤㅤ</span>
+            <span ref="mySpan">Current time: {{ getRealTime(global.time) }}ㅤㅤ</span>
             <span>Building heat: <b>{{ getBldg().meta.heat }}</b>ㅤㅤ</span>
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
