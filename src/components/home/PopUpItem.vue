@@ -23,11 +23,11 @@ import moment from 'moment-timezone'
                 <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
                 <span>Active: <code class="code">{{ getData().meta.active }}</code>ㅤㅤ</span>
                 <span v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
-                    <b>{{ getData().meta.cur[1].hours() }}h</b> and
-                    <b>{{ getData().meta.cur[1].minutes() }}m</b>ㅤㅤ</span>
+                    <b>{{ getCur().hours() }}h</b> and
+                    <b>{{ getCur().minutes() }}m</b>ㅤㅤ</span>
                 <span v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
-                    <b>{{ getData().meta.next[1].hours() }}h</b> and
-                    <b>{{ getData().meta.next[1].minutes() }}m</b>ㅤㅤ</span>
+                    <b>{{ getNext().hours() }}h</b> and
+                    <b>{{ getNext().minutes() }}m</b>ㅤㅤ</span>
                 <span v-else class="warn"> No more classes this week!</span>
                 <ul>
                     <li v-for="item in getTodaysClasses()">
@@ -49,6 +49,14 @@ export default {
         noneSelected() { return !this.global.room },
         getBldg() { return this.global.data[this.global.bldg] },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
+        getCur() {
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[1]
+            return moment.duration(f.diff(i))
+        },
+        getNext() {
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[1]
+            return moment.duration(f.diff(i))
+        },
         getData() { return this.getBldg()[this.global.room] },
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
         getPrinters() {
