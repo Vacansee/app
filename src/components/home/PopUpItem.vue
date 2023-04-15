@@ -18,11 +18,17 @@ import moment from 'moment-timezone'
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
             <div v-else-if="noData()" class="warn">No classes in room</div>
-            <div v-else >
+            <div v-else>
                 <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
                 <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
-                <span>Active: {{ getData().meta.active }}ㅤㅤ</span>
-                <span><b>{{ getActive() }}ㅤㅤ</b></span>
+                <span>Active: <code class="code">{{ getData().meta.active }}</code>ㅤㅤ</span>
+                <span v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
+                    <b>{{ getData().meta.cur[1].hours() }}h</b> and
+                    <b>{{ getData().meta.cur[1].minutes() }}m</b>ㅤㅤ</span>
+                <span v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
+                    <b>{{ getData().meta.next[1].hours() }}h</b> and
+                    <b>{{ getData().meta.next[1].minutes() }}m</b>ㅤㅤ</span>
+                <span v-else class="warn"> No more classes this week!</span>
                 <ul>
                     <li v-for="item in getTodaysClasses()">
                         {{ item }}
@@ -45,37 +51,17 @@ export default {
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         getData() { return this.getBldg()[this.global.room] },
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
-        getActive() {
-            for (const key in this.getData())  {
-                if (key == 'meta') continue //skip
-                let now = this.global.time
-                let [beg, end] = key.split('-')
-                if (beg <= now && end >= now) {
-                    const tStart = moment(now, 'e:HHmm'), tEnd = moment(end, 'e:HHmm')
-                    const diff = moment.duration(tEnd.diff(tStart))
-                    return `${this.getData()[key][0]} ends in ${diff.hours()}h and ${diff.minutes()}m`
-                }
-                if (beg > now) {
-                    const tStart = moment(now, 'e:HHmm'), tEnd = moment(beg, 'e:HHmm')
-                    const diff = moment.duration(tEnd.diff(tStart))
-                    return `Next class is in ${diff.hours()}h and ${diff.minutes()}m`
-                }
-            }
-        },
         getPrinters() {
-            if (!this.getBldg().meta.hasOwnProperty("printers"))
-                return 'none'
+            if (!this.getBldg().meta.hasOwnProperty("printers")) return 'none'
             else return this.getBldg().meta.printers
         },
         getTodaysClasses() {
             let classes = []
             let roomData = this.getData() 
             for (let time in roomData) {
-                if (time.split(':')[0] == this.global.time.split(':')[0]) {
+                if (time.split(':')[0] == this.global.time.split(':')[0])
                     classes.push(roomData[time][0] + ' at ' + this.getRealTime(time))
-                }
-            }
-            return classes
+            } return classes
         }
     }
 }
@@ -119,6 +105,10 @@ export default {
     font-weight: 500;
 
 }
+.code {
+    font-size: 15px;
+    color: #902a00;
+}
 
 .body {
     margin-top: 50px;
@@ -128,5 +118,6 @@ export default {
 li {
     line-height: 1.5;
 }
+
 
 </style>
