@@ -28,7 +28,7 @@ import moment from 'moment-timezone'
                 <span v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
                     <b>{{ getNext().hours() }}h</b> and
                     <b>{{ getNext().minutes() }}m</b>ㅤㅤ</span>
-                <span v-else class="warn"> No more classes this week!</span>
+                <span v-else class="warn"> It's the weekend!</span>
                 <ul>
                     <li v-for="item in getTodaysClasses()">
                         {{ item }}

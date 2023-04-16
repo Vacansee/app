@@ -52,23 +52,22 @@ export default {
     getBldg() { return this.global.data[this.global.bldg] },
     getColor(minutes) {
       const colors = [
-        "#59de9f", // 4 hours (240 minutes)
-        "#c3ed6d", // 2 hours (120 minutes)
-        "#fad98e", // 1 hour (60 minutes)
-        "#f99a57", // 30 minutes free
+        "#66e099", // 4 hours (240 minutes)
+        "#aeea77", // 2 hours (120 minutes)
+        "#d8ed80", // 1 hour (60 minutes)
+        "#feeea4", // 30 minutes free
+        "#fdc675", // 15 minutes free
+        "#f99a57", // 10 minutes free
         "#fc4e58", // occupied
       ]
 
-      if (minutes >= 240)
-        return colors[0]
-      else if (minutes >= 120)
-        return colors[1]
-      else if (minutes >= 60)
-        return colors[2]
-      else if (minutes >= 30)
-        return colors[3]
-      else
-        return colors[4]
+      if (minutes >= 240) return colors[0]
+      if (minutes >= 120) return colors[1]
+      if (minutes >= 60)  return colors[2]
+      if (minutes >= 30)  return colors[3]
+      if (minutes >= 15)  return colors[4]
+      if (minutes >= 10)  return colors[5]
+      else return colors[6]
     },
     roomSelect(path) {
       let roomName = path.id.substr(1)
@@ -103,6 +102,9 @@ export default {
           if (roomInfo) {
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
+            }
+            else if (!roomInfo.meta.next) { // weekends
+              path.setAttribute("fill", "#0eeb6f");
             }
             else {
               const initial = moment(this.global.time, 'e:HHmm')

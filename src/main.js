@@ -44,6 +44,8 @@ function checkActive() {
 					break
 				}
 			}
+			// if end of Friday, Saturday (already '') or Sunday (0):
+			if (Moment().day() == '0') room.meta.next = ''
 		}
 		// let oldHeat = bldg.meta.heat
 		bldg.meta.heat = `${(sum/bldg.meta.max * 100).toFixed(2)}%`
