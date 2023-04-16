@@ -1,3 +1,7 @@
+<script setup>
+import moment from 'moment-timezone'
+</script>
+
 <template>
   <div id="svgFloor">
     <component :is="svg" ref="svgComponent"></component>
@@ -41,54 +45,81 @@ export default {
   },
   updated() {
     this.$nextTick(() => {
-      this.applyRandomColors()
+      this.applyRoomColors()
     })
   },
   methods: {
-    applyRandomColors() {
+    getBldg() { return this.global.data[this.global.bldg] },
+    getColor(minutes) {
       const colors = [
-        "#fdfedc",
-        "#fef6c0",
-        "#feeea4",
-        "#fdd884",
-        "#fdc675",
-        "#fcad60",
-        "#f99a57",
-        "#f57948",
-        "#eb6045",
-        "#d7434b",
-        "#c9314b",
-        "#9e0041",
+        "#59de9f", // 4 hours (240 minutes)
+        "#c3ed6d", // 2 hours (120 minutes)
+        "#fad98e", // 1 hour (60 minutes)
+        "#f99a57", // 30 minutes free
+        "#fc4e58", // occupied
       ]
 
+      if (minutes >= 240)
+        return colors[0]
+      else if (minutes >= 120)
+        return colors[1]
+      else if (minutes >= 60)
+        return colors[2]
+      else if (minutes >= 30)
+        return colors[3]
+      else
+        return colors[4]
+    },
+    roomSelect(path) {
+      let roomName = path.id.substr(1)
+      if (!this.getBldg()[roomName]) {
+        this.currRoom.remove();
+        this.currRoom = null
+        this.roomLabel = ""
+      }
+      else {
+        if (this.currRoom != null) 
+          this.currRoom.remove();
+        this.currRoom = path
+        this.roomLabel = path.id.substr(1)
+        const clonedPath = path.cloneNode(true);
+        path.parentNode.appendChild(clonedPath);
+        this.currRoom = clonedPath;
+        setTimeout(() => {
+          clonedPath.setAttribute("class", "selected");
+        }, 10);
+      }
+      this.global.room = this.roomLabel
+    },
+    applyRoomColors() {
       const svgComponent = this.$refs.svgComponent
 
       if (svgComponent && svgComponent.$el) {
         const paths = svgComponent.$el.querySelectorAll("path")
 
         paths.forEach((path) => {
-          if (path.getAttribute("id") != "floor") {
-            let randColor = colors[Math.floor(Math.random() * colors.length)]
-            path.setAttribute("fill", randColor)
-            path.setAttribute("pointer-events", "all");
-            path.addEventListener("click", () => { this.roomSelect(path) })
+          let roomName = path.getAttribute("id").substr(1);
+          let roomInfo = this.getBldg()[roomName];
+          if (roomInfo) {
+            if (roomInfo.meta.cur) {
+              path.setAttribute("fill", "#fc4e58");
+            }
+            else {
+              const initial = moment(this.global.time, 'e:HHmm')
+              const final = roomInfo.meta.next[1]
+              const next = moment.duration(final.diff(initial)).asMinutes()
+              path.setAttribute("fill", this.getColor(next));
+            }
           }
+          else if (roomName == "loor") {
+          }
+          else {
+            path.setAttribute("fill", "var(--unusedfill)")
+          }
+          path.setAttribute("pointer-events", "all");
+          path.addEventListener("click", () => { this.roomSelect(path); })
         })
       }
-    },
-    roomSelect(path) {
-      if (this.currRoom == null) {
-        this.currRoom = path
-        this.roomLabel = path.id.replace(/_/g, '')
-        path.setAttribute("class", "selected");
-      }
-      else {
-        this.currRoom.removeAttribute("class", "selected");
-        this.currRoom = path
-        this.roomLabel = path.id.replace(/_/g, '')
-        path.setAttribute("class", "selected");
-      }
-      this.global.room = this.roomLabel
     }
   }
 }
@@ -108,7 +139,10 @@ export default {
 
 .selected {
   opacity: 1 !important;
-  fill: var(--selectedfill) !important;
+  stroke: #007160 !important;
+  transition: stroke-width 0.25s ease-in-out, stroke 0.25s ease-in-out;
+  stroke-width: 15px;
   z-index: 6;
+  position: absolute;
 }
 </style>

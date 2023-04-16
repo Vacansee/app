@@ -47,9 +47,10 @@
   --buildfill: #d4e5e2;
   --buildbord: #7cacab;
 
-  --roomfill: #bbd3cf;
+  --roomfill: #d5ebe7;
+  --unusedfill: #bbd3cf;
   
-  --selectedfill: #3aeab5;
+  --selectedfill: #6afacf;
   --selectedbord: #20c05b6f;
 }
 

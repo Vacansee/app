@@ -36,21 +36,23 @@ export default {
         currFloor.style.opacity = 0;
         up.style.opacity = 0;
         down.style.opacity = 0;
-        this.floorNum = 1;
       } else {
-        this.floor = this.bldgLabel + this.floorNum
+        if (this.getBldg()) {
+          this.floorNum = this.getBldg().meta.floors[2]
+          this.floor = this.bldgLabel + this.getBldg().meta.floors[2]
+          this.global.floor = this.getBldg().meta.floors[2]
+        }
         currFloor.style.opacity = 1;
         up.style.opacity = 1;
         down.style.opacity = 1;
       }
-      this.global.floor = this.floorNum
     }
   },
   data() {
     return {
       threshold: 1,
       doResize: "",
-      floorNum: 3,
+      floorNum: 1,
       floor: "",
     }
   },
@@ -61,6 +63,7 @@ export default {
     this.windowEventHandler()
   },
   methods: {
+    getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
       let group = f.parentNode
       group.appendChild(f)
@@ -80,10 +83,11 @@ export default {
         currFloor.style.transform = `scale(${x / 60})`
     },
     increaseFloor() {
-      // Check if at max floor
-      this.floorNum++;
-      this.global.floor = this.floorNum;
-      this.floor = this.bldgLabel + this.floorNum
+      if (this.floorNum < this.getBldg().meta.floors[1]) {
+        this.floorNum++;
+        this.global.floor = this.floorNum;
+        this.floor = this.bldgLabel + this.floorNum
+      }
     },
     decreaseFloor() {
       if (this.floorNum != 1) {
