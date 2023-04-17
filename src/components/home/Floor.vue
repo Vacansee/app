@@ -142,7 +142,7 @@ export default {
 .selected {
   opacity: 1 !important;
   stroke: #007160 !important;
-  transition: stroke-width 0.25s ease-in-out, stroke 0.25s ease-in-out;
+  transition: stroke-width 0.2s ease-in-out, stroke 0.2s ease-in-out;
   stroke-width: 15px;
   z-index: 6;
   position: absolute;

@@ -354,6 +354,7 @@
 
 <script>
 export default {
+  inject: ["global"],
   props: ['unselected', 'currBuilding'],
   watch: {
     unselected(newVar, oldVar) {
@@ -361,6 +362,14 @@ export default {
         setTimeout(this.windowEventHandler, 800);
       else
         this.bringToFront(this.currBuilding);
+    },
+    'global.firstCalc': {
+      deep: true,
+      handler() {
+        if (this.global.firstCalc) {
+          this.applyBuildingColors();
+        }
+      }
     }
   },
   data() {
@@ -369,35 +378,63 @@ export default {
       doResize: "",
     }
   },
+  updated() {
+    this.$nextTick(() => {
+      this.applyBuildingColors()
+    })
+  },
   mounted() {
-    let colors = [
-      "#fdfedc",
-      "#fef6c0",
-      "#feeea4",
-      "#fdd884",
-      "#fdc675",
-      "#fcad60",
-      "#f99a57",
-      "#f57948",
-      "#eb6045",
-      "#d7434b",
-      "#c9314b",
-      "#9e0041",
-    ]
-
     map.style.opacity = 1
     setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
 
     window.addEventListener("resize", this.windowResizeTimeout)
 
     this.windowEventHandler()
-
-    for (const b of buildings.children) {
-      let randColor = colors[Math.floor(Math.random() * colors.length)]
-      b.style.fill = randColor
-    }
   },
   methods: {
+    applyBuildingColors() {
+      let colors = [
+        "#fdfedc", // 10%
+        "#fef6c0", // 20%
+        "#feeea4", // 30%
+        "#fdd884", // 40%
+        "#fdc675", // 50%
+        "#fcad60", // 60%
+        "#f99a57", // 70%
+        "#f57948", // 80%
+        "#eb6045", // 90%
+        "#d7434b", //100%
+      ]
+      for (const b of buildings.children) {
+        let bldngHeat = 0
+        try {
+          console.log(b.id)
+          console.log(this.global.data[b.id])
+          bldngHeat = this.global.data[b.id].meta.heat
+        }
+        catch { console.log("No such building.") }
+        if (bldngHeat >= 90)
+          b.style.fill = colors[9]
+        else if (bldngHeat >= 80)
+          b.style.fill = colors[8]
+        else if (bldngHeat >= 70)
+          b.style.fill = colors[7]
+        else if (bldngHeat >= 60)
+          b.style.fill = colors[6]
+        else if (bldngHeat >= 50)
+          b.style.fill = colors[5]
+        else if (bldngHeat >= 40)
+          b.style.fill = colors[4]
+        else if (bldngHeat >= 30)
+          b.style.fill = colors[3]
+        else if (bldngHeat >= 20)
+          b.style.fill = colors[2]
+        else if (bldngHeat >= 10)
+          b.style.fill = colors[1]
+        else
+          b.style.fill = colors[0]
+      }
+    },
     bringToFront(b) {
       let group = b.parentNode
       group.appendChild(b)
@@ -450,6 +487,7 @@ export default {
   stroke: var(--buildbord);
   stroke-width: 1px;
   transition-duration: .2s;
+  transition: fill 0.5s;
   will-change: transform;
 }
 

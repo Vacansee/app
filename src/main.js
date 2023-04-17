@@ -16,6 +16,7 @@ const global = reactive({
 	room: '',
 	floor: '1',
 	time: Moment.tz('America/New_York').format('e:HHmm'),
+	firstCalc: false,
 })
 
 function checkActive() {
@@ -44,11 +45,9 @@ function checkActive() {
 					break
 				}
 			}
-			// if end of Friday, Saturday (already '') or Sunday (0):
-			if (Moment().day() == '0') room.meta.next = ''
 		}
 		// let oldHeat = bldg.meta.heat
-		bldg.meta.heat = `${(sum/bldg.meta.max * 100).toFixed(2)}%`
+		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)
 	}
@@ -65,7 +64,10 @@ setInterval(() => { // Update current time every seconcd
 }, 1000)
   
 watch(data, () => {
-	if (global.data) checkActive()
+	if (global.data) {
+		checkActive()
+		global.firstCalc = true
+	}
 })
 
 const app = createApp(App)

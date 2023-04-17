@@ -4,8 +4,8 @@ import Logo from '@/assets/logo.svg?component'
 </script>
 
 <template>
-  <header v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    <Logo class="logo" width="75" height="75"/>
+  <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
+    <Logo class="logo" width="75" height="75" />
 
     <div class="wrapper">
       <nav>
@@ -19,6 +19,23 @@ import Logo from '@/assets/logo.svg?component'
   <RouterView />
 </template>
 
+<script>
+export default {
+  inject: ["global"],
+  watch: {
+    'global.bldg': {
+      deep: true,
+      handler() {
+        if (this.global.bldg)
+          document.getElementById("header").style.opacity = "0";
+        else
+          document.getElementById("header").style.opacity = "1";
+
+      }
+    }
+  }
+}
+</script>
 <style scoped>
 @import './assets/main.css';
 
