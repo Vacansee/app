@@ -11,12 +11,16 @@ import Floor from './Floor.vue'
   </div>
 
   <div id='button-box'>
-    <button id="up" class="floor-button" type="button" @click="increaseFloor">
-      <i class="material-symbols-outlined">arrow_upward</i>
+    <button id="up" v-bind:class="{ 'disabled': !btnUp }" class="floor-button" type="button" @click="increaseFloor">
+    <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+    </svg>
     </button>
 
-    <button id="down" class="floor-button" type="button" @click="decreaseFloor">
-      <i class="material-symbols-outlined">arrow_downward</i>
+    <button id="down" v-bind:class="{ 'disabled': !btnDown }" class="floor-button" type="button" @click="decreaseFloor">
+      <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
+    </svg>
     </button>
 
   </div>
@@ -30,7 +34,7 @@ export default {
   },
   props: ['unselected', 'currBuilding', 'bldgLabel'],
   watch: {
-    unselected(newVar, oldVar) {
+    unselected(newVar) {
       if (newVar) {
         this.floor = ""
         currFloor.style.opacity = 0;
@@ -45,14 +49,33 @@ export default {
         currFloor.style.opacity = 1;
         up.style.opacity = 1;
         down.style.opacity = 1;
+        down.style.transform = "rotate(180deg)";
       }
-    }
+    },
+    floorNum(newVar) {
+      if (newVar == this.getBldg().meta.floors[1])
+        this.btnUp = false 
+      else this.btnUp = true
+      if (newVar == 1) this.btnDown = false
+      else this.btnDown = true
+    },
+    btnUp(newVar) {
+      if (newVar) up.style.opacity = 1;
+      else        up.style.opacity = 0.6;
+
+    },
+    btnDown(newVar) {
+      if (newVar) down.style.opacity = 1;
+      else        down.style.opacity = 0.6;
+    },
   },
   data() {
     return {
       threshold: 1,
       doResize: "",
       floorNum: 1,
+      btnUp: true,
+      btnDown: true,
       floor: "",
     }
   },
@@ -120,26 +143,34 @@ export default {
   justify-content: center;
   align-items: right;
   right: 40px;
-  top: 40px;
-  width: 50px;
-  height: 130px;
+  bottom: 270px;
+  width: 60px;
+  height: 150px;
   display: flex;
   flex-wrap: wrap;
 }
 
+.disabled {
+  background-color: #dedede !important;
+  border-color: var(--hardborder) !important;
+  color: #afafaf !important;
+}
+
 .floor-button {
   position: flex;
-  background: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  color: #222222;
+  border: 3px solid var(--softborder);
   padding: 0;
-  border: none;
   opacity: 0;
 }
 
 .floor-button:hover {
   background-color: var(--roomfill);
+  border: 3px solid #86b0ac;
+  color: #4d6d6b;
 }
 
 

@@ -408,8 +408,6 @@ export default {
       for (const b of buildings.children) {
         let bldngHeat = 0
         try {
-          console.log(b.id)
-          console.log(this.global.data[b.id])
           bldngHeat = this.global.data[b.id].meta.heat
         }
         catch { console.log("No such building.") }
