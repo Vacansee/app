@@ -73,14 +73,14 @@ export default {
       this.doResize = setTimeout(this.windowEventHandler, 300);
     },
     windowEventHandler() {
-      let x = window.innerWidth
-      let y = window.innerHeight
-      let ratio = x / y
+      let x = window.innerWidth;
+      let y = window.innerHeight - 250; // Subtract the bottom panel's height
+      let ratio = x / y;
 
       if (ratio < this.threshold)  // portrait mode
-        currFloor.style.transform = `scale(${(y - 150) / 60})` + `rotate(90deg)`
+        currFloor.style.transform = `translate(calc(-50% - 30px), calc(-50%)) scale(${(y - 150) / 50})` + `rotate(90deg)`;
       else // landscape mode
-        currFloor.style.transform = `scale(${x / 60})`
+        currFloor.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${x / 65})`;
     },
     increaseFloor() {
       if (this.floorNum < this.getBldg().meta.floors[1]) {
@@ -104,14 +104,15 @@ export default {
 #currFloor {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(50% - 125px);
+  transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
-  transform: translate(-50%, -50%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   justify-content: center;
   align-items: center;
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
+
 }
 
 #button-box {
