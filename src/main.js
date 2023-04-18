@@ -41,6 +41,7 @@ function checkActive() {
 					const i = Moment(now, 'e:HHmm'), f = Moment(beg, 'e:HHmm')
                     const until = Moment.duration(f.diff(i))
 					room.meta.next = [ room[time][0], f ] 
+					console.log("Next class timer for ",room,":",room.meta.next)
 					if (until.asMinutes() > longest) longest = until.asMinutes()
 					break
 				}

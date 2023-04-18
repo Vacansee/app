@@ -110,6 +110,7 @@ export default {
         this.floorNum++;
         this.global.floor = this.floorNum;
         this.floor = this.bldgLabel + this.floorNum
+        this.global.room = ""
       }
     },
     decreaseFloor() {
@@ -117,6 +118,7 @@ export default {
         this.floorNum--;
         this.global.floor = this.floorNum;
         this.floor = this.bldgLabel + this.floorNum
+        this.global.room = ""
       }
     }
   }
@@ -154,6 +156,7 @@ export default {
   background-color: #dedede !important;
   border-color: var(--hardborder) !important;
   color: #afafaf !important;
+  cursor: not-allowed !important;
 }
 
 .floor-button {
@@ -165,6 +168,7 @@ export default {
   border: 3px solid var(--softborder);
   padding: 0;
   opacity: 0;
+  cursor: pointer;
 }
 
 .floor-button:hover {

@@ -102,21 +102,25 @@ export default {
           if (roomInfo) {
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
+              path.setAttribute("cursor", "pointer")
             }
             else if (!roomInfo.meta.next) { // weekends
               path.setAttribute("fill", "#0eeb6f");
+              path.setAttribute("cursor", "pointer")
             }
             else {
               const initial = moment(this.global.time, 'e:HHmm')
               const final = roomInfo.meta.next[1]
               const next = moment.duration(final.diff(initial)).asMinutes()
               path.setAttribute("fill", this.getColor(next));
+              path.setAttribute("cursor", "pointer")
             }
           }
           else if (roomName == "loor") {
           }
           else {
             path.setAttribute("fill", "var(--unusedfill)")
+            path.setAttribute("cursor","not-allowed")
           }
           path.setAttribute("pointer-events", "all");
           path.addEventListener("click", () => { this.roomSelect(path); })
