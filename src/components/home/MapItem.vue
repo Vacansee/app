@@ -410,7 +410,7 @@ export default {
         try {
           bldngHeat = this.global.data[b.id].meta.heat
         }
-        catch { console.log("No such building.") }
+        catch { console.log(`buildings w/o classes`) }
         if (bldngHeat >= 90)
           b.style.fill = colors[9]
         else if (bldngHeat >= 80)

@@ -18,22 +18,33 @@ import moment from 'moment-timezone'
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
             <div v-else-if="noData()" class="warn">No classes in room</div>
-            <div v-else>
-                <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
-                <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
-                <span>Active: <code class="code">{{ getData().meta.active }}</code>ㅤㅤ</span>
-                <span v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
-                    <b>{{ getCur().hours() }}h</b> and
-                    <b>{{ getCur().minutes() }}m</b>ㅤㅤ</span>
-                <span v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
-                    <b>{{ getNext().hours() }}h</b> and
-                    <b>{{ getNext().minutes() }}m</b>ㅤㅤ</span>
-                <span v-else class="warn"> It's the weekend!</span>
-                <ul>
-                    <li v-for="item in getTodaysClasses()">
-                        {{ item }}
-                    </li>
-                </ul>
+            <div v-else style="display: flex;">
+                <div class="column">
+                    <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
+                    <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
+                    <span>Active: <code class="code">{{ getData().meta.active }}</code>ㅤㅤ</span>
+                    <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
+                        <b>{{ getCur().hours() }}h</b> and
+                        <b>{{ getCur().minutes() }}m</b>
+                        <span v-if="hasSecs('cur')"> for sections </span>
+                        <span v-for="item in getData().meta.cur[1]" class="sec">{{ item }}</span>
+                    </p>
+                    <p v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
+                        <b>{{ getNext().hours() }}h</b> and
+                        <b>{{ getNext().minutes() }}m</b>
+                        <span v-if="hasSecs('next')"> for sections </span>
+                        <span v-for="item in getData().meta.next[1]" class="sec">{{ item }}</span>
+                    </p>
+                    <p v-else class="warn"> It's the weekend!</p>
+                </div>
+                <div class="column">
+                    <b>Today</b>
+                    <ul>
+                        <li v-for="item in getTodaysClasses()">
+                            {{ item }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -49,12 +60,18 @@ export default {
         noneSelected() { return !this.global.room },
         getBldg() { return this.global.data[this.global.bldg] },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
+        hasSecs(type) { 
+            switch(type) {
+                case  'cur': return (this.getData().meta.cur[1].length > 0)
+                case 'next': return (this.getData().meta.next[1].length > 0)
+            }
+        },
         getCur() {
-            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[1]
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[2]
             return moment.duration(f.diff(i))
         },
         getNext() {
-            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[1]
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[2]
             return moment.duration(f.diff(i))
         },
         getData() { return this.getBldg()[this.global.room] },
@@ -116,6 +133,17 @@ export default {
 .code {
     font-size: 15px;
     color: #902a00;
+}
+
+.sec {
+    padding: 1px 5px 2px 5px;
+    margin: 3px;
+    background-color: var(--roomfill);
+    border-radius: 30%;
+}
+
+.column {
+  flex: 50%;
 }
 
 .body {
