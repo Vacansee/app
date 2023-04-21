@@ -110,7 +110,7 @@ export default {
             }
             else {
               const initial = moment(this.global.time, 'e:HHmm')
-              const final = roomInfo.meta.next[1]
+              const final = roomInfo.meta.next[2]
               const next = moment.duration(final.diff(initial)).asMinutes()
               path.setAttribute("fill", this.getColor(next));
               path.setAttribute("cursor", "pointer")

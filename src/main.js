@@ -34,14 +34,13 @@ function checkActive() {
 				if (beg <= now && end > now) {
 					const i = Moment(now, 'e:HHmm'), f = Moment(end, 'e:HHmm')
 					const left = Moment.duration(f.diff(i))
-					room.meta.cur = [ room[time][0], f ]; room.meta.active = true
+					room.meta.cur = [ room[time][0], room[time][2], f ]; room.meta.active = true
 					sum += room.meta.max
 				}
 				if (now < beg) {
 					const i = Moment(now, 'e:HHmm'), f = Moment(beg, 'e:HHmm')
                     const until = Moment.duration(f.diff(i))
-					room.meta.next = [ room[time][0], f ] 
-					console.log("Next class timer for ",room,":",room.meta.next)
+					room.meta.next = [ room[time][0], room[time][2], f ] 
 					if (until.asMinutes() > longest) longest = until.asMinutes()
 					break
 				}
