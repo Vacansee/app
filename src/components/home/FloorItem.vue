@@ -7,7 +7,7 @@ import Floor from './Floor.vue'
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
   <div id='currFloor'>
-    <Floor :floor="floor" />
+    <Floor @room-hover="onRoomHover" :floor="floor" />
   </div>
 
   <div id='button-box'>
@@ -90,6 +90,9 @@ export default {
     bringToFront(f) {
       let group = f.parentNode
       group.appendChild(f)
+    },
+    onRoomHover(roomHover) {
+      this.$emit('room-hover', roomHover); // pass it up one more time
     },
     windowResizeTimeout() {
       clearTimeout(this.doResize);

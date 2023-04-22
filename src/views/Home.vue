@@ -7,11 +7,11 @@ import FloorItem from '../components/home/FloorItem.vue'
 <template>
   <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
   <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
-  <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ bldgLabel }}</div>
+  <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
   <MapItem :unselected="unselected" :currBuilding="currBuilding" />
   <div id="mask"></div>
   <PopUpItem />
-  <FloorItem :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
+  <FloorItem @room-hover="onRoomHover" :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
 </template>
 
 <script>
@@ -31,6 +31,7 @@ export default {
       currBuilding: "",
       unselected: true,
       bldgLabel: "",
+      label: '',
     }
   },
   mounted() {
@@ -49,7 +50,7 @@ export default {
       // Only show nametag on unselected buildings
       if (this.unselected) {
         this.ntVisible = 1
-        this.bldgLabel = b.id.replace(/-/g, ' ')
+        this.label = b.id.replace(/-/g, ' ')
       }
     },
     nameTagDisappear() {
@@ -64,6 +65,18 @@ export default {
       if (this.ntVisible == 1)
         tagWidth = nametag.getBoundingClientRect().width
       this.mouseLeft = clickX - (tagWidth / 2.2)
+    },
+    onRoomHover(roomHover) {
+      let nametag = document.getElementById('nametag');
+      if (roomHover) {
+        this.ntVisible = 1
+        this.label = roomHover 
+        nametag.style.fontSize = '24px'
+      }
+      else if (roomHover == '') {
+        this.ntVisible = 0
+        nametag.style.fontSize = '14px'
+      }
     },
     buildingSelect(b) {
       if (this.unselected) {

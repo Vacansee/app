@@ -37,8 +37,7 @@ export default {
           this.roomLabel = "";
           this.global.room = ""
         }
-        else
-          this.svg = await getSvgFloor(floor)
+        else this.svg = await getSvgFloor(floor)
       },
       immediate: true,
     },
@@ -100,6 +99,9 @@ export default {
           let roomName = path.getAttribute("id").substr(1);
           let roomInfo = this.getBldg()[roomName];
           if (roomInfo) {
+            path.addEventListener("mouseover", () => { this.$emit('room-hover', roomName) })
+            path.addEventListener("mouseleave", () => { this.$emit('room-hover', '')  } )
+
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
               path.setAttribute("cursor", "pointer")
@@ -116,9 +118,7 @@ export default {
               path.setAttribute("cursor", "pointer")
             }
           }
-          else if (roomName == "loor") {
-          }
-          else {
+          else if (roomName != 'loor') {
             path.setAttribute("fill", "var(--unusedfill)")
             path.setAttribute("cursor","not-allowed")
           }
