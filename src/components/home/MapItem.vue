@@ -1,3 +1,6 @@
+<script setup>
+import tinycolor from "tinycolor2";
+</script>
 <template>
   <div id="mapBox">
     <svg viewBox="0 0 1024 1706" id="map">
@@ -394,43 +397,38 @@ export default {
   methods: {
     applyBuildingColors() {
       let colors = [
-        "#fdfedc", // 10%
-        "#fef6c0", // 20%
-        "#feeea4", // 30%
-        "#fdd884", // 40%
-        "#fdc675", // 50%
-        "#fcad60", // 60%
-        "#f99a57", // 70%
-        "#f57948", // 80%
-        "#eb6045", // 90%
-        "#d7434b", //100%
+        "#eff5de", // >0%
+        "#fef6c0", // >10%
+        "#feeea4", // >20%
+        "#fdd884", // >30%
+        "#fdc675", // >40%
+        "#fcad60", // >50%
+        "#f99a57", // >60%
+        "#f57948", // >70%
+        "#eb6045", // >80%
+        "#d7434b", // >90%
       ]
       for (const b of buildings.children) {
         let bldngHeat = 0
         try {
           bldngHeat = this.global.data[b.id].meta.heat
-        }
-        catch { console.log(`buildings w/o classes`) }
-        if (bldngHeat >= 90)
-          b.style.fill = colors[9]
-        else if (bldngHeat >= 80)
-          b.style.fill = colors[8]
-        else if (bldngHeat >= 70)
-          b.style.fill = colors[7]
-        else if (bldngHeat >= 60)
-          b.style.fill = colors[6]
-        else if (bldngHeat >= 50)
-          b.style.fill = colors[5]
-        else if (bldngHeat >= 40)
-          b.style.fill = colors[4]
-        else if (bldngHeat >= 30)
-          b.style.fill = colors[3]
-        else if (bldngHeat >= 20)
-          b.style.fill = colors[2]
-        else if (bldngHeat >= 10)
-          b.style.fill = colors[1]
-        else
-          b.style.fill = colors[0]
+        } catch { console.log(`buildings w/o classes`) }
+        let fill = ''
+        if (bldngHeat >= 90)      fill = colors[9]
+        else if (bldngHeat >= 80) fill = colors[8]
+        else if (bldngHeat >= 70) fill = colors[7]
+        else if (bldngHeat >= 60) fill = colors[6]
+        else if (bldngHeat >= 50) fill = colors[5]
+        else if (bldngHeat >= 40) fill = colors[4]
+        else if (bldngHeat >= 30) fill = colors[3]
+        else if (bldngHeat >= 20) fill = colors[2]
+        else if (bldngHeat >= 10) fill = colors[1]
+        else                      fill = colors[0]
+
+        b.style.fill = fill
+        let border = tinycolor(fill).darken(25).toString()
+        b.style.stroke = border
+
       }
     },
     bringToFront(b) {
@@ -537,10 +535,4 @@ export default {
   stroke-dasharray: 1px;
 }
 
-.selected {
-  opacity: 1 !important;
-  fill: var(--selectedfill) !important;
-  stroke: var(--selectedbord) !important;
-  stroke-width: 2px !important;
-}
 </style>

@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     nameTagAppear(b) {
-      this.ntVisible = 0
       // Only show nametag on unselected buildings
       if (this.unselected) {
         this.ntVisible = 1
@@ -89,7 +88,6 @@ export default {
         this.bldgLabel = b.id.replace(/-/g, ' ')
         this.global.bldg = this.bldgLabel
 
-        b.classList.add("selected")
         this.ntVisible = 0 // hide nametag when building selected
 
         mask.style.opacity = 0.8
@@ -108,7 +106,6 @@ export default {
         popup.style.transform = "translateY(250px)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
-        tmp.classList.remove("selected")
       } catch { /* pass */ }
 
     }
@@ -145,5 +142,6 @@ export default {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
   /*opacity: 0;*/
   transition-duration: .1s;
+  pointer-events: none;
 }
 </style>

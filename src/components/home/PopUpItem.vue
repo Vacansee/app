@@ -38,7 +38,7 @@ import moment from 'moment-timezone'
                     <p v-else class="warn"> It's the weekend!</p>
                 </div>
                 <div class="column">
-                    <b>Today</b>
+                    <b v-if="getData().meta.next">Today</b>
                     <ul>
                         <li v-for="item in getTodaysClasses()">
                             {{ item }}

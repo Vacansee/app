@@ -1,5 +1,6 @@
 <script setup>
 import moment from 'moment-timezone'
+import tinycolor from "tinycolor2";
 </script>
 
 <template>
@@ -32,7 +33,7 @@ export default {
         if (floor == "") {
           this.svg = null;
           if (this.currRoom != null)
-            this.currRoom.removeAttribute("class", "selected");
+            this.currRoom.removeAttribute("id", "selected");
           this.currRoom = null;
           this.roomLabel = "";
           this.global.room = ""
@@ -54,7 +55,7 @@ export default {
         "#66e099", // 4 hours (240 minutes)
         "#aeea77", // 2 hours (120 minutes)
         "#d8ed80", // 1 hour (60 minutes)
-        "#feeea4", // 30 minutes free
+        "#fce68e", // 30 minutes free
         "#fdc675", // 15 minutes free
         "#f99a57", // 10 minutes free
         "#fc4e58", // occupied
@@ -84,7 +85,9 @@ export default {
         path.parentNode.appendChild(clonedPath);
         this.currRoom = clonedPath;
         setTimeout(() => {
-          clonedPath.setAttribute("class", "selected");
+          clonedPath.setAttribute("id", "selected");
+          let border = tinycolor(path.getAttribute("fill")).darken(30).toString();
+          clonedPath.style.stroke = border
         }, 10);
       }
       this.global.room = this.roomLabel
@@ -104,17 +107,24 @@ export default {
 
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
+              let border = tinycolor("#fc4e58").darken(20).toString()
+              path.style.stroke = border
               path.setAttribute("cursor", "pointer")
             }
             else if (!roomInfo.meta.next) { // weekends
               path.setAttribute("fill", "#0eeb6f");
+              let border = tinycolor("#0eeb6f").darken(20).toString()
+              path.style.stroke = border
               path.setAttribute("cursor", "pointer")
             }
             else {
               const initial = moment(this.global.time, 'e:HHmm')
               const final = roomInfo.meta.next[2]
               const next = moment.duration(final.diff(initial)).asMinutes()
-              path.setAttribute("fill", this.getColor(next));
+              let fill = this.getColor(next)
+              path.setAttribute("fill", fill);
+              let border = tinycolor(fill).darken(25).toString();
+              path.style.stroke = border
               path.setAttribute("cursor", "pointer")
             }
           }
@@ -143,9 +153,8 @@ export default {
   pointer-events: none;
 }
 
-.selected {
+#selected {
   opacity: 1 !important;
-  stroke: #007160 !important;
   transition: stroke-width 0.2s ease-in-out, stroke 0.2s ease-in-out;
   stroke-width: 15px;
   z-index: 6;
