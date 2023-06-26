@@ -1,0 +1,32 @@
+:root {
+  --avail-4: #A0DFB9;
+  --avail-3: #FFE988;
+  --avail-2: #FFC272;
+  --avail-1: #FF8C79;
+  --avail-0: #CBD5D8;
+
+  --avail-bord-4: #79B792;
+  --avail-bord-3: #D5B563;
+  --avail-bord-2: #CC8B35;
+  --avail-bord-1: #9F5346;
+  --avail-bord-0: #A5BAC0;
+
+  --bg-parking: #EDEDED;
+  --bg-grass: #E1F4D2;
+  --bg-campus: #FFFAE8;
+  --bg-road: #D7D7D7;
+  --bg-walk: #9E9E9E;
+
+  --button-blue: #506FA9;
+}
+
+html, body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background);
+  touch-action: none;
+  overflow: hidden;
+  position: relative;
+  transition: opacity 0.5s;
+  margin: 0;
+  height: 100%;
+}

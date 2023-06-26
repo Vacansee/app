@@ -1,9 +1,20 @@
+// Root file ; app creation and mounting
+// Maintains global variables for building data and time
+
 import { createApp, reactive, watch } from 'vue'
 import App from './App.vue'
 import Router from './router'
+
 import Moment from 'moment-timezone'
-import { useFetch } from '@vueuse/core';
-import './assets/main.css'
+import { useFetch } from '@vueuse/core'
+
+// PrimeVue resources
+import PrimeVue from "primevue/config"
+import './assets/theme.css'
+import "primevue/resources/primevue.min.css" //core
+import 'primeflex/primeflex.scss'
+import './assets/app.scss'
+
 
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
@@ -71,8 +82,12 @@ watch(data, () => {
 })
 
 const app = createApp(App)
-app.provide('global', global);
+app.provide('global', global)
 app.use(Router)
 app.use(Moment)
-
+// Consider adding ZIndex for components in config
+app.use(PrimeVue, { 
+	ripple: true,
+	inputStyle: "outlined"
+  });
 app.mount('#app')
