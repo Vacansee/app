@@ -10,10 +10,12 @@ import { useFetch } from '@vueuse/core'
 
 // PrimeVue resources
 import PrimeVue from "primevue/config"
-import './assets/theme.css'
+import './assets/themes/theme.css'
 import "primevue/resources/primevue.min.css" //core
 import 'primeflex/primeflex.scss'
-import './assets/app.scss'
+import 'primeicons/primeicons.css'
+import './assets/themes/app.scss'
+
 
 
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
