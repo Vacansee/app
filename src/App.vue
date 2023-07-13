@@ -6,15 +6,15 @@ import MapInteract from '@/views/MapInteract.vue'
 </script>
 
 <template>
-
-<div class="card d-flex align-items-center justify-content-center" style="width: 100%; height: 0rem;">
-    <NavBar/>
-  </div>
-
-  <div class="absolute w-screen" style="z-index: -1; top: -500px">
+  <div class="absolute left-0 top-0 z-0 flex justify-center align-items-center h-full" style="width:135vh">
     <MapInteract/>
   </div>
 
+  <div class="absolute left-0 top-0 z-1 flex h-full w-full">
+    <div class="relative w-full flex">
+      <NavBar />
+    </div>
+  </div>
 </template>
 
 <style>
