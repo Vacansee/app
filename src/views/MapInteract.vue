@@ -1,6 +1,6 @@
 <template>
-    <div id="campussvg" class="relative flex md:rotate-90 min-w-full">
-        <campus-svg ref="svgComponent"/>
+    <div id="campus-map">
+        <campus-svg ref="svgComponent" />
     </div>
 </template>
   
@@ -56,3 +56,20 @@ export default {
     }
 }
 </script>
+
+<style>
+#campus-map {
+    width: 133vh;
+    margin-left: 50vw;
+    will-change: transform;
+    transform: translateX(-50%);
+}
+
+@media only screen and (min-width: 768px) {
+    #campus-map {
+        width: 133vw;
+        margin-top: 50vh;
+        transform: translateX(-50%) translateY(-50%) rotate(90deg);
+    }
+}
+</style>

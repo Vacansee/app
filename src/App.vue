@@ -6,11 +6,11 @@ import MapInteract from '@/views/MapInteract.vue'
 </script>
 
 <template>
-  <div class="absolute left-0 top-0 z-0 flex justify-center align-items-center h-full" style="width:135vh">
+  <div id="map" class="absolute top-0 left-0 z-0 w-full h-full overflow-hidden">
     <MapInteract/>
   </div>
 
-  <div class="absolute left-0 top-0 z-1 flex h-full w-full">
+  <div class="absolute left-0 top-0 z-1 flex w-full">
     <div class="relative w-full flex">
       <NavBar />
     </div>
@@ -19,8 +19,4 @@ import MapInteract from '@/views/MapInteract.vue'
 
 <style>
 @import './assets/themes/app.scss';
-
-.homePageLogo {
-  position: absolute;
-}
 </style>
