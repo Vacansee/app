@@ -10,10 +10,8 @@ import MapInteract from '@/views/MapInteract.vue'
     <MapInteract/>
   </div>
 
-  <div class="absolute left-0 top-0 z-1 flex w-full">
-    <div class="relative w-full flex">
+  <div class="absolute z-1 flex top-0 left-0 w-full">
       <NavBar />
-    </div>
   </div>
 </template>
 

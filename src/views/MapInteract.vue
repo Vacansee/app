@@ -8,6 +8,7 @@
 import CampusSvg from '@/assets/svgs/campus.svg'
 
 export default {
+    inject: ["global"],
     components: {
         'campus-svg': CampusSvg
     },
@@ -19,39 +20,26 @@ export default {
             const svgComponent = this.$refs.svgComponent
 
             if (svgComponent && svgComponent.$el) {
-                const groups = svgComponent.$el.querySelectorAll("g");
-                groups.forEach((group) => {
-                    this.styleGroups(group)
+                const buildings = svgComponent.$el.querySelectorAll("#building");
+                buildings.forEach((building) => {
+                    const paths = building.querySelectorAll('path');
+                    paths.forEach((path) => {
+                        let bldngHeat = 0
+                        try {
+                            bldngHeat = this.global.data[path.id].meta.heat
+                        } catch { console.log(path.id) }
+                        if (bldngHeat >= 75) this.pathStyle(path, 1)
+                        else if (bldngHeat >= 50) this.pathStyle(path, 2)
+                        else if (bldngHeat >= 25) this.pathStyle(path, 3)
+                        else this.pathStyle(path, 4)
+                    });
                 });
             }
         },
-        styleGroups(group) {
-            const paths = group.querySelectorAll("path");
-            if (group.id == 'boundary')
-                this.styleHelper(paths, "var(--bg-boundary)", "none", 0)
-            else if (group.id == 'parking')
-                this.styleHelper(paths, "var(--bg-parking)", "none", 0)
-            else if (group.id == 'grass')
-                this.styleHelper(paths, "var(--bg-grass)", "none", 0)
-            else if (group.id == 'building' || group.id == 'other')
-                this.styleHelper(paths, "var(--bg-parking)", "none", 0)
-            else if (group.id == 'thick-road')
-                this.styleHelper(paths, "none", "var(--bg-road)", 20)
-            else if (group.id == 'thin-road')
-                this.styleHelper(paths, "none", "var(--bg-road)", 10)
-            else if (group.id == 'stair')
-                this.styleHelper(paths, "none", "var(--bg-walkway)", 3)
-            else if (group.id == 'walkway')
-                this.styleHelper(paths, "none", "var(--bg-walkway)", 3)
-            else if (group.id == 'bridge')
-                this.styleHelper(paths, "none", "white", 10)
-        },
-        styleHelper(paths, fillCol, strokeCol, strokeWid) {
-            paths.forEach((path) => {
-                path.setAttribute("fill", fillCol)
-                path.setAttribute("stroke", strokeCol)
-                path.setAttribute("stroke-width", strokeWid + "px")
-            });
+        pathStyle(path, number) {
+            path.style.fill = 'var(--avail-' + number + ')'
+            path.style.stroke = 'var(--avail-bord-' + number + ')'
+            path.style.strokeWidth = '5'
         }
     }
 }
@@ -71,5 +59,60 @@ export default {
         margin-top: 50vh;
         transform: translateX(-50%) translateY(-50%) rotate(90deg);
     }
+}
+
+#boundary path {
+    fill: var(--bg-boundary);
+    stroke: none;
+    stroke-width: 0;
+}
+
+#parking path {
+    fill: var(--bg-parking);
+    stroke: none;
+    stroke-width: 0;
+}
+
+#grass path {
+    fill: var(--bg-grass);
+    stroke: none;
+    stroke-width: 0;
+}
+
+#building path,
+#other path {
+    fill: var(--avail-0);
+    stroke: var(--avail-bord-0);
+    stroke-width: 5;
+}
+
+#thick-road path {
+    fill: none;
+    stroke: var(--bg-road);
+    stroke-width: 20px;
+}
+
+#thin-road path {
+    fill: none;
+    stroke: var(--bg-road);
+    stroke-width: 10px;
+}
+
+#stair path {
+    fill: none;
+    stroke: var(--bg-walkway);
+    stroke-width: 3px;
+}
+
+#walkway path {
+    fill: none;
+    stroke: var(--bg-walkway);
+    stroke-width: 3px;
+}
+
+#bridge path {
+    fill: none;
+    stroke: white;
+    stroke-width: 10px;
 }
 </style>

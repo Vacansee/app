@@ -18,7 +18,7 @@ import Button from "primevue/button"
     </div>
 
     <div id="rightnav" class="inline-flex w-6 justify-content-end align-items-start">
-        <div class="flex flex-wrap card-container gap-2 p-2">
+        <div class="flex flex-wrap gap-2 p-2">
             <Button class="mybutton">
                 <img alt="bug" src="../assets/svgs/bug.svg" />
             </Button>
