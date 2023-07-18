@@ -12,8 +12,20 @@ export default {
     components: {
         'campus-svg': CampusSvg
     },
-    mounted() {
-        this.applyColors()
+    watch: {
+        'global.firstCalc': {
+            deep: true,
+            handler() {
+                if (this.global.firstCalc) {
+                    this.applyColors();
+                }
+            }
+        }
+    },
+    updated() {
+        this.$nextTick(() => {
+            this.applyColors()
+        })
     },
     methods: {
         applyColors() {
@@ -27,12 +39,13 @@ export default {
                         let bldngHeat = 0
                         try {
                             bldngHeat = this.global.data[path.id].meta.heat
-                        } catch { console.log(path.id) }
+                        } catch {}
                         if (bldngHeat >= 75) this.pathStyle(path, 1)
                         else if (bldngHeat >= 50) this.pathStyle(path, 2)
                         else if (bldngHeat >= 25) this.pathStyle(path, 3)
                         else this.pathStyle(path, 4)
                     });
+                    building.addEventListener('click', this.selectBuilding);
                 });
             }
         },
@@ -40,6 +53,10 @@ export default {
             path.style.fill = 'var(--avail-' + number + ')'
             path.style.stroke = 'var(--avail-bord-' + number + ')'
             path.style.strokeWidth = '5'
+        },
+        selectBuilding(event) {
+            this.global.bldg = event.target.id
+            console.log(this.global.bldg)
         }
     }
 }
@@ -84,6 +101,7 @@ export default {
     fill: var(--avail-0);
     stroke: var(--avail-bord-0);
     stroke-width: 5;
+    transition: 0.5s ease;
 }
 
 #thick-road path {
