@@ -1,11 +1,15 @@
 <script setup>
-import Sidebar from 'primevue/sidebar';
-//import PanelContent from '/PanelContent.vue'
+import Sidebar from 'primevue/sidebar'
+import Header from './SidePanelHeader.vue'
+import Hours from './SidePanelHours.vue'
+import Occupancy from './SidePanelOccupancy.vue'
 </script>
 
 <template>
-    <Sidebar v-model:visible="visible" class="w-23rem">
-    <PanelContent />
+    <Sidebar v-model:visible="visible" :showCloseIcon="false" class="w-23rem">
+    <Header />
+    <Hours />
+    <Occupancy />
     </Sidebar>
 </template>
 

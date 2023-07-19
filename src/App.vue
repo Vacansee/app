@@ -8,12 +8,12 @@ import SidePanel from '@/views/SidePanel.vue'
 
 <template>
   <SidePanel/>
-
-  <div id="map" class="absolute z-0 w-full h-full overflow-hidden">
+  
+  <div id="map" class="absolute top-0 left-0 z-0 w-full h-full overflow-hidden">
     <MapInteract/>
   </div>
 
-  <div class="absolute z-1 flex w-full">
+  <div class="absolute z-1 flex top-0 left-0 w-full">
       <NavBar />
   </div>
 
