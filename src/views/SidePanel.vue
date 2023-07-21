@@ -6,10 +6,15 @@ import Occupancy from './SidePanelOccupancy.vue'
 </script>
 
 <template>
-    <Sidebar v-model:visible="visible" :showCloseIcon="false" class="w-23rem">
-    <Header />
-    <Hours />
-    <Occupancy />
+    <Sidebar v-model:visible="visible" :showCloseIcon="false" class="w-23rem overflow-hidden h-full">
+        <div class="flex flex-column h-full">
+            <Header />
+            <div id="occupancy" class="h-full flex flex-column justify-content-around">
+                <Hours />
+                <Occupancy :occupancyType="'Building'" />
+                <Occupancy :occupancyType="'Floor'" />
+            </div>
+        </div>
     </Sidebar>
 </template>
 
