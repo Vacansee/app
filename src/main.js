@@ -1,7 +1,7 @@
 // Root file ; app creation and mounting
 // Maintains global variables for building data and time
 
-import { createApp, reactive, watch } from 'vue'
+import { createApp, reactive, watch, ref } from 'vue'
 import App from './App.vue'
 import Router from './router'
 
@@ -15,6 +15,7 @@ import "primevue/resources/primevue.min.css" //core
 import 'primeflex/primeflex.scss'
 import 'primeicons/primeicons.css'
 import './assets/themes/app.scss'
+import ToastService from 'primevue/toastservice'
 
 
 
@@ -87,6 +88,7 @@ const app = createApp(App)
 app.provide('global', global)
 app.use(Router)
 app.use(Moment)
+app.use(ToastService)
 // Consider adding ZIndex for components in config
 app.use(PrimeVue, { 
 	ripple: true,
