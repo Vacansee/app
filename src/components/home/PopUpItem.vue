@@ -12,17 +12,17 @@ import moment from 'moment-timezone'
             </div>
         </div>
         <div v-if="global.bldg" class="body">
-            <span>{{ getBldg().meta.name }}ㅤㅤ</span>
-            <span ref="mySpan">Current time: {{ getRealTime(global.time) }}ㅤㅤ</span>
-            <span>Building heat: <b>{{ getBldg().meta.heat }}</b>ㅤㅤ</span>
+            <span>{{ getBldg().meta.name }}&emsp;&emsp;</span>
+            <span ref="mySpan">Current time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
+            <span>Building heat: <b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)&emsp;&emsp;</span>
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
             <div v-else-if="noData()" class="warn">No classes in room</div>
             <div v-else style="display: flex;">
                 <div class="column">
-                    <span>Capacity: ~{{ getData().meta.max }}ㅤㅤ</span>
-                    <span>Printers: {{ getPrinters() }}ㅤㅤ</span>
-                    <span>Active: <code class="code">{{ getData().meta.active }}</code>ㅤㅤ</span>
+                    <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
+                    <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
+                    <span>Open: <code class="code">{{ getData().meta.active }}</code>&emsp;&emsp;</span>
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
                         <b>{{ getCur().hours() }}h</b> and
                         <b>{{ getCur().minutes() }}m</b>
@@ -35,7 +35,7 @@ import moment from 'moment-timezone'
                         <span v-if="hasSecs('next')"> for sections </span>
                         <span v-for="item in getData().meta.next[1]" class="sec">{{ item }}</span>
                     </p>
-                    <p v-else class="warn"> It's the weekend!</p>
+                    <p v-else class="warn"> No more classes this week</p>
                 </div>
                 <div class="column">
                     <b v-if="getData().meta.next">Today</b>
@@ -87,6 +87,14 @@ export default {
                 if (time.split(':')[0] == this.global.time.split(':')[0])
                     classes.push(roomData[time][0] + ' at ' + this.getRealTime(time))
             } return classes
+        },
+        interpretHeat() {
+            let heat = this.getBldg().meta.heat
+            if (heat > 80) return 'very busy'
+            else if (heat > 60) return 'busy'
+            else if (heat > 40) return 'usual'
+            else if (heat > 10) return 'not busy'
+            else return 'vacant'
         }
     }
 }

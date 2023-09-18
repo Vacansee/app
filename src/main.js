@@ -16,6 +16,7 @@ const global = reactive({
 	room: '',
 	floor: '1',
 	time: Moment.tz('America/New_York').format('e:HHmm'),
+	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
 	firstCalc: false,
 })
 
@@ -55,7 +56,10 @@ function checkActive() {
 
 setInterval(() => { // Update current time every seconcd
 	global.time = Moment.tz('America/New_York').format('e:HHmm')
+	// global.time = Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm')
 	let seconds = Number(Moment.tz('America/New_York').format('ss'))
+	// let seconds = Number(Moment.tz('2023-09-14 12:30', 'America/New_York').format('ss'))
+	
 	if (!(global.time.split(':')[1] % 5) && !seconds) { // update states every 5m (on the dot)
 		checkActive()
 		console.log(`Updating states @ ${global.time}:${seconds}`)
