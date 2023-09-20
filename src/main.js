@@ -1,3 +1,7 @@
+/* main.js
+ * Global state, global.data updates, and Vue app initialization
+ */
+
 import { createApp, reactive, watch } from 'vue'
 import App from './App.vue'
 import Router from './router'
@@ -5,10 +9,12 @@ import Moment from 'moment-timezone'
 import { useFetch } from '@vueuse/core';
 import './assets/main.css'
 
+// On page load, fetch building/room data from Vacansee/data:
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
 
-const global = reactive({ 
+const global = reactive({ // The global reactive object!
+	// Any changes to its members will trigger reactivity in components that reference it: 
 	data: data,
 	loading: isFetching,
 	error: error,
@@ -20,41 +26,48 @@ const global = reactive({
 	firstCalc: false,
 })
 
+
+// Consider global.data a living document: most of it's values are pre-generated & retrieved from
+// the Vacansee/data repo, but some are (re)calculated regularly and inserted/updated in the object.
+
+// checkActive() is run regularly and updates "meta" properties for both rooms and buildings
 function checkActive() {
 	for (let b in global.data) {
 		let bldg = global.data[b], sum = 0, longest = 0
 		if (!('heat' in bldg.meta)) bldg.meta.heat = 0
 		for (let r in bldg) {
-			if (r == 'meta') continue
+			if (r == 'meta') continue // skip meta properties
 			let room = bldg[r]
 			room.meta.active = false
 			room.meta.cur = room.meta.next = ''
+
 			for (let time in room) {
 				if (time == 'meta') continue
 				let now = global.time, [beg, end] = time.split('-')
+				// if class is in session, toggle room state, set cur class, and add to bulding sum
 				if (beg <= now && end > now) {
 					const i = Moment(now, 'e:HHmm'), f = Moment(end, 'e:HHmm')
 					const left = Moment.duration(f.diff(i))
 					room.meta.cur = [ room[time][0], room[time][2], f ]; room.meta.active = true
 					sum += room.meta.max
 				}
-				if (now < beg) {
+				if (beg > now) { // reached the end of the day
 					const i = Moment(now, 'e:HHmm'), f = Moment(beg, 'e:HHmm')
                     const until = Moment.duration(f.diff(i))
-					room.meta.next = [ room[time][0], room[time][2], f ] 
 					if (until.asMinutes() > longest) longest = until.asMinutes()
+					// Set as next class and stop searching:
+					room.meta.next = [ room[time][0], room[time][2], f ] 
 					break
 				}
 			}
 		}
-		// let oldHeat = bldg.meta.heat
 		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)
 	}
 }
 
-setInterval(() => { // Update current time every seconcd
+setInterval(() => { // Update current time every second
 	global.time = Moment.tz('America/New_York').format('e:HHmm')
 	// global.time = Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm')
 	let seconds = Number(Moment.tz('America/New_York').format('ss'))
@@ -67,7 +80,7 @@ setInterval(() => { // Update current time every seconcd
 	// else console.log(`${global.time}:${seconds}`)
 }, 1000)
   
-watch(data, () => {
+watch(data, () => { // perform first calculations only after data is loaded
 	if (global.data) {
 		checkActive()
 		global.firstCalc = true

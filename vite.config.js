@@ -18,7 +18,8 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      manifest: {
+      // Used to build the manifest.json file for PWAs:
+      manifest: { 
         name: 'Vacansee',
         short_name: 'Vacansee',
         description: 'Predicting campus occupancy and room availability @ RPI',
