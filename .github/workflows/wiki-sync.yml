@@ -1,0 +1,38 @@
+name: Wiki Sync
+
+on:
+  push:
+    paths:
+      - "docs/**"
+  repository_dispatch:
+    types: [docs]
+  gollum:
+
+jobs:
+  docs-to-wiki:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'gollum'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Sync docs/ to Wiki
+        uses: newrelic/wiki-sync-action@main
+        with:
+          source: docs
+          destination: wiki
+          token: ${{ secrets.WIKI_PAT }}
+  
+  wiki-to-docs:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'gollum'
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.WIKI_PAT }} # allows us to push back to repo
+      - name: Sync Wiki to docs/
+        uses: newrelic/wiki-sync-action@main
+        with:
+          source: wiki
+          destination: docs
+          token: ${{ secrets.WIKI_PAT }}
