@@ -12,6 +12,7 @@ import moment from 'moment-timezone'
             </div>
         </div>
         <div v-if="global.bldg" class="body">
+            <!-- <img src="../../assets/photos/DCC.jpg" alt="DCC" id="photo"> -->
             <span>{{ getBldg().meta.name }}&emsp;&emsp;</span>
             <span ref="mySpan">Current time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
             <span>Building heat: <b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)&emsp;&emsp;</span>
@@ -131,6 +132,12 @@ export default {
 
 #popupbuild {
     padding: 10px 20px;
+}
+
+#photo {
+    height: 175px;
+    border-radius: 10px;
+    display: flex;
 }
 
 .warn {

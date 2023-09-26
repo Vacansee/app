@@ -11,7 +11,7 @@ import tinycolor from "tinycolor2";
   
 <script>
 const getSvgFloor = async (floor) => {
-  const module = await import(`../floors/${floor}.svg`)
+  const module = await import(`../../assets/floors/${floor}.svg`)
   return module.default
 }
 
