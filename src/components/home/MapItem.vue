@@ -358,13 +358,13 @@ import tinycolor from "tinycolor2";
 <script>
 export default {
   inject: ["global"],
-  props: ['unselected', 'currBuilding'],
+  props: ['unselected', 'bldgSVG'],
   watch: {
-    unselected(newVar, oldVar) {
+    unselected(newVar) {
       if (newVar)
         setTimeout(this.windowEventHandler, 800);
       else
-        this.bringToFront(this.currBuilding);
+        this.bringToFront(this.bldgSVG);
     },
     'global.firstCalc': {
       deep: true,
@@ -412,7 +412,7 @@ export default {
         let bldngHeat = 0
         try {
           bldngHeat = this.global.data[b.id].meta.heat
-        } catch { console.log(`buildings w/o classes`) }
+        } catch { console.warn(`Buildings w/o classes`) }
         let fill = ''
         if (bldngHeat >= 90)      fill = colors[9]
         else if (bldngHeat >= 80) fill = colors[8]

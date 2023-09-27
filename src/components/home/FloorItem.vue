@@ -29,10 +29,10 @@ import Floor from './Floor.vue'
 <script>
 export default {
   inject: ["global"],
+  props: ['unselected'],
   components: {
     Floor
   },
-  props: ['unselected', 'currBuilding', 'bldgLabel'],
   watch: {
     unselected(newVar) {
       if (newVar) {
@@ -43,7 +43,7 @@ export default {
       } else {
         if (this.getBldg()) {
           this.floorNum = this.getBldg().meta.floors[2]
-          this.floor = this.bldgLabel + this.getBldg().meta.floors[2]
+          this.floor = this.global.bldg + this.getBldg().meta.floors[2]
           this.global.floor = this.getBldg().meta.floors[2]
         }
         currFloor.style.opacity = 1;
@@ -112,7 +112,7 @@ export default {
       if (this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
         this.global.floor = this.floorNum;
-        this.floor = this.bldgLabel + this.floorNum
+        this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
       }
     },
@@ -120,7 +120,7 @@ export default {
       if (this.floorNum != 1) {
         this.floorNum--;
         this.global.floor = this.floorNum;
-        this.floor = this.bldgLabel + this.floorNum
+        this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
       }
     }

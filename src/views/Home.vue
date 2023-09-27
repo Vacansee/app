@@ -8,10 +8,10 @@ import FloorItem from '../components/home/FloorItem.vue'
   <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
   <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
-  <MapItem :unselected="unselected" :currBuilding="currBuilding" />
+  <MapItem :unselected="unselected" :bldgSVG="bldgSVG" />
   <div id="mask"></div>
   <PopUpItem />
-  <FloorItem @room-hover="onRoomHover" :unselected="unselected" :currBuilding="currBuilding" :bldgLabel="bldgLabel" />
+  <FloorItem @room-hover="onRoomHover" :unselected="unselected"/>
 </template>
 
 <script>
@@ -28,9 +28,8 @@ export default {
       mouseLeft: 0,
       ntVisible: 0,
       switch: 0,
-      currBuilding: "",
+      bldgSVG: "",
       unselected: true,
-      bldgLabel: "",
       label: '',
     }
   },
@@ -84,9 +83,8 @@ export default {
         var boxCenterY = bBox.y + bBox.height / 2
 
         this.unselected = false
-        this.currBuilding = b
-        this.bldgLabel = b.id.replace(/-/g, ' ')
-        this.global.bldg = this.bldgLabel
+        this.bldgSVG = b
+        this.global.bldg = b.id.replace(/-/g, ' ')
 
         this.ntVisible = 0 // hide nametag when building selected
 
@@ -98,8 +96,7 @@ export default {
     },
     buildingDeselect() {
       try {
-        let tmp = this.currBuilding
-        this.currBuilding = ""
+        this.bldgSVG = ""
         this.global.bldg = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"

@@ -17,9 +17,7 @@ const getSvgFloor = async (floor) => {
 
 export default {
   inject: ["global"],
-  props: {
-    floor: String,
-  },
+  props: ["floor"],
   data() {
     return {
       svg: null,

@@ -23,7 +23,7 @@ import moment from 'moment-timezone'
                 <div class="column">
                     <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
                     <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
-                    <span>Open: <code class="code">{{ getData().meta.active }}</code>&emsp;&emsp;</span>
+                    <span>In session: <code class="code">{{ getData().meta.active }}</code>&emsp;&emsp;</span>
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
                         <b>{{ getCur().hours() }}h</b> and
                         <b>{{ getCur().minutes() }}m</b>
@@ -56,7 +56,6 @@ import moment from 'moment-timezone'
 
 export default {
     inject: ['global'],
-    props: ['data'],
     methods: {
         noneSelected() { return !this.global.room },
         getBldg() { return this.global.data[this.global.bldg] },
