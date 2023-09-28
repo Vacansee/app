@@ -58,9 +58,10 @@ export default {
     inject: ['global'],
     watch: {
         'global.aspectRatio': {
+            deep: true,
             handler() {
                 // If landscape mode
-                if (this.global.aspectRatio < 1) {
+                if (this.global.aspectRatio <= 1) {
                 popup.style.height = "25vh"
                 popup.style.width = "100vw"
                 // If portrait mode

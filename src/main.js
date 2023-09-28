@@ -20,7 +20,7 @@ const global = reactive({ // The global reactive object!
 	bldg: '',
 	room: '',
 	floor: '1',
-	aspectRatio: 1,
+	aspectRatio: 0.5,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
 	firstCalc: false,
@@ -68,9 +68,6 @@ function checkActive() {
 }
 
 setInterval(() => { // Update current time and aspect ratio every second
-	// Updates the aspect ratio globally
-	// global.aspectRatio = window.innerHeight/window.innerWidth
-
 	global.time = Moment.tz('America/New_York').format('e:HHmm')
 	// global.time = Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm')
 	let seconds = Number(Moment.tz('America/New_York').format('ss'))
@@ -86,12 +83,18 @@ setInterval(() => { // Update current time and aspect ratio every second
 function updateAspectRatio() {
 	global.aspectRatio = window.innerHeight/window.innerWidth
 }
-
 watch(data, () => { // perform first calculations only after data is loaded
 	if (global.data) {
+		// Adds an event listener to update resize when the window is resized
 		window.addEventListener("resize", updateAspectRatio)
 		checkActive()
 		global.firstCalc = true
+	}
+})
+// First calculations for global variables that need to be set
+watch(data, () => {
+	if (global.firstCalc) {
+		updateAspectRatio()
 	}
 })
 
