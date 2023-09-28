@@ -33,6 +33,22 @@ export default {
       label: '',
     }
   },
+  watch: {
+    // Move the popup to the right spot off view if popup isnt selected
+    'global.aspectRatio': {
+      handler() {
+        // If landscape mode
+        // Fixes issue where transitions when unselected would show the popup for a split second
+        popup.style.transition = "transform .0s"
+        if (this.unselected && this.global.aspectRatio < 1) {
+          popup.style.transform = "TranslateY(25vh)"
+        // If portrait mode
+        } else if (this.unselected){
+          popup.style.transform = "TranslateX(-33vw)"
+        }
+      }
+    }
+  },
   mounted() {
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
@@ -91,7 +107,9 @@ export default {
         mask.style.opacity = 0.8
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
-        popup.style.transform = "translateY(0px)"
+        // Bring the popup to 0,0
+        popup.style.transition = "transform .5s"
+        popup.style.transform = "translateY(0vh)"
       }
     },
     buildingDeselect() {
@@ -100,9 +118,16 @@ export default {
         this.global.bldg = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
-        popup.style.transform = "translateY(250px)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
+        popup.style.transition = "transform .5s"
+        // Landscape mode
+        if (this.global.aspectRatio <= 1) {
+          popup.style.transform = "TranslateY(25vh)"
+        // If portrait mode
+        } else {
+          popup.style.transform = "TranslateX(-33vw)"
+        }
       } catch { /* pass */ }
 
     }
