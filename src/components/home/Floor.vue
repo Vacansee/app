@@ -105,12 +105,18 @@ export default {
         const paths = svgComponent.$el.querySelectorAll("path")
 
         paths.forEach((path) => {
-          let roomName = path.getAttribute("id").substr(1);
+          let roomID = path.getAttribute("id");
+          let roomName = roomID.substr(1);
           let roomInfo = this.getBldg()[roomName];
-          if (roomInfo) {
-            path.addEventListener("mouseover", () => { this.$emit('room-hover', roomName) })
-            path.addEventListener("mouseleave", () => { this.$emit('room-hover', '')  } )
+          
+          if (roomID != 'floor' && !roomID.includes('excavated')) {
+            if (roomInfo)
+              path.addEventListener("mouseover", () => { this.$emit('room-hover', [roomName, true]) })
+            else path.addEventListener("mouseover", () => { this.$emit('room-hover', [roomName, false]) })
 
+            path.addEventListener("mouseleave", () => { this.$emit('room-hover', ['', false])  } )
+          }
+          if (roomInfo) {
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
               let border = tinycolor("#fc4e58").darken(20).toString()
@@ -134,9 +140,11 @@ export default {
               path.setAttribute("cursor", "pointer")
             }
           }
-          else if (roomName != 'loor') {
-            path.setAttribute("fill", "var(--unusedfill)")
+          else { // !roomInfo
             path.setAttribute("cursor","not-allowed")
+            if (roomID.includes('excavated')) path.setAttribute("fill", "var(--hardborder)")
+            if (roomID != 'floor') // rooms w/o classes:
+              path.setAttribute("fill", "var(--unusedfill)")
           }
           path.setAttribute("pointer-events", "all");
           path.addEventListener("click", () => { this.roomSelect(path); })

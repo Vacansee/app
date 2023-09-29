@@ -39,6 +39,22 @@ export default {
       label: '',
     }
   },
+  watch: {
+    // Move the popup to the right spot off-view if popup isnt selected
+    'global.aspectRatio': {
+      handler() {
+        // If landscape mode
+        // Fixes issue where transitions when unselected would show the popup for a split second
+        popup.style.transition = "transform .0s"
+        if (this.unselected && this.global.aspectRatio < 1) {
+          popup.style.transform = "TranslateY(25vh)"
+        // If portrait mode
+        } else if (this.unselected){
+          popup.style.transform = "TranslateX(-33vw)"
+        }
+      }
+    }
+  },
   mounted() {
     // addEventListeners allow the file to call a function when 
     // an action occurs
@@ -78,12 +94,13 @@ export default {
     // events that occur when a room is hovered over
     onRoomHover(roomHover) {
       let nametag = document.getElementById('nametag');
-      if (roomHover) {
+      if (roomHover[0]) {
         this.ntVisible = 1
-        this.label = roomHover 
-        nametag.style.fontSize = '24px'
+        this.label = roomHover[0] 
+        if (roomHover[1]) nametag.style.fontSize = '24px'
+        else nametag.style.fontSize = '16px'
       }
-      else if (roomHover == '') {
+      else if (roomHover[0] == '') {
         this.ntVisible = 0
         nametag.style.fontSize = '14px'
       }
@@ -104,8 +121,9 @@ export default {
         mask.style.opacity = 0.8
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
-        // Bring the popup on screen
-        popup.style.transform = "translateY(0px)"
+        // Bring the popup to 0,0
+        popup.style.transition = "transform .5s"
+        popup.style.transform = "translateY(0vh)"
       }
     },
     // On deselection of a building (when clicked off)
@@ -115,10 +133,16 @@ export default {
         this.global.bldg = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
-        // Bring the popup off screen
-        popup.style.transform = "translateY(250px)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
+        popup.style.transition = "transform .5s"
+        // Landscape mode
+        if (this.global.aspectRatio <= 1) {
+          popup.style.transform = "TranslateY(25vh)"
+        // If portrait mode
+        } else {
+          popup.style.transform = "TranslateX(-33vw)"
+        }
       } catch { /* pass */ }
 
     }
@@ -155,7 +179,6 @@ export default {
   border: 2px solid var(--softborder);
   border-radius: 5px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  /*opacity: 0;*/
   transition-duration: .1s;
   pointer-events: none;
 }
