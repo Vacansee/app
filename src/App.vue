@@ -41,6 +41,7 @@ export default {
 
 .homePageLogo {
   position: absolute;
+  right: 20px;
 }
 
 header {
