@@ -12,7 +12,6 @@ import './assets/main.css'
 // On page load, fetch building/room data from Vacansee/data:
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
-
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 
 	data: data,
@@ -21,6 +20,7 @@ const global = reactive({ // The global reactive object!
 	bldg: '',
 	room: '',
 	floor: '1',
+	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
 	firstCalc: false,
@@ -79,9 +79,14 @@ setInterval(() => { // Update current time every second
 	}
 	// else console.log(`${global.time}:${seconds}`)
 }, 1000)
-  
+
+function updateAspectRatio() { // Updates the aspect ratio globally
+	global.aspectRatio = window.innerHeight/window.innerWidth
+}
 watch(data, () => { // perform first calculations only after data is loaded
 	if (global.data) {
+		// Adds an event listener to update resize when the window is resized
+		window.addEventListener("resize", updateAspectRatio)
 		checkActive()
 		global.firstCalc = true
 	}

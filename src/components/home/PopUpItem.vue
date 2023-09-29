@@ -14,7 +14,7 @@ import moment from 'moment-timezone'
         <div v-if="global.bldg" class="body">
             <!-- <img src="../../assets/photos/DCC.jpg" alt="DCC" id="photo"> -->
             <span>{{ getBldg().meta.name }}&emsp;&emsp;</span>
-            <span ref="mySpan">Current time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
+            <span ref="mySpan">Current Time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
             <span>Building heat: <b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)&emsp;&emsp;</span>
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
@@ -56,6 +56,23 @@ import moment from 'moment-timezone'
 
 export default {
     inject: ['global'],
+    watch: {
+        'global.aspectRatio': {
+            deep: true,
+            handler() {
+                // If landscape mode
+                if (this.global.aspectRatio <= 1) {
+                    popup.style.height = "25vh"
+                    popup.style.width = "100vw"
+                    popup.style.borderRadius = "30px 30px 0 0"
+                } else { // If portrait mode
+                    popup.style.height = "100vh"
+                    popup.style.width = "33vw"
+                    popup.style.borderRadius = "0 30px 30px 0"
+                }
+            }
+        }
+    },
     methods: {
         noneSelected() { return !this.global.room },
         getBldg() { return this.global.data[this.global.bldg] },
@@ -103,7 +120,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    height: 250px;
+    height: 25vh;
     position: absolute;
     pointer-events: all;
     display:inline-block;
@@ -116,7 +133,7 @@ export default {
     border: 3px solid var(--softborder);
     border-bottom-style: none;
     box-shadow: 0px -2px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 30px 30px 0vh 0vh;
+    border-radius: 30px 30px 0 0;
 }
 
 #popup-head {
