@@ -1,4 +1,5 @@
 <script setup>
+// Basic imports
 import moment from 'moment-timezone'
 import tinycolor from "tinycolor2";
 </script>
@@ -16,10 +17,12 @@ const getSvgFloor = async (floor) => {
 }
 
 export default {
+  // Get references to global
   inject: ["global"],
   props: ["floor"],
   data() {
     return {
+      // Local variables
       svg: null,
       currRoom: null,
       roomLabel: "",
@@ -27,6 +30,7 @@ export default {
   },
   watch: {
     floor: {
+      // When floor changes, run this code
       async handler(floor) {
         if (floor == "") {
           this.svg = null;
@@ -47,7 +51,9 @@ export default {
     })
   },
   methods: {
+    // Gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
+    // get room color corresponding to room availability
     getColor(minutes) {
       const colors = [
         "#66e099", // 4 hours (240 minutes)
@@ -67,6 +73,7 @@ export default {
       if (minutes >= 10)  return colors[5]
       else return colors[6]
     },
+    // Select the room needed
     roomSelect(path) {
       let roomName = path.id.substr(1)
       if (!this.getBldg()[roomName]) {
@@ -90,6 +97,7 @@ export default {
       }
       this.global.room = this.roomLabel
     },
+    // Apply the room color to the popup
     applyRoomColors() {
       const svgComponent = this.$refs.svgComponent
 

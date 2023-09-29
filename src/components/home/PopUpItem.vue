@@ -3,6 +3,7 @@ import moment from 'moment-timezone'
 </script>
 
 <template>
+    <!-- HTML for the popup -->
     <div id="popup">
         <div id="popup-head"> 
             <div id="popupbuild">
@@ -55,6 +56,7 @@ import moment from 'moment-timezone'
 <script>
 
 export default {
+    // Gets reference to global
     inject: ['global'],
     watch: {
         'global.aspectRatio': {
@@ -74,7 +76,9 @@ export default {
         }
     },
     methods: {
+        // return if a room is selected
         noneSelected() { return !this.global.room },
+        // Returns the current building
         getBldg() { return this.global.data[this.global.bldg] },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         hasSecs(type) { 
@@ -83,20 +87,26 @@ export default {
                 case 'next': return (this.getData().meta.next[1].length > 0)
             }
         },
+        // Gets the cur from meta data
         getCur() {
             const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[2]
             return moment.duration(f.diff(i))
         },
+        // Gets next from meta data
         getNext() {
             const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[2]
             return moment.duration(f.diff(i))
         },
+        // Returns all data for the current room
         getData() { return this.getBldg()[this.global.room] },
+        // Gets the current time
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
+        // Returns the printers in a building
         getPrinters() {
             if (!this.getBldg().meta.hasOwnProperty("printers")) return 'none'
             else return this.getBldg().meta.printers
         },
+        // Gathers the classes for the building
         getTodaysClasses() {
             let classes = []
             let roomData = this.getData() 
@@ -105,6 +115,7 @@ export default {
                     classes.push(roomData[time][0] + ' at ' + this.getRealTime(time))
             } return classes
         },
+        // Turns the heat from a number into a representative phrase
         interpretHeat() {
             let heat = this.getBldg().meta.heat
             if (heat > 80) return 'very busy'

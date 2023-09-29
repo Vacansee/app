@@ -28,12 +28,14 @@ import Floor from './Floor.vue'
 
 <script>
 export default {
+  // Get reference to global
   inject: ["global"],
   props: ['unselected'],
   components: {
     Floor
   },
   watch: {
+    // When unselected changes
     unselected(newVar) {
       if (newVar) {
         this.floor = ""
@@ -52,6 +54,7 @@ export default {
         down.style.transform = "rotate(180deg)";
       }
     },
+    // When floor num changes
     floorNum(newVar) {
       if (newVar == this.getBldg().meta.floors[1])
         this.btnUp = false 
@@ -59,17 +62,20 @@ export default {
       if (newVar == 1) this.btnDown = false
       else this.btnDown = true
     },
+    // When button up changes
     btnUp(newVar) {
       if (newVar) up.style.opacity = 1;
       else        up.style.opacity = 0.6;
 
     },
+    // When button down changes
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
     },
   },
   data() {
+    // Local variables
     return {
       threshold: 1,
       doResize: "",
@@ -80,24 +86,31 @@ export default {
     }
   },
   mounted() {
+    // On load, set currFloor transition
     setTimeout(() => currFloor.style.transition = "transform .2s, width .4s", 500)
-
+    // constantly check for resize of window
     window.addEventListener("resize", this.windowResizeTimeout)
+    // call the event handler
     this.windowEventHandler()
   },
   methods: {
+    // gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
       let group = f.parentNode
       group.appendChild(f)
     },
+    // When a room is hovered over
     onRoomHover(roomHover) {
       this.$emit('room-hover', roomHover); // pass it up one more time
     },
+    // Function is used so that after 300 seconds of not resizing,
+    // the function doesnt check for resizing
     windowResizeTimeout() {
       clearTimeout(this.doResize);
       this.doResize = setTimeout(this.windowEventHandler, 300);
     },
+    // Handles changes of other variables when resize is changed
     windowEventHandler() {
       let x = window.innerWidth;
       let y = window.innerHeight - 250; // Subtract the bottom panel's height
@@ -108,6 +121,7 @@ export default {
       else // landscape mode
         currFloor.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${x / 65})`;
     },
+    // Increases the floor
     increaseFloor() {
       if (this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
@@ -116,6 +130,7 @@ export default {
         this.global.room = ""
       }
     },
+    // Decreases the floor
     decreaseFloor() {
       if (this.floorNum != 1) {
         this.floorNum--;
