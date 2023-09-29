@@ -62,12 +62,13 @@ export default {
             handler() {
                 // If landscape mode
                 if (this.global.aspectRatio <= 1) {
-                popup.style.height = "25vh"
-                popup.style.width = "100vw"
-                // If portrait mode
-                } else {
-                popup.style.height = "100vh"
-                popup.style.width = "33vw"
+                    popup.style.height = "25vh"
+                    popup.style.width = "100vw"
+                    popup.style.borderRadius = "30px 30px 0 0"
+                } else { // If portrait mode
+                    popup.style.height = "100vh"
+                    popup.style.width = "33vw"
+                    popup.style.borderRadius = "0 30px 30px 0"
                 }
             }
         }
@@ -132,7 +133,7 @@ export default {
     border: 3px solid var(--softborder);
     border-bottom-style: none;
     box-shadow: 0px -2px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 30px 30px 0vh 0vh;
+    border-radius: 30px 30px 0 0;
 }
 
 #popup-head {

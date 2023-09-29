@@ -34,7 +34,7 @@ export default {
     }
   },
   watch: {
-    // Move the popup to the right spot off view if popup isnt selected
+    // Move the popup to the right spot off-view if popup isnt selected
     'global.aspectRatio': {
       handler() {
         // If landscape mode
