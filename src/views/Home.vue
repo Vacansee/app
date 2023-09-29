@@ -1,13 +1,16 @@
 <script setup>
+// Imports items used on the homepage
 import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
 </script>
 
 <template>
+  <!-- Loads Data -->
   <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
   <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
+  <!-- Creates mapitem, popupitem, flooritem -->
   <MapItem :unselected="unselected" :bldgSVG="bldgSVG" />
   <div id="mask"></div>
   <PopUpItem />
@@ -16,7 +19,9 @@ import FloorItem from '../components/home/FloorItem.vue'
 
 <script>
 export default {
+  // Get reference to all global reactive variables
   inject: ['global'],
+  // Components are the .vue files associated with the home page
   components: {
     MapItem,
     PopUpItem,
@@ -24,6 +29,7 @@ export default {
   },
   data() {
     return {
+      // Local variables used in this .vue file
       mouseTop: 0,
       mouseLeft: 0,
       ntVisible: 0,
@@ -34,6 +40,8 @@ export default {
     }
   },
   mounted() {
+    // addEventListeners allow the file to call a function when 
+    // an action occurs
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
 
@@ -44,6 +52,7 @@ export default {
     }
   },
   methods: {
+    // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
       if (this.unselected) {
@@ -51,9 +60,11 @@ export default {
         this.label = b.id.replace(/-/g, ' ')
       }
     },
+    // Make the name tag go away
     nameTagDisappear() {
       this.ntVisible = 0
     },
+    // Have the name tag move along with the cursor
     nameTagMove(c) {
       let clickX = c.clientX
       let clickY = c.clientY
@@ -64,6 +75,7 @@ export default {
         tagWidth = nametag.getBoundingClientRect().width
       this.mouseLeft = clickX - (tagWidth / 2.2)
     },
+    // events that occur when a room is hovered over
     onRoomHover(roomHover) {
       let nametag = document.getElementById('nametag');
       if (roomHover) {
@@ -76,6 +88,7 @@ export default {
         nametag.style.fontSize = '14px'
       }
     },
+    // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.unselected) {
         var bBox = b.getBoundingClientRect()
@@ -91,15 +104,18 @@ export default {
         mask.style.opacity = 0.8
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
+        // Bring the popup on screen
         popup.style.transform = "translateY(0px)"
       }
     },
+    // On deselection of a building (when clicked off)
     buildingDeselect() {
       try {
         this.bldgSVG = ""
         this.global.bldg = ""
         this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
+        // Bring the popup off screen
         popup.style.transform = "translateY(250px)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
@@ -111,7 +127,9 @@ export default {
 </script>
 
 <style scoped>
+
 #mask {
+  /* Basic CSS Below */
   width: 100vw;
   height: 100vh;
   z-index: 5;

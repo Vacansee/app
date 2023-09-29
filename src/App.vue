@@ -1,9 +1,11 @@
 <script setup>
+// Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
 </script>
 
 <template>
+  <!-- HTML For Header -->
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
     <Logo class="logo" width="75" height="75" />
 
@@ -26,6 +28,7 @@ export default {
     'global.bldg': {
       deep: true,
       handler() {
+        // Only shows header when a building is not selected
         if (this.global.bldg)
           document.getElementById("header").style.opacity = "0";
         else
@@ -38,7 +41,7 @@ export default {
 </script>
 <style scoped>
 @import './assets/main.css';
-
+/* Everything from here on in the file is  basic css */
 .homePageLogo {
   position: absolute;
 }
