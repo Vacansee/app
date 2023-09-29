@@ -82,12 +82,13 @@ export default {
     },
     onRoomHover(roomHover) {
       let nametag = document.getElementById('nametag');
-      if (roomHover) {
+      if (roomHover[0]) {
         this.ntVisible = 1
-        this.label = roomHover 
-        nametag.style.fontSize = '24px'
+        this.label = roomHover[0] 
+        if (roomHover[1]) nametag.style.fontSize = '24px'
+        else nametag.style.fontSize = '16px'
       }
-      else if (roomHover == '') {
+      else if (roomHover[0] == '') {
         this.ntVisible = 0
         nametag.style.fontSize = '14px'
       }
@@ -162,7 +163,6 @@ export default {
   border: 2px solid var(--softborder);
   border-radius: 5px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  /*opacity: 0;*/
   transition-duration: .1s;
   pointer-events: none;
 }
