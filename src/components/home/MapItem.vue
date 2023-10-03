@@ -397,6 +397,21 @@ export default {
     setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
     // Check for resizing of window
     window.addEventListener("resize", this.windowResizeTimeout)
+    // Allow for the scroll wheel to zoom the map
+    let mapsize = window.innerWidth/50
+    window.addEventListener("wheel", event => { 
+      let dirwheel = 0
+      if (event.deltaY>0) {
+        dirwheel = -1
+      } else if (event.deltaY<0) {
+        dirwheel = 1
+      }
+      console.log(mapsize+dirwheel*10)
+      if (mapsize+dirwheel*10>20) {
+        mapsize +=dirwheel*10
+      }
+      map.style.transform = `scale(${mapsize})`;
+    })
     // Handles changes to the window
     this.windowEventHandler()
   },
