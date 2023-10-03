@@ -64,15 +64,26 @@ export default {
             handler() {
                 // If landscape mode
                 if (this.global.aspectRatio <= 1) {
-                    popup.style.height = "25vh"
-                    popup.style.width = "100vw"
-                    popup.style.borderRadius = "30px 30px 0 0"
-                } else { // If portrait mode
                     popup.style.height = "100vh"
                     popup.style.width = "33vw"
                     popup.style.borderRadius = "0 30px 30px 0"
+                } else { // If portrait mode
+                    popup.style.height = "25vh"
+                    popup.style.width = "100vw"
+                    popup.style.borderRadius = "30px 30px 0 0"
                 }
             }
+        }
+    },
+    mounted() {
+        if (this.global.aspectRatio <= 1) {
+                popup.style.height = "100vh"
+                popup.style.width = "33vw"
+                popup.style.borderRadius = "0 30px 30px 0"
+        } else { // If portrait mode
+                popup.style.height = "25vh"
+                popup.style.width = "100vw"
+                popup.style.borderRadius = "30px 30px 0 0"
         }
     },
     methods: {
