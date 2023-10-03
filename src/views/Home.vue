@@ -50,7 +50,7 @@ export default {
           popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else if (this.unselected){
-          popup.style.transform = "TranslateY(25vh)"
+          popup.style.transform = "TranslateY(50vh)"
         }
       }
     }
@@ -73,7 +73,7 @@ export default {
         popup.style.transform = "TranslateX(-33vw)"
       // If portrait mode
       } else if (this.unselected){
-        popup.style.transform = "TranslateY(25vh)"
+        popup.style.transform = "TranslateY(50vh)"
       }
   },
   methods: {
@@ -150,7 +150,7 @@ export default {
           popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else {
-          popup.style.transform = "TranslateY(25vh)"
+          popup.style.transform = "TranslateY(50vh)"
         }
       } catch { /* pass */ }
 

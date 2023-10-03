@@ -146,8 +146,10 @@ export default {
 <style >
 #currFloor {
   position: absolute;
-  left: 50%;
-  top: calc(50% - 125px);
+  left: 40%;
+  /* left: 50% */
+  top: 15%;
+  /* top: calc(50% - 125px); */
   transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
   justify-content: center;
@@ -162,8 +164,8 @@ export default {
   position: absolute;
   justify-content: center;
   align-items: right;
-  right: 40px;
-  bottom: 270px;
+  right: 5%;
+  top: 15%;
   width: 60px;
   height: 150px;
   display: flex;

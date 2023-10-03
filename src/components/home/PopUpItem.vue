@@ -68,7 +68,7 @@ export default {
                     popup.style.width = "33vw"
                     popup.style.borderRadius = "0 30px 30px 0"
                 } else { // If portrait mode
-                    popup.style.height = "25vh"
+                    popup.style.height = "50vh"
                     popup.style.width = "100vw"
                     popup.style.borderRadius = "30px 30px 0 0"
                 }
@@ -81,7 +81,7 @@ export default {
                 popup.style.width = "33vw"
                 popup.style.borderRadius = "0 30px 30px 0"
         } else { // If portrait mode
-                popup.style.height = "25vh"
+                popup.style.height = "50vh"
                 popup.style.width = "100vw"
                 popup.style.borderRadius = "30px 30px 0 0"
         }
@@ -142,7 +142,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    height: 25vh;
+    height: 50vh;
     position: absolute;
     pointer-events: all;
     display:inline-block;
