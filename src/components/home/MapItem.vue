@@ -2,6 +2,7 @@
 import tinycolor from "tinycolor2";
 </script>
 <template>
+  <!-- data for every building -->
   <div id="mapBox">
     <svg viewBox="0 0 1024 1706" id="map">
       <g id="bg">
@@ -357,15 +358,18 @@ import tinycolor from "tinycolor2";
 
 <script>
 export default {
+  // Adds use of global variables
   inject: ["global"],
   props: ['unselected', 'bldgSVG'],
   watch: {
+    // When unselected is changed
     unselected(newVar) {
       if (newVar)
         setTimeout(this.windowEventHandler, 800);
       else
         this.bringToFront(this.bldgSVG);
     },
+    // This is run once, for a first calculation
     'global.firstCalc': {
       deep: true,
       handler() {
@@ -375,6 +379,7 @@ export default {
       }
     }
   },
+  // General local variables
   data() {
     return {
       threshold: 1,
@@ -387,14 +392,16 @@ export default {
     })
   },
   mounted() {
+    // Turn on the map
     map.style.opacity = 1
     setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
-
+    // Check for resizing of window
     window.addEventListener("resize", this.windowResizeTimeout)
-
+    // Handles changes to the window
     this.windowEventHandler()
   },
   methods: {
+    // Applys the color of the building based on availability
     applyBuildingColors() {
       let colors = [
         "#eff5de", // >0%
@@ -435,6 +442,8 @@ export default {
       let group = b.parentNode
       group.appendChild(b)
     },
+    // Used so resizing isnt called forever, 
+    // Stops calling when resize hasnt been changed for 300 seconds
     windowResizeTimeout() {
       console.log(this.unselected)
       if (this.unselected) {
@@ -442,6 +451,7 @@ export default {
         this.doResize = setTimeout(this.windowEventHandler, 300);
       }
     },
+    // Handles events when resize is changed
     windowEventHandler() {
       let x = window.innerWidth
       let y = window.innerHeight

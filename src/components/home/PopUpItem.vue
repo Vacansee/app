@@ -3,6 +3,7 @@ import moment from 'moment-timezone'
 </script>
 
 <template>
+    <!-- HTML for the popup -->
     <div id="popup">
         <div id="popup-head"> 
             <div id="popupbuild">
@@ -14,7 +15,7 @@ import moment from 'moment-timezone'
         <div v-if="global.bldg" class="body">
             <!-- <img src="../../assets/photos/DCC.jpg" alt="DCC" id="photo"> -->
             <span>{{ getBldg().meta.name }}&emsp;&emsp;</span>
-            <span ref="mySpan">Current time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
+            <span ref="mySpan">Current Time: {{ getRealTime(global.time) }}&emsp;&emsp;</span>
             <span>Building heat: <b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)&emsp;&emsp;</span>
             <p></p>
             <div v-if="noneSelected()" class="warn">No room selected</div>
@@ -55,9 +56,29 @@ import moment from 'moment-timezone'
 <script>
 
 export default {
+    // Gets reference to global
     inject: ['global'],
+    watch: {
+        'global.aspectRatio': {
+            deep: true,
+            handler() {
+                // If landscape mode
+                if (this.global.aspectRatio <= 1) {
+                    popup.style.height = "25vh"
+                    popup.style.width = "100vw"
+                    popup.style.borderRadius = "30px 30px 0 0"
+                } else { // If portrait mode
+                    popup.style.height = "100vh"
+                    popup.style.width = "33vw"
+                    popup.style.borderRadius = "0 30px 30px 0"
+                }
+            }
+        }
+    },
     methods: {
+        // return if a room is selected
         noneSelected() { return !this.global.room },
+        // Returns the current building
         getBldg() { return this.global.data[this.global.bldg] },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         hasSecs(type) { 
@@ -66,20 +87,26 @@ export default {
                 case 'next': return (this.getData().meta.next[1].length > 0)
             }
         },
+        // Gets the cur from meta data
         getCur() {
             const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[2]
             return moment.duration(f.diff(i))
         },
+        // Gets next from meta data
         getNext() {
             const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[2]
             return moment.duration(f.diff(i))
         },
+        // Returns all data for the current room
         getData() { return this.getBldg()[this.global.room] },
+        // Gets the current time
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
+        // Returns the printers in a building
         getPrinters() {
             if (!this.getBldg().meta.hasOwnProperty("printers")) return 'none'
             else return this.getBldg().meta.printers
         },
+        // Gathers the classes for the building
         getTodaysClasses() {
             let classes = []
             let roomData = this.getData() 
@@ -88,6 +115,7 @@ export default {
                     classes.push(roomData[time][0] + ' at ' + this.getRealTime(time))
             } return classes
         },
+        // Turns the heat from a number into a representative phrase
         interpretHeat() {
             let heat = this.getBldg().meta.heat
             if (heat > 80) return 'very busy'
@@ -103,7 +131,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    height: 250px;
+    height: 25vh;
     position: absolute;
     pointer-events: all;
     display:inline-block;
@@ -116,7 +144,7 @@ export default {
     border: 3px solid var(--softborder);
     border-bottom-style: none;
     box-shadow: 0px -2px 25px rgba(0, 0, 0, 0.08);
-    border-radius: 30px 30px 0vh 0vh;
+    border-radius: 30px 30px 0 0;
 }
 
 #popup-head {
