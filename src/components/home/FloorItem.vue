@@ -54,6 +54,18 @@ export default {
         down.style.transform = "rotate(180deg)";
       }
     },
+    'global.aspectRatio': {
+      deep: true,
+      handler() {
+        // If landscape mode
+        if (this.global.aspectRatio <= 1) {
+          currFloor.style.transform = 
+          `translate(calc(-50% - 30px), calc(-50%)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+        } else { // If portrait mode
+          currFloor.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+        }
+      }
+    },
     // When floor num changes
     floorNum(newVar) {
       if (newVar == this.getBldg().meta.floors[1])
@@ -72,7 +84,7 @@ export default {
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    },
+    }
   },
   data() {
     // Local variables
@@ -88,10 +100,6 @@ export default {
   mounted() {
     // On load, set currFloor transition
     setTimeout(() => currFloor.style.transition = "transform .2s, width .4s", 500)
-    // constantly check for resize of window
-    window.addEventListener("resize", this.windowResizeTimeout)
-    // call the event handler
-    this.windowEventHandler()
   },
   methods: {
     // gets the current building
