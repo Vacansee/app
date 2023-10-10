@@ -384,12 +384,18 @@ export default {
     return {
       threshold: 1,
       doResize: "",
+      mapzoom: 0,
     }
   },
   updated() {
     this.$nextTick(() => {
       this.applyBuildingColors()
     })
+    // if (this.ratio < this.threshold) {
+    //   portraitMode = true;
+    // } else {
+    //   portraitMode = false;
+    // }
   },
   mounted() {
     // Turn on the map
@@ -398,20 +404,35 @@ export default {
     // Check for resizing of window
     window.addEventListener("resize", this.windowResizeTimeout)
     // Allow for the scroll wheel to zoom the map
-    let mapsize = window.innerWidth/50
-    window.addEventListener("wheel", event => { 
-      let dirwheel = 0
-      if (event.deltaY>0) {
-        dirwheel = -1
-      } else if (event.deltaY<0) {
-        dirwheel = 1
-      }
-      console.log(mapsize+dirwheel*10)
-      if (mapsize+dirwheel*10>20) {
-        mapsize +=dirwheel*10
-      }
-      map.style.transform = `scale(${mapsize})`;
-    })
+    let portraitMode = false;
+    window.addEventListener("wheel", event => {
+        if (!this.global.buildingMapOpen){
+          let dirwheel = 0;
+          if (event.deltaY>0) {
+            dirwheel = -1;
+          } else if (event.deltaY<0) {
+            dirwheel = 1;
+          }
+
+          let x = window.innerWidth;
+          let y = window.innerHeight;
+          let ratio = x / y;
+          portraitMode = false;
+          if (this.ratio < this.threshold) {
+            portraitMode = true;
+          }
+          if (portraitMode) {
+            if (y/50+this.mapzoom+dirwheel*10>20) {
+              this.mapzoom +=dirwheel*10;
+            }
+          } else {
+            if (x/50+this.mapzoom+dirwheel*10>20) {
+              this.mapzoom +=dirwheel*10;
+            }
+          }
+          this.windowEventHandler();
+        }
+      })
     // Handles changes to the window
     this.windowEventHandler()
   },
@@ -468,15 +489,15 @@ export default {
     },
     // Handles events when resize is changed
     windowEventHandler() {
-      let x = window.innerWidth
-      let y = window.innerHeight
-      let ratio = x / y
-
-      if (ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y / 50})` + `rotate(90deg)`
+      let x = window.innerWidth;
+      let y = window.innerHeight;
+      let ratio = x / y;
+      console.log(this.mapzoom);
+      if (this.ratio < this.threshold) { // portrait mode
+        map.style.transform = `scale(${y/50+this.mapzoom})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x / 50})`
+        map.style.transform = `scale(${x/50+this.mapzoom})`
     }
   }
 }

@@ -32,6 +32,7 @@ const global = reactive({ // The global reactive object!
 	// Non current time during a busy part of the day (used for testing)
 	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
 	firstCalc: false,
+	buildingMapOpen: false,
 })
 
 

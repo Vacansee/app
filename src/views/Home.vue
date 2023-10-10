@@ -124,6 +124,7 @@ export default {
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
+        this.global.buildingMapOpen = true
       }
     },
     // On deselection of a building (when clicked off)
@@ -143,6 +144,7 @@ export default {
         } else {
           popup.style.transform = "TranslateX(-33vw)"
         }
+        this.global.buildingMapOpen = false
       } catch { /* pass */ }
 
     }
