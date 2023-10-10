@@ -154,6 +154,7 @@ export default {
         } else {
           popup.style.transform = "TranslateY(50vh)"
         }
+        this.global.buildingMapOpen = false
       } catch { /* pass */ }
 
     }
