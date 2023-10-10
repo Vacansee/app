@@ -284,12 +284,12 @@ import tinycolor from "tinycolor2";
         </g>
       </g>
       <g id="buildings">
-        <path id="Center Biotechnology and Interdisciplinary Studies"
+        <path id="Center for Biotechnology and Interdisciplinary Studies"
           d="m444 941.4 2.3.7.7 1.7 3.1 2.1.9 2.5 5.2 2.1 5.4-.4.9-.5s1.2 2.7 3.3 3c2.2.1 2.9-2 2.9-2l8.6.4-1 13.6 84.2 4 3.5.1-.3 4.5 11.4.5 1.6-77.9-11-.1-.2 6.7-4.8-.3.6-12-11.7-.7.1 4-9.5-.6-.6 40.5-81-2.2v-2.6h-12l-1 2.6h1.7l-3.4 10.3Z" />
         <path id="Experimental Media and Performing Arts Center"
           d="m80.2 985.6 8.8.8 76.2 6.4 2.3-27-4-.4 2.7-37.3-80-7-.6 8.7-5.1 1-1.4 18.4 6 2.7-.6 7.2-2-.4-2.3 27Z" />
         <path id="Center for Industrial Innovation" d="M486 810v-16.5l-51.5.3.4 6.4 11.6 6-.2 3.8h39.8Z" />
-        <path id="Darren Communications Center"
+        <path id="Darrin Communications Center"
           d="m446.3 810-.2 5v1.3l-.1 1.5.6.6 1.4 1.2.8 21.9-3.2.4-1.5.9-2 1.8-.1 2 .5 1.8 1.6 1.9 2.2.2 2.6.2 1.2 57.5 35.9-.5-1-13.3h2.8l-1.7-84.4h-39.8Z" />
         <path id="Armory"
           d="m629.8 931.3 8.6.8 32.3.6 36.8.7 1.5-55.7-20.4-1-55.4-1-.5 19.4-4.5-.2-.5 19h2.6l-.5 17.4Z" />
@@ -307,7 +307,7 @@ import tinycolor from "tinycolor2";
         <path id="Commons Dining Hall"
           d="m845.8 901.7 9.5.3v1.6l-.8 16 31.8 1.2.8-16.7.1-2.4 9.4.3.3-9.9h4.3l6.5-7.7-7.3-7-12.4-.4-2-.1V871l-2.2-.1.1-2.1-23.4-.7-3.8 1.4-.2 2h-1.2l-1.5.7-1 1.3v1.8l-4.2-.5-2.8 27Z" />
         <path id="NYS Center for Polymer Synthesis" d="m226.9 1000.1 54 4.5-.2 3 15.1 1 2.5-31.5v-3l-14.9-1v2.8l-17.5-1.5-37-3.2-2 28.9Z" />
-        <path id="Jonsson Rowling Science Center"
+        <path id="Jonsson Rowland Science Center"
           d="m344.8 913.2 34.8 2.5-1 47.1 20 1 .1-3.4 2.1-49.6-2.4-.1.1-4.1.2-4.8-6.7-.3-11.1-.5.2-4.6-6-.3.3-6-6.8-.4-.2 5.2-22.5-1.2-1 19.5Z" />
         <path id="West Hall"
           d="m95.9 656.6 12.2.3-.3 14 24.2.7.3-10.1 22.4.6.4-16.5.1-3.4-13.5-.4-8.7-.2.3-9.6-24.8-.7-.4 13.8-12-.4-.2 11.9Z" />
