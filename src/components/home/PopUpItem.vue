@@ -67,10 +67,12 @@ export default {
                     popup.style.height = "100vh"
                     popup.style.width = "33vw"
                     popup.style.borderRadius = "0 30px 30px 0"
+                    buttonBox.style.bottom = "5vh"
                 } else { // If portrait mode
                     popup.style.height = "50vh"
                     popup.style.width = "100vw"
                     popup.style.borderRadius = "30px 30px 0 0"
+                    buttonBox.style.bottom = "52vh"
                 }
             }
         }

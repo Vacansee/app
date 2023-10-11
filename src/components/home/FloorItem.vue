@@ -10,7 +10,7 @@ import Floor from './Floor.vue'
     <Floor @room-hover="onRoomHover" :floor="floor" />
   </div>
 
-  <div id='buttonbox'>
+  <div id='buttonBox'>
     <button id="up" v-bind:class="{ 'disabled': !btnUp }" class="floor-button" type="button" @click="increaseFloor">
     <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
@@ -158,12 +158,12 @@ export default {
 
 }
 
-#buttonbox {
+#buttonBox {
   position: absolute;
   justify-content: center;
   align-items: right;
   right: 5vw;
-  top: 15vh;
+  bottom: 5vh;
   width: 60px;
   height: 150px;
   display: flex;
