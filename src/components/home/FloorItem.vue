@@ -6,7 +6,7 @@ import Floor from './Floor.vue'
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-  <div id='floorBox'>
+  <div id='currFloor'>
     <Floor @room-hover="onRoomHover" :floor="floor" />
   </div>
 
@@ -39,7 +39,7 @@ export default {
     unselected(newVar) {
       if (newVar) {
         this.floor = ""
-        floorBox.style.opacity = 0;
+        currFloor.style.opacity = 0;
         up.style.opacity = 0;
         down.style.opacity = 0;
       } else {
@@ -48,7 +48,7 @@ export default {
           this.floor = this.global.bldg + this.getBldg().meta.floors[2]
           this.global.floor = this.getBldg().meta.floors[2]
         }
-        floorBox.style.opacity = 1;
+        currFloor.style.opacity = 1;
         up.style.opacity = 1;
         down.style.opacity = 1;
         down.style.transform = "rotate(180deg)";
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style >
-#floorBox {
+#currFloor {
   position: absolute;
   left: 40%;
   /* left: 50% */
@@ -194,6 +194,8 @@ export default {
   border: 3px solid #86b0ac;
   color: #4d6d6b;
 }
+
+
 
 .material-symbols-outlined {
   font-variation-settings:

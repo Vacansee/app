@@ -48,22 +48,24 @@ export default {
 
 header {
   z-index: 7;
+  line-height: 1.5;
   display: flex;
-  padding: 1rem;
-  pointer-events: none;
+  padding-right: calc(var(--section-gap) / 2);
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
 }
 
 .logo {
   display: block;
-  margin: 0 1rem 0 0;
+  margin: 0 2rem 0 0;
 }
 
 nav {
-  line-height: 2;
-  font-size: 1rem;
+  width: 100%;
   text-align: left;
-  pointer-events: all;
-  margin: 1.25rem;
+  font-size: 1rem;
+  padding: 1rem 0;
 }
 
 nav a.router-link-exact-active {

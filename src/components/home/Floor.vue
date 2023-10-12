@@ -6,12 +6,12 @@ import tinycolor from "tinycolor2";
 
 <template>
   <div id="svgFloor">
-    <component :is="floorSVG" ref="svgComponent"></component>
+    <component :is="svg" ref="svgComponent"></component>
   </div>
 </template>
-
+  
 <script>
-const getFloorSVG = async (floor) => {
+const getSvgFloor = async (floor) => {
   const module = await import(`../../assets/floors/${floor}.svg`)
   return module.default
 }
@@ -21,9 +21,11 @@ export default {
   inject: ["global"],
   props: ["floor"],
   data() {
-    return { // Local variables
-      floorSVG: null,
-      roomSVG: null,
+    return {
+      // Local variables
+      svg: null,
+      currRoom: null,
+      roomLabel: "",
     }
   },
   watch: {
@@ -31,13 +33,14 @@ export default {
       // When floor changes, run this code
       async handler(floor) {
         if (floor == "") {
-          this.floorSVG = null;
-          if (this.roomSVG != null)
-            this.roomSVG.removeAttribute("id", "selected");
-          this.roomSVG = null;
+          this.svg = null;
+          if (this.currRoom != null)
+            this.currRoom.removeAttribute("id", "selected");
+          this.currRoom = null;
+          this.roomLabel = "";
           this.global.room = ""
         }
-        else this.floorSVG = await getFloorSVG(floor)
+        else this.svg = await getSvgFloor(floor)
       },
       immediate: true,
     },
@@ -70,31 +73,32 @@ export default {
       if (minutes >= 10)  return colors[5]
       else return colors[6]
     },
-    
-    roomSelect(path) { // Select the room needed
+    // Select the room needed
+    roomSelect(path) {
       let roomName = path.id.substr(1)
       if (!this.getBldg()[roomName]) {
-        if (this.roomSVG != null) this.roomSVG.remove()
-        this.roomSVG = null
-        this.global.room = ""
+        this.currRoom.remove();
+        this.currRoom = null
+        this.roomLabel = ""
       }
       else {
-        if (this.roomSVG != null) 
-          this.roomSVG.remove();
-        this.roomSVG = path
-        this.global.room = path.id.substr(1)
+        if (this.currRoom != null) 
+          this.currRoom.remove();
+        this.currRoom = path
+        this.roomLabel = path.id.substr(1)
         const clonedPath = path.cloneNode(true);
         path.parentNode.appendChild(clonedPath);
-        this.roomSVG = clonedPath;
+        this.currRoom = clonedPath;
         setTimeout(() => {
           clonedPath.setAttribute("id", "selected");
           let border = tinycolor(path.getAttribute("fill")).darken(30).toString();
           clonedPath.style.stroke = border
         }, 10);
       }
+      this.global.room = this.roomLabel
     },
-
-    applyRoomColors() { // Apply the room color to the popup
+    // Apply the room color to the popup
+    applyRoomColors() {
       const svgComponent = this.$refs.svgComponent
 
       if (svgComponent && svgComponent.$el) {
@@ -126,8 +130,9 @@ export default {
               path.setAttribute("cursor", "pointer")
             }
             else {
-              let initial = moment(this.global.time, 'e:HHmm'), final = roomInfo.meta.next[2]
-              let next = moment.duration(final.diff(initial)).asMinutes()
+              const initial = moment(this.global.time, 'e:HHmm')
+              const final = roomInfo.meta.next[2]
+              const next = moment.duration(final.diff(initial)).asMinutes()
               let fill = this.getColor(next)
               path.setAttribute("fill", fill);
               let border = tinycolor(fill).darken(25).toString();
@@ -149,7 +154,7 @@ export default {
   }
 }
 </script>
-
+  
 <style>
 #svgFloor {
   fill: var(--roomfill);
