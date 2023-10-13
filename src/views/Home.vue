@@ -46,7 +46,7 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (this.unselected && this.global.aspectRatio < 1) {
+        if (this.unselected && this.global.aspectRatio < 1.2) {
           popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else if (this.unselected){
@@ -69,7 +69,7 @@ export default {
       // If landscape mode
       // Fixes issue where transitions when unselected would show the popup for a split second
       popup.style.transition = "transform .0s"
-      if (this.unselected && this.global.aspectRatio < 1) {
+      if (this.unselected && this.global.aspectRatio < 1.2) {
         popup.style.transform = "TranslateX(-33vw)"
       // If portrait mode
       } else if (this.unselected){
