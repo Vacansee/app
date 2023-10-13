@@ -32,14 +32,14 @@ import moment from 'moment-timezone'
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
                         <b>{{ getCur().hours() }}h</b> and
                         <b>{{ getCur().minutes() }}m</b>
-                        <span v-if="hasSecs('cur')"> for sections </span>
+                        <span v-if="getSecs('cur')>0"> for section{{(getSecs('cur') > 1) ? 's':''}}</span>
                         <span v-for="item in getData().meta.cur[1]" class="sec">{{ item }}</span>
                     </p>
                     <p v-else>No class in session</p>
                     <p v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
                         <b>{{ getNext().hours() }}h</b> and
                         <b>{{ getNext().minutes() }}m</b>
-                        <span v-if="hasSecs('next')"> for sections </span>
+                        <span v-if="getSecs('next')>0"> for section{{(getSecs('next') > 1) ? 's':''}}</span>
                         <span v-for="item in getData().meta.next[1]" class="sec">{{ item }}</span>
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
@@ -66,10 +66,9 @@ export default {
     inject: ['global'],
     watch: {
         'global.aspectRatio': {
-            deep: true,
             handler() {
                 // If landscape mode
-                if (this.global.aspectRatio <= 1) {
+                if (this.global.aspectRatio <= 1.2) {
                     popup.style.height = "100vh"
                     popup.style.width = "33vw"
                     popup.style.borderRadius = "0 15px 15px 0"
@@ -84,7 +83,7 @@ export default {
         }
     },
     mounted() {
-        if (this.global.aspectRatio <= 1) {
+        if (this.global.aspectRatio <= 1.2) {
                 popup.style.height = "100vh"
                 popup.style.width = "33vw"
                 popup.style.borderRadius = "0 15px 15px 0"
@@ -102,10 +101,10 @@ export default {
         // Returns the current building
         getBldg() { return this.global.data[this.global.bldg] },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
-        hasSecs(type) { 
+        getSecs(type) { 
             switch(type) {
-                case  'cur': return (this.getData().meta.cur[1].length > 0)
-                case 'next': return (this.getData().meta.next[1].length > 0)
+                case  'cur': return this.getData().meta.cur[1].length
+                case 'next': return this.getData().meta.next[1].length
             }
         },
         // Gets the cur from meta data
@@ -152,6 +151,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
+    min-width: 400px;
     height: 50vh;
     position: absolute;
     pointer-events: all;

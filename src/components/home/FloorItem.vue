@@ -55,10 +55,9 @@ export default {
       }
     },
     'global.aspectRatio': {
-      deep: true,
       handler() {
         // If landscape mode
-        if (this.global.aspectRatio <= 1) {
+        if (this.global.aspectRatio <= 1.2) {
           floorBox.style.transform = 
           `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
         } else { // If portrait mode
@@ -101,7 +100,7 @@ export default {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
     // If landscape mode
-    if (this.global.aspectRatio <= 1) {
+    if (this.global.aspectRatio <= 1.2) {
       floorBox.style.transform = 
       `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
     } else { // If portrait mode
@@ -162,7 +161,7 @@ export default {
   position: absolute;
   justify-content: center;
   align-items: right;
-  right: 5vw;
+  right: 4vw;
   bottom: 5vh;
   width: 60px;
   height: 150px;

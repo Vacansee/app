@@ -371,7 +371,6 @@ export default {
     },
     // This is run once, for a first calculation
     'global.firstCalc': {
-      deep: true,
       handler() {
         if (this.global.firstCalc) {
           this.applyBuildingColors();

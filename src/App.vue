@@ -26,7 +26,6 @@ export default {
   inject: ["global"],
   watch: {
     'global.bldg': {
-      deep: true,
       handler() {
         // Only shows header when a building is not selected
         if (this.global.bldg)
