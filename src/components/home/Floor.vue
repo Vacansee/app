@@ -136,7 +136,7 @@ export default {
           else { // !roomInfo
             path.setAttribute("cursor","not-allowed")
             if (roomID.includes('excavated')) path.setAttribute("fill", "var(--hardborder)")
-            if (roomID != 'floor') // rooms w/o classes:
+            else if (roomID != 'floor') // rooms w/o classes:
               path.setAttribute("fill", "var(--unusedfill)")
           }
           path.setAttribute("pointer-events", "all");
