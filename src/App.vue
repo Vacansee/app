@@ -26,7 +26,6 @@ export default {
   inject: ["global"],
   watch: {
     'global.bldg': {
-      deep: true,
       handler() {
         // Only shows header when a building is not selected
         if (this.global.bldg)
@@ -48,24 +47,22 @@ export default {
 
 header {
   z-index: 7;
-  line-height: 1.5;
   display: flex;
-  padding-right: calc(var(--section-gap) / 2);
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  padding: 1rem;
+  pointer-events: none;
 }
 
 .logo {
   display: block;
-  margin: 0 2rem 0 0;
+  margin: 0 1rem 0 0;
 }
 
 nav {
-  width: 100%;
-  text-align: left;
+  line-height: 2;
   font-size: 1rem;
-  padding: 1rem 0;
+  text-align: left;
+  pointer-events: all;
+  margin: 1.25rem;
 }
 
 nav a.router-link-exact-active {

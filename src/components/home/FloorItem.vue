@@ -10,7 +10,7 @@ import Floor from './Floor.vue'
     <Floor @room-hover="onRoomHover" :floor="floor" />
   </div>
 
-  <div id='button-box'>
+  <div id='buttonBox'>
     <button id="up" v-bind:class="{ 'disabled': !btnUp }" class="floor-button" type="button" @click="increaseFloor">
     <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
@@ -54,6 +54,17 @@ export default {
         down.style.transform = "rotate(180deg)";
       }
     },
+    'global.aspectRatio': {
+      handler() {
+        // If landscape mode
+        if (this.global.aspectRatio <= 1.2) {
+          floorBox.style.transform = 
+          `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+        } else { // If portrait mode
+          floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+        }
+      }
+    },
     // When floor num changes
     floorNum(newVar) {
       if (newVar == this.getBldg().meta.floors[1])
@@ -72,7 +83,7 @@ export default {
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    },
+    }
   },
   data() {
     // Local variables
@@ -88,10 +99,13 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
-    // constantly check for resize of window
-    window.addEventListener("resize", this.windowResizeTimeout)
-    // call the event handler
-    this.windowEventHandler()
+    // If landscape mode
+    if (this.global.aspectRatio <= 1.2) {
+      floorBox.style.transform = 
+      `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+    } else { // If portrait mode
+      floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+    }
   },
   methods: {
     // gets the current building
@@ -103,23 +117,6 @@ export default {
     // When a room is hovered over
     onRoomHover(roomHover) {
       this.$emit('room-hover', roomHover); // pass it up one more time
-    },
-    // Function is used so that after 300 seconds of not resizing,
-    // the function doesnt check for resizing
-    windowResizeTimeout() {
-      clearTimeout(this.doResize);
-      this.doResize = setTimeout(this.windowEventHandler, 300);
-    },
-    // Handles changes of other variables when resize is changed
-    windowEventHandler() {
-      let x = window.innerWidth;
-      let y = window.innerHeight - 250; // Subtract the bottom panel's height
-      let ratio = x / y;
-
-      if (ratio < this.threshold)  // portrait mode
-        floorBox.style.transform = `translate(calc(-50% - 30px), calc(-50%)) scale(${(y - 150) / 50})` + `rotate(90deg)`;
-      else // landscape mode
-        floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${x / 65})`;
     },
     // Increases the floor
     increaseFloor() {
@@ -146,8 +143,10 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 50%;
-  top: calc(50% - 125px);
+  left: 40%;
+  /* left: 50% */
+  top: 15%;
+  /* top: calc(50% - 125px); */
   transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
   justify-content: center;
@@ -158,12 +157,12 @@ export default {
 
 }
 
-#button-box {
+#buttonBox {
   position: absolute;
   justify-content: center;
   align-items: right;
-  right: 40px;
-  bottom: 270px;
+  right: 4vw;
+  bottom: 5vh;
   width: 60px;
   height: 150px;
   display: flex;

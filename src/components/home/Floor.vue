@@ -9,7 +9,7 @@ import tinycolor from "tinycolor2";
     <component :is="floorSVG" ref="svgComponent"></component>
   </div>
 </template>
-
+  
 <script>
 const getFloorSVG = async (floor) => {
   const module = await import(`../../assets/floors/${floor}.svg`)
@@ -70,7 +70,6 @@ export default {
       if (minutes >= 10)  return colors[5]
       else return colors[6]
     },
-    
     roomSelect(path) { // Select the room needed
       let roomName = path.id.substr(1)
       if (!this.getBldg()[roomName]) {
@@ -93,7 +92,6 @@ export default {
         }, 10);
       }
     },
-
     applyRoomColors() { // Apply the room color to the popup
       const svgComponent = this.$refs.svgComponent
 
@@ -138,7 +136,7 @@ export default {
           else { // !roomInfo
             path.setAttribute("cursor","not-allowed")
             if (roomID.includes('excavated')) path.setAttribute("fill", "var(--hardborder)")
-            if (roomID != 'floor') // rooms w/o classes:
+            else if (roomID != 'floor') // rooms w/o classes:
               path.setAttribute("fill", "var(--unusedfill)")
           }
           path.setAttribute("pointer-events", "all");

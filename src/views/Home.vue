@@ -46,11 +46,11 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (this.unselected && this.global.aspectRatio < 1) {
-          popup.style.transform = "TranslateY(25vh)"
+        if (this.unselected && this.global.aspectRatio < 1.2) {
+          popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else if (this.unselected){
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateY(50vh)"
         }
       }
     }
@@ -66,6 +66,15 @@ export default {
       b.addEventListener("mouseleave", this.nameTagDisappear)
       b.addEventListener("click", () => { this.buildingSelect(b) })
     }
+      // If landscape mode
+      // Fixes issue where transitions when unselected would show the popup for a split second
+      popup.style.transition = "transform .0s"
+      if (this.unselected && this.global.aspectRatio < 1.2) {
+        popup.style.transform = "TranslateX(-33vw)"
+      // If portrait mode
+      } else if (this.unselected){
+        popup.style.transform = "TranslateY(50vh)"
+      }
   },
   methods: {
     // Make the name tag pop up
@@ -138,11 +147,11 @@ export default {
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
         // Landscape mode
-        if (this.global.aspectRatio <= 1) {
-          popup.style.transform = "TranslateY(25vh)"
+        if (this.global.aspectRatio <= 1.2) {
+          popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else {
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateY(50vh)"
         }
         this.global.buildingMapOpen = false
       } catch { /* pass */ }
