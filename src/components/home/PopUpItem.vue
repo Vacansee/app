@@ -5,12 +5,10 @@ import moment from 'moment-timezone'
 <template>
     <!-- HTML for the popup -->
     <div id="popup">
-        <div id="popup-head"> 
-            <div id="popupbuild">
-                {{ global.bldg }}
-                <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
-                <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
-            </div>
+        <div id="breadcrumbs">
+            {{ global.bldg }}
+            <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
+            <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
         <div v-if="global.bldg" class="body">
             <div class="block">
@@ -56,7 +54,6 @@ import moment from 'moment-timezone'
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -170,18 +167,11 @@ export default {
     overflow-y: auto;
 }
 
-#popup-head {
-    width: 100vw;
-    height: 6vh;
-    background-color: none;
+#breadcrumbs {
+    padding: 10px 0px 0px 20px;
     color: rgb(0, 0, 0);
-    position: absolute;
     font-weight: 600;
     font-size: x-large;
-}
-
-#popupbuild {
-    padding: 10px 20px;
 }
 
 #photo {
@@ -222,7 +212,7 @@ table {
 }
 
 td {
-  border-left: solid 1px var(--softborder);
+    border-left: solid 1px var(--softborder);
 }
 
 tr:nth-child(even) {
@@ -252,10 +242,6 @@ tr:nth-child(even) {
     padding: 10px;    
     border-radius: 10px;
     border: 1px solid var(--softborder);
-}
-
-.body {
-    margin-top: 50px;
 }
 
 li {
