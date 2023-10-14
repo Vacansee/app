@@ -1,5 +1,6 @@
 <script setup>
 import Floor from './Floor.vue'
+import PopUpItem from './PopUpItem.vue';
 </script>
 
 <template>
@@ -58,10 +59,14 @@ export default {
       handler() {
         // If landscape mode
         if (this.global.aspectRatio <= 1.2) {
+   //       floorBox.left = 'PopUpItem.width + 50vw + floorBox.width/2'
+          floorBox.style.left = `calc(${popup.style.width}/2 + 50vw - ${window.innerHeight})`;
+        //  floorBox.style.left = `calc(${PopUpItem.style.width}/2 + 50vw` // ${floorBox.style.width}`;
+          
           floorBox.style.transform = 
           `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
         } else { // If portrait mode
-          floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+          floorBox.style.transform = `scale(${window.innerWidth / 65})`;
         }
       }
     },
@@ -143,9 +148,9 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 40%;
+  left: 75vw; 
   /* left: 50% */
-  top: 15%;
+  top: 15vh;
   /* top: calc(50% - 125px); */
   transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
