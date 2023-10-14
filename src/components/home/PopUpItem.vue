@@ -24,7 +24,7 @@ import moment from 'moment-timezone'
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
             <div v-else> <!-- Room w/ data selected -->
-                <div class="block">
+                <div class="block"> <!-- Block #1: room information -->
                     <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
                     <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
@@ -42,8 +42,8 @@ import moment from 'moment-timezone'
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
                 </div>
-                <div class="block">
-                    <b v-if="getData().meta.next">Today</b>
+                <div v-if="getData().meta.next" class="block"> <!-- Block #2: today's room schedule -->
+                    <b>Today</b>
                     <table>
                         <tr v-for="item in getTodaysClasses()">
                             {{ item[0] }}
@@ -223,10 +223,6 @@ tr:nth-child(even) {
     color: red;
     text-align: center;
     font-weight: 500;
-}
-.code {
-    font-size: 15px;
-    color: #902a00;
 }
 
 .sec {

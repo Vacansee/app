@@ -40,8 +40,8 @@ export default {
       if (newVar) {
         this.floor = ""
         floorBox.style.opacity = 0;
-        up.style.opacity = 0;
-        down.style.opacity = 0;
+        up.style.opacity = down.style.opacity = 0;
+        buttonBox.style.pointerEvents = "none";
       } else {
         if (this.getBldg()) {
           this.floorNum = this.getBldg().meta.floors[2]
@@ -49,8 +49,8 @@ export default {
           this.global.floor = this.getBldg().meta.floors[2]
         }
         floorBox.style.opacity = 1;
-        up.style.opacity = 1;
-        down.style.opacity = 1;
+        up.style.opacity = down.style.opacity = 1;
+        buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
     },
@@ -154,7 +154,6 @@ export default {
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
-
 }
 
 #buttonBox {
@@ -167,6 +166,7 @@ export default {
   height: 150px;
   display: flex;
   flex-wrap: wrap;
+  pointer-events: none;
 }
 
 .disabled {

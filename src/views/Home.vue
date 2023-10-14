@@ -127,7 +127,7 @@ export default {
 
         this.ntVisible = 0 // hide nametag when building selected
 
-        mask.style.opacity = 0.8
+        mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         // Bring the popup to 0,0
@@ -162,12 +162,10 @@ export default {
 <style scoped>
 
 #mask {
-  /* Basic CSS Below */
   width: 100vw;
   height: 100vh;
   z-index: 5;
   opacity: 0;
-  /* display: none; */
   background: black !important;
   stroke: none !important;
   pointer-events: none;

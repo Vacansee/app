@@ -4,7 +4,8 @@ import tinycolor from "tinycolor2";
 <template>
   <!-- data for every building -->
   <div id="mapBox">
-    <svg viewBox="0 0 1024 1706" id="map">
+    <svg viewBox="0 0 1024 1706" id="map" filter="url(#blur)">
+      <filter id="blur"> <feGaussianBlur in="SourceGraphic" ref="blurRef"/> </filter>
       <g id="bg">
         <g id="stair">
           <path d="M847.6 903.6h7.7M10.6 789.8l-43.3 1.2" />
@@ -364,10 +365,14 @@ export default {
   watch: {
     // When unselected is changed
     unselected(newVar) {
-      if (newVar)
+      if (newVar) { // unselected
         setTimeout(this.windowEventHandler, 800);
-      else
+        this.$refs.blurRef.setAttribute('stdDeviation', 0);
+      }
+      else { // selected
         this.bringToFront(this.bldgSVG);
+        this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+      }
     },
     // This is run once, for a first calculation
     'global.firstCalc': {
