@@ -100,6 +100,7 @@ nav a {
 
 .top-right-navbar {
   position: fixed;
+  padding-right: 2rem;
   top: 0;
   right: 0;
 }
