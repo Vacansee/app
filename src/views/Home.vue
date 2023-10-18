@@ -117,9 +117,9 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.unselected) {
-        var bBox = b.getBoundingClientRect()
-        var boxCenterX = bBox.x + bBox.width / 2
-        var boxCenterY = bBox.y + bBox.height / 2
+        let bBox = b.getBoundingClientRect()
+        let boxCenterX = bBox.x + bBox.width / 2
+        let boxCenterY = bBox.y + bBox.height / 2
 
         this.unselected = false
         this.bldgSVG = b

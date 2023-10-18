@@ -31,6 +31,7 @@ export default {
   // Get reference to global
   inject: ["global"],
   props: ['unselected'],
+  emits: ["roomHover"],
   components: {
     Floor
   },
@@ -67,7 +68,7 @@ export default {
     },
     // When floor num changes
     floorNum(newVar) {
-      if (newVar == this.getBldg().meta.floors[1])
+      if (this.getBldg() && newVar == this.getBldg().meta.floors[1])
         this.btnUp = false 
       else this.btnUp = true
       if (newVar == 1) this.btnDown = false
@@ -120,7 +121,7 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.floorNum < this.getBldg().meta.floors[1]) {
+      if (this.getBldg() && this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum

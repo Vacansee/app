@@ -423,7 +423,7 @@ export default {
         let bldngHeat = 0
         try {
           bldngHeat = this.global.data[b.id].meta.heat
-        } catch { console.warn(`Buildings w/o classes`) }
+        } catch { console.warn(`Can't color buildings w/o classes`) }
         let fill = ''
         if (bldngHeat >= 90)      fill = colors[9]
         else if (bldngHeat >= 80) fill = colors[8]

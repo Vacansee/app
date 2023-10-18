@@ -10,7 +10,7 @@ import moment from 'moment-timezone'
             <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
             <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
-        <div v-if="global.bldg" class="body">
+        <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
                 <div id="photo-box">
                     <img src="../../assets/photos/DCC.jpg" id="photo">
@@ -42,7 +42,7 @@ import moment from 'moment-timezone'
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
                 </div>
-                <div v-if="getData().meta.next" class="block"> <!-- Block #2: today's room schedule -->
+                <div v-if="getTodaysClasses().length" class="block"> <!-- Block #2: today's room schedule -->
                     <b>Today</b>
                     <table>
                         <tr v-for="item in getTodaysClasses()">
@@ -53,6 +53,7 @@ import moment from 'moment-timezone'
                 </div>
             </div>
         </div>
+        <div v-else-if="global.bldg" class="block warn">No classes here!</div>
     </div>
 </template>
 
@@ -96,7 +97,10 @@ export default {
         // return if a room is selected
         noneSelected() { return !this.global.room },
         // Returns the current building
-        getBldg() { return this.global.data[this.global.bldg] },
+        getBldg() {
+            let bldg = this.global.data[this.global.bldg]
+            return bldg ? bldg : console.error(`No classes here!`)
+        },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         getSecs(type) { 
             switch(type) {
