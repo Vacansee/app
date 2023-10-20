@@ -385,7 +385,7 @@ export default {
       doResize: "",
       mapZoom: 0,
       mapLeftTransform: 50,
-      mapRightTransform: 50,
+      mapTopTransform: 50,
     }
   },
   updated() {
@@ -422,35 +422,42 @@ export default {
           if (this.ratio < this.threshold) {
             portraitMode = true;
           }
+          let zoom=0;
           if (portraitMode) {
-            if (y/50+this.mapZoom+dirwheel*10>20) {
-              this.mapZoom +=dirwheel*10;
-            }
+            zoom = y/50+this.mapZoom+dirwheel*10;
           } else {
-            if (x/50+this.mapZoom+dirwheel*10>20) {
-              this.mapZoom +=dirwheel*10;
-            }
+            zoom = x/50+this.mapZoom+dirwheel*10;
+          }
+          if (20<zoom&&zoom<200) {
+            this.mapZoom +=dirwheel*10;
           }
           this.windowEventHandler();
         }
       })
     // Handles changes to the window
-    this.windowEventHandler()
-    window.addEventListener("mousedown", () => {
-      window.addEventListener("mousemove", this.onMouseDrag);
-    });
-    window.addEventListener("mouseup", () => {
-      window.removeEventListener("mousemove", this.onMouseDrag);
-    });
+    // this.windowEventHandler()
+    // window.addEventListener("mousedown", () => {
+    //   window.addEventListener("mousemove", this.onMouseDrag);
+    // });
+    // window.addEventListener("mouseup", () => {
+    //   window.removeEventListener("mousemove", this.onMouseDrag);
+    // });
   },
   methods: {
     // Applys the color of the building based on availability
-    onMouseDrag({movementX, movementY }) {
-      console.log("X:"+movementX+" Y:"+movementY);
+    onMouseDrag({movementX, movementY}) {
+      // let x = window.innerWidth;
+      // let y = window.innerHeight;
+      // let ratio = x / y;
+      // let changeX=0, changeY=0;
       
-      mapBox.style.left = `${this.mapLeftTransform+movementX}%`; 
-      mapBox.style.top = `${this.mapRightTransform+movementY}%`; 
+      // changeX = movementX;
+      // changeY = movementY;
+      // console.log("X:"+changeX+" Y:"+changeY);
       
+      mapBox.style.left = `calc(${this.mapLeftTransform}% + ${movementX*10}px)`; 
+      mapBox.style.top = `calc(${this.mapTopTransform}% + ${movementY*10}px)`; 
+      console.log("X: " +movementX + " Y: " +movementY)
     },
     applyBuildingColors() {
       let colors = [
