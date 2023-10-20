@@ -16,7 +16,7 @@ const getFloorSVG = async (floor) => {
     const module = await import(`../../assets/floors/${floor}.svg`)
     return module.default
   }
-  catch(err) { console.error(`Map not yet implemented!`) }
+  catch { console.error(`Map not yet implemented!`) }
 }
 
 export default {

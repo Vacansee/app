@@ -124,7 +124,6 @@ export default {
         this.unselected = false
         this.bldgSVG = b
         this.global.bldg = b.id.replace(/-/g, ' ')
-
         this.ntVisible = 0 // hide nametag when building selected
 
         mask.style.opacity = 0.65
@@ -133,6 +132,7 @@ export default {
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
+        popup.style.minWidth = "400px"
       }
     },
     // On deselection of a building (when clicked off)
@@ -145,6 +145,7 @@ export default {
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
+        popup.style.minWidth = "unset"
         // Landscape mode
         if (this.global.aspectRatio <= 1.2) {
           popup.style.transform = "TranslateX(-33vw)"

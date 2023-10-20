@@ -152,7 +152,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    min-width: 400px;
+    min-width: unset;
     height: 50vh;
     position: absolute;
     pointer-events: all;
