@@ -383,7 +383,9 @@ export default {
     return {
       threshold: 1,
       doResize: "",
-      mapzoom: 0,
+      mapZoom: 0,
+      mapLeftTransform: 50,
+      mapRightTransform: 50,
     }
   },
   updated() {
@@ -421,12 +423,12 @@ export default {
             portraitMode = true;
           }
           if (portraitMode) {
-            if (y/50+this.mapzoom+dirwheel*10>20) {
-              this.mapzoom +=dirwheel*10;
+            if (y/50+this.mapZoom+dirwheel*10>20) {
+              this.mapZoom +=dirwheel*10;
             }
           } else {
-            if (x/50+this.mapzoom+dirwheel*10>20) {
-              this.mapzoom +=dirwheel*10;
+            if (x/50+this.mapZoom+dirwheel*10>20) {
+              this.mapZoom +=dirwheel*10;
             }
           }
           this.windowEventHandler();
@@ -434,9 +436,35 @@ export default {
       })
     // Handles changes to the window
     this.windowEventHandler()
+    window.addEventListener("mousedown", () => {
+      window.addEventListener("mousemove", this.onMouseDrag);
+    });
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseDrag);
+    });
   },
   methods: {
     // Applys the color of the building based on availability
+    onMouseDrag({movementX, movementY }) {
+      let x = window.innerWidth;
+      let y = window.innerHeight;
+      let ratio = x / y;
+      let portraitMode = false;
+      if (this.ratio < this.threshold) {
+        portraitMode = true;
+      }
+      if (portraitMode) {
+        this.mapLeftTransform = `${this.mapLeftTransform + (movementX/(y/50+this.mapZoom))}%`; 
+        this.mapRightTransform = `${this.mapRightTransform + (movementy/(x/50+this.mapZoom))}%`; 
+      } else {
+        this.mapLeftTransform = `${this.mapLeftTransform + (movementX/(x/50+this.mapZoom))}%`; 
+        this.mapRightTransform = `${this.mapRightTransform + (movementY/(y/50+this.mapZoom))}%`;
+      }
+      
+      mapBox.style.left = `${this.mapLeftTransform}%`; 
+      mapBox.style.top = `${this.mapRightTransform}%`; 
+      
+    },
     applyBuildingColors() {
       let colors = [
         "#eff5de", // >0%
@@ -491,12 +519,12 @@ export default {
       let x = window.innerWidth;
       let y = window.innerHeight;
       let ratio = x / y;
-      console.log(this.mapzoom);
+      console.log(this.mapZoom);
       if (this.ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y/50+this.mapzoom})` + `rotate(90deg)`
+        map.style.transform = `scale(${y/50+this.mapZoom})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x/50+this.mapzoom})`
+        map.style.transform = `scale(${x/50+this.mapZoom})`
     }
   }
 }
