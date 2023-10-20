@@ -446,23 +446,10 @@ export default {
   methods: {
     // Applys the color of the building based on availability
     onMouseDrag({movementX, movementY }) {
-      let x = window.innerWidth;
-      let y = window.innerHeight;
-      let ratio = x / y;
-      let portraitMode = false;
-      if (this.ratio < this.threshold) {
-        portraitMode = true;
-      }
-      if (portraitMode) {
-        this.mapLeftTransform = `${this.mapLeftTransform + (movementX/(y/50+this.mapZoom))}%`; 
-        this.mapRightTransform = `${this.mapRightTransform + (movementy/(x/50+this.mapZoom))}%`; 
-      } else {
-        this.mapLeftTransform = `${this.mapLeftTransform + (movementX/(x/50+this.mapZoom))}%`; 
-        this.mapRightTransform = `${this.mapRightTransform + (movementY/(y/50+this.mapZoom))}%`;
-      }
+      console.log("X:"+movementX+" Y:"+movementY);
       
-      mapBox.style.left = `${this.mapLeftTransform}%`; 
-      mapBox.style.top = `${this.mapRightTransform}%`; 
+      mapBox.style.left = `${this.mapLeftTransform+movementX}%`; 
+      mapBox.style.top = `${this.mapRightTransform+movementY}%`; 
       
     },
     applyBuildingColors() {
