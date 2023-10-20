@@ -2,8 +2,10 @@
 import tinycolor from "tinycolor2";
 </script>
 <template>
+  <!-- data for every building -->
   <div id="mapBox">
-    <svg viewBox="0 0 1024 1706" id="map">
+    <svg viewBox="0 0 1024 1706" id="map" filter="url(#blur)">
+      <filter id="blur"> <feGaussianBlur in="SourceGraphic" ref="blurRef"/> </filter>
       <g id="bg">
         <g id="stair">
           <path d="M847.6 903.6h7.7M10.6 789.8l-43.3 1.2" />
@@ -357,17 +359,23 @@ import tinycolor from "tinycolor2";
 
 <script>
 export default {
+  // Adds use of global variables
   inject: ["global"],
-  props: ['unselected', 'currBuilding'],
+  props: ['unselected', 'bldgSVG'],
   watch: {
-    unselected(newVar, oldVar) {
-      if (newVar)
+    // When unselected is changed
+    unselected(newVar) {
+      if (newVar) { // unselected
         setTimeout(this.windowEventHandler, 800);
-      else
-        this.bringToFront(this.currBuilding);
+        this.$refs.blurRef.setAttribute('stdDeviation', 0);
+      }
+      else { // selected
+        this.bringToFront(this.bldgSVG);
+        this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+      }
     },
+    // This is run once, for a first calculation
     'global.firstCalc': {
-      deep: true,
       handler() {
         if (this.global.firstCalc) {
           this.applyBuildingColors();
@@ -376,6 +384,7 @@ export default {
       }
     }
   },
+  // General local variables
   data() {
     return {
       threshold: 1,
@@ -388,14 +397,16 @@ export default {
     })
   },
   mounted() {
+    // Turn on the map
     map.style.opacity = 1
     setTimeout(() => map.style.transition = "transform .2s, width .4s", 500)
-
+    // Check for resizing of window
     window.addEventListener("resize", this.windowResizeTimeout)
-
+    // Handles changes to the window
     this.windowEventHandler()
   },
   methods: {
+    // Applys the color of the building based on availability
     applyBuildingColors() {
       let colors = [
         "#eff5de", // >0%
@@ -413,7 +424,7 @@ export default {
         let bldngHeat = 0
         try {
           bldngHeat = this.global.data[b.id].meta.heat
-        } catch { console.log(`buildings w/o classes`) }
+        } catch { console.warn(`Buildings w/o classes`) }
         let fill = ''
         if (bldngHeat >= 90)      fill = colors[9]
         else if (bldngHeat >= 80) fill = colors[8]
@@ -444,6 +455,8 @@ export default {
       let group = b.parentNode
       group.appendChild(b)
     },
+    // Used so resizing isnt called forever, 
+    // Stops calling when resize hasnt been changed for 300 seconds
     windowResizeTimeout() {
       console.log(this.unselected)
       if (this.unselected) {
@@ -451,6 +464,7 @@ export default {
         this.doResize = setTimeout(this.windowEventHandler, 300);
       }
     },
+    // Handles events when resize is changed
     windowEventHandler() {
       let x = window.innerWidth
       let y = window.innerHeight

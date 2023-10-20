@@ -1,4 +1,6 @@
 <script setup>
+// This file is currently a placeholder for an about page
+// Completely useless at the current moment
 </script>
 
 <template>

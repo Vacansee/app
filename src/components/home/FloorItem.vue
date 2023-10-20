@@ -6,11 +6,11 @@ import Floor from './Floor.vue'
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-  <div id='currFloor'>
+  <div id='floorBox'>
     <Floor @room-hover="onRoomHover" :floor="floor" />
   </div>
 
-  <div id='button-box'>
+  <div id='buttonBox'>
     <button id="up" v-bind:class="{ 'disabled': !btnUp }" class="floor-button" type="button" @click="increaseFloor">
     <svg width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path>
@@ -28,30 +28,44 @@ import Floor from './Floor.vue'
 
 <script>
 export default {
+  // Get reference to global
   inject: ["global"],
+  props: ['unselected'],
   components: {
     Floor
   },
-  props: ['unselected', 'currBuilding', 'bldgLabel'],
   watch: {
+    // When unselected changes
     unselected(newVar) {
       if (newVar) {
         this.floor = ""
-        currFloor.style.opacity = 0;
-        up.style.opacity = 0;
-        down.style.opacity = 0;
+        floorBox.style.opacity = 0;
+        up.style.opacity = down.style.opacity = 0;
+        buttonBox.style.pointerEvents = "none";
       } else {
         if (this.getBldg()) {
           this.floorNum = this.getBldg().meta.floors[2]
-          this.floor = this.bldgLabel + this.getBldg().meta.floors[2]
+          this.floor = this.global.bldg + this.getBldg().meta.floors[2]
           this.global.floor = this.getBldg().meta.floors[2]
         }
-        currFloor.style.opacity = 1;
-        up.style.opacity = 1;
-        down.style.opacity = 1;
+        floorBox.style.opacity = 1;
+        up.style.opacity = down.style.opacity = 1;
+        buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
     },
+    'global.aspectRatio': {
+      handler() {
+        // If landscape mode
+        if (this.global.aspectRatio <= 1.2) {
+          floorBox.style.transform = 
+          `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+        } else { // If portrait mode
+          floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+        }
+      }
+    },
+    // When floor num changes
     floorNum(newVar) {
       if (newVar == this.getBldg().meta.floors[1])
         this.btnUp = false 
@@ -59,17 +73,20 @@ export default {
       if (newVar == 1) this.btnDown = false
       else this.btnDown = true
     },
+    // When button up changes
     btnUp(newVar) {
       if (newVar) up.style.opacity = 1;
       else        up.style.opacity = 0.6;
 
     },
+    // When button down changes
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    },
+    }
   },
   data() {
+    // Local variables
     return {
       threshold: 1,
       doResize: "",
@@ -80,47 +97,42 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => currFloor.style.transition = "transform .2s, width .4s", 500)
-
-    window.addEventListener("resize", this.windowResizeTimeout)
-    this.windowEventHandler()
+    // On load, set floorBox transition
+    setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
+    // If landscape mode
+    if (this.global.aspectRatio <= 1.2) {
+      floorBox.style.transform = 
+      `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+    } else { // If portrait mode
+      floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+    }
   },
   methods: {
+    // gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
       let group = f.parentNode
       group.appendChild(f)
     },
+    // When a room is hovered over
     onRoomHover(roomHover) {
       this.$emit('room-hover', roomHover); // pass it up one more time
     },
-    windowResizeTimeout() {
-      clearTimeout(this.doResize);
-      this.doResize = setTimeout(this.windowEventHandler, 300);
-    },
-    windowEventHandler() {
-      let x = window.innerWidth;
-      let y = window.innerHeight - 250; // Subtract the bottom panel's height
-      let ratio = x / y;
-
-      if (ratio < this.threshold)  // portrait mode
-        currFloor.style.transform = `translate(calc(-50% - 30px), calc(-50%)) scale(${(y - 150) / 50})` + `rotate(90deg)`;
-      else // landscape mode
-        currFloor.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${x / 65})`;
-    },
+    // Increases the floor
     increaseFloor() {
       if (this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
         this.global.floor = this.floorNum;
-        this.floor = this.bldgLabel + this.floorNum
+        this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
       }
     },
+    // Decreases the floor
     decreaseFloor() {
       if (this.floorNum != 1) {
         this.floorNum--;
         this.global.floor = this.floorNum;
-        this.floor = this.bldgLabel + this.floorNum
+        this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
       }
     }
@@ -129,10 +141,12 @@ export default {
 </script>
 
 <style >
-#currFloor {
+#floorBox {
   position: absolute;
-  left: 50%;
-  top: calc(50% - 125px);
+  left: 40%;
+  /* left: 50% */
+  top: 15%;
+  /* top: calc(50% - 125px); */
   transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
   justify-content: center;
@@ -140,19 +154,19 @@ export default {
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
-
 }
 
-#button-box {
+#buttonBox {
   position: absolute;
   justify-content: center;
   align-items: right;
-  right: 40px;
-  bottom: 270px;
+  right: 4vw;
+  bottom: 5vh;
   width: 60px;
   height: 150px;
   display: flex;
   flex-wrap: wrap;
+  pointer-events: none;
 }
 
 .disabled {
@@ -179,8 +193,6 @@ export default {
   border: 3px solid #86b0ac;
   color: #4d6d6b;
 }
-
-
 
 .material-symbols-outlined {
   font-variation-settings:
