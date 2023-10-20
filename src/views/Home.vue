@@ -82,7 +82,8 @@ export default {
       // Only show nametag on unselected buildings
       if (this.unselected) {
         this.ntVisible = 1
-        this.label = b.id.replace(/-/g, ' ')
+        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name.replace(/-/g, ' ')
+        else this.label = b.id.replace(/-/g, ' ')
       }
     },
     // Make the name tag go away

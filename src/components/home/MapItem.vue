@@ -379,7 +379,6 @@ export default {
       handler() {
         if (this.global.firstCalc) {
           this.applyBuildingColors();
-          this.editBuildingNames();
         }
       }
     }
@@ -441,14 +440,6 @@ export default {
         let border = tinycolor(fill).darken(25).toString()
         b.style.stroke = border
 
-      }
-    },
-    editBuildingNames() {
-      for (const b of buildings.children) {
-        if(this.global.data[b.id] != undefined) {
-          console.log(this.global.data[b.id].meta.name);
-          b.id = this.global.data[b.id].meta.name;
-        }
       }
     },
     bringToFront(b) {
