@@ -1,6 +1,5 @@
 <script setup>
 import Floor from './Floor.vue'
-import PopUpItem from './PopUpItem.vue';
 </script>
 
 <template>
@@ -32,6 +31,7 @@ export default {
   // Get reference to global
   inject: ["global"],
   props: ['unselected'],
+  emits: ["roomHover"],
   components: {
     Floor
   },
@@ -41,8 +41,8 @@ export default {
       if (newVar) {
         this.floor = ""
         floorBox.style.opacity = 0;
-        up.style.opacity = 0;
-        down.style.opacity = 0;
+        up.style.opacity = down.style.opacity = 0;
+        buttonBox.style.pointerEvents = "none";
       } else {
         if (this.getBldg()) {
           this.floorNum = this.getBldg().meta.floors[2]
@@ -50,8 +50,8 @@ export default {
           this.global.floor = this.getBldg().meta.floors[2]
         }
         floorBox.style.opacity = 1;
-        up.style.opacity = 1;
-        down.style.opacity = 1;
+        up.style.opacity = down.style.opacity = 1;
+        buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
     },
@@ -59,20 +59,16 @@ export default {
       handler() {
         // If landscape mode
         if (this.global.aspectRatio <= 1.2) {
-   //       floorBox.left = 'PopUpItem.width + 50vw + floorBox.width/2'
-          floorBox.style.left = `calc(${popup.style.width}/2 + 50vw - ${window.innerHeight})`;
-        //  floorBox.style.left = `calc(${PopUpItem.style.width}/2 + 50vw` // ${floorBox.style.width}`;
-          
           floorBox.style.transform = 
           `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
         } else { // If portrait mode
-          floorBox.style.transform = `scale(${window.innerWidth / 65})`;
+          floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
       }
     },
     // When floor num changes
     floorNum(newVar) {
-      if (newVar == this.getBldg().meta.floors[1])
+      if (this.getBldg() && newVar == this.getBldg().meta.floors[1])
         this.btnUp = false 
       else this.btnUp = true
       if (newVar == 1) this.btnDown = false
@@ -125,7 +121,7 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.floorNum < this.getBldg().meta.floors[1]) {
+      if (this.getBldg() && this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
@@ -148,9 +144,9 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 75vw; 
+  left: 40%;
   /* left: 50% */
-  top: 15vh;
+  top: 15%;
   /* top: calc(50% - 125px); */
   transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
@@ -159,7 +155,6 @@ export default {
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
-
 }
 
 #buttonBox {
@@ -172,6 +167,7 @@ export default {
   height: 150px;
   display: flex;
   flex-wrap: wrap;
+  pointer-events: none;
 }
 
 .disabled {

@@ -444,7 +444,6 @@ export default {
     // Used so resizing isnt called forever, 
     // Stops calling when resize hasnt been changed for 300 seconds
     windowResizeTimeout() {
-      console.log(this.unselected)
       if (this.unselected) {
         clearTimeout(this.doResize);
         this.doResize = setTimeout(this.windowEventHandler, 300);
