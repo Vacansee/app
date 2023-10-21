@@ -435,30 +435,30 @@ export default {
         }
       })
     // Handles changes to the window
-    // this.windowEventHandler()
-    // window.addEventListener("mousedown", () => {
-    //   window.addEventListener("mousemove", this.onMouseDrag);
-    // });
-    // window.addEventListener("mouseup", () => {
-    //   window.removeEventListener("mousemove", this.onMouseDrag);
-    // });
+    this.windowEventHandler()
+    window.addEventListener("mousedown", () => {
+      window.addEventListener("mousemove", this.onMouseDrag);
+    });
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseDrag);
+    });
   },
   methods: {
-    // Applys the color of the building based on availability
-    onMouseDrag({movementX, movementY}) {
+    onMouseDrag({offsetX, offsetY}) {
       // let x = window.innerWidth;
       // let y = window.innerHeight;
       // let ratio = x / y;
       // let changeX=0, changeY=0;
       
-      // changeX = movementX;
-      // changeY = movementY;
+      let changeX = (offsetX-1919/2)/10;
+      let changeY = (offsetY-970/2)/10;
       // console.log("X:"+changeX+" Y:"+changeY);
-      
-      mapBox.style.left = `calc(${this.mapLeftTransform}% + ${movementX*10}px)`; 
-      mapBox.style.top = `calc(${this.mapTopTransform}% + ${movementY*10}px)`; 
-      console.log("X: " +movementX + " Y: " +movementY)
+      mapBox.style.left = `calc(${mapBox.style.leftValue}% + ${changeX}px)`; 
+      mapBox.style.top = `calc(${mapBox.style.topValue}% + ${changeY}px)`;
+
+      console.log("X: " +changeX + " Y: " +changeY)
     },
+    // Applys the color of the building based on availability
     applyBuildingColors() {
       let colors = [
         "#eff5de", // >0%
