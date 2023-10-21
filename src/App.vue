@@ -2,28 +2,30 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
+import AutoComplete from 'primevue/autocomplete';
+import Button from "primevue/button"
+
 </script>
 
 <template>
   <!-- HTML For Header -->
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
     
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">
-          <Logo class="logo" height="75" width="75"/>
-        </RouterLink>
-      </nav>
+      <div class="left-nav">
+        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
+        <div class="search">
+          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+        </div>
+      </div>
 
-      <nav class="top-right-navbar">
-        <a href="https://github.com/Vacansee">
-          <img class="icon" src="src\assets\githubicon.png" height="50" width="50" />
-        </a>
-        <a href="mailto:rpi.vacansee@gmail.com">
-          <img class="icon" src="src\assets\bug.png" height="50" width="50" />
-        </a>
-      </nav>
-    </div>
+      <div class="right-nav">
+        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
+            <img src="./assets/icons/poll.svg" height="30" width="30" />
+        </Button></a>
+        <a href="https://github.com/Vacansee"><Button class="nav-btn">
+            <img src="./assets/icons/github.svg" height="30" width="30"/>
+        </Button></a>
+      </div>
   </header>
 
 
@@ -58,48 +60,37 @@ header {
   z-index: 7;
   display: flex;
   padding: 1rem;
-  pointer-events: none;
 }
 
 .logo {
   display: block;
   margin: 0 1rem 0 0;
-}
-
-.icon {
-  margin-top: 1rem;
-  padding: .5rem;
-  border-radius: 25%;
-  transition: background-color 0.5s;
-}
-
-nav {
-  line-height: 2;
-  font-size: 1rem;
-  position: fixed;
-  align-items: center;
-  text-align: left;
-  display: flex;
   pointer-events: all;
-  margin: 1.25rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-btn {
+  margin: .5rem;
+  pointer-events: all;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: none;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 .5rem;
-}
-
-.top-right-navbar {
+.left-nav {
   position: fixed;
-  padding-right: 2rem;
+  display: flex;
+  pointer-events: none;
+  padding: .5rem 1rem;
+  top: 0;
+  left: 0;
+}
+
+.search {
+  align-self: center;
+  pointer-events: all;
+}
+
+.right-nav {
+  position: fixed;
+  pointer-events: none;
+  padding: .8rem 1rem;
   top: 0;
   right: 0;
 }

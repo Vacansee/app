@@ -16,6 +16,10 @@ import { useFetch } from '@vueuse/core';
 // Basic CSS
 import './assets/main.css'
 
+// Primevue resources
+import PrimeVue from 'primevue/config';
+import './assets/themes/theme.css';
+
 // On page load, fetch building/room data from Vacansee/data:
 const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
@@ -112,5 +116,6 @@ const app = createApp(App)
 app.provide('global', global);
 app.use(Router)
 app.use(Moment)
+app.use(PrimeVue, { ripple: true })
 
 app.mount('#app')
