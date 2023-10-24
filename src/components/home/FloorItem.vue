@@ -59,8 +59,8 @@ export default {
       handler() {
         // If landscape mode
         if (this.global.aspectRatio <= 1.2) {
-          floorBox.style.transform = 
-          `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+   //       floorBox.style.transform = 
+     //     `translate(calc(${floorBBox.width}), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
         } else { // If portrait mode
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
