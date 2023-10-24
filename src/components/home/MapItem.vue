@@ -384,8 +384,7 @@ export default {
       threshold: 1,
       doResize: "",
       mapZoom: 0,
-      mapLeftTransform: 50,
-      mapTopTransform: 50,
+      count:0,
     }
   },
   updated() {
@@ -444,18 +443,39 @@ export default {
     });
   },
   methods: {
-    onMouseDrag({screenX, screenY}) {
-      let x = window.innerWidth;
-      let y = window.innerHeight;
-      let ratio = x / y;
+    onMouseDrag({movementX, movementY}) {
+      let mouseerr = 1.75;
+      let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
+      let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
       // let changeX=0, changeY=0;
-      
-      let changeX = (screenX-(x/2));
-      let changeY = (screenY-(y/2));
+      let maxmoveSpeed = 3*(this.mapZoom+100);
+      let changeX = (x*2*(this.mapZoom+100));
+      let changeY = (y*2*(this.mapZoom+100));
+      let dirX = (changeX<=0)?-1:1;
+      let dirY = (changeY<=0)?-1:1;
+      if (dirX<0) {
+        if (changeX<-maxmoveSpeed) {
+          changeX = -maxmoveSpeed
+        }
+      } else {
+        if (changeX>maxmoveSpeed) {
+          changeX = maxmoveSpeed
+        }
+      }
+
+      if (dirY<0) {
+        if (changeY<-maxmoveSpeed) {
+          changeY = -maxmoveSpeed
+        }
+      } else {
+        if (changeY>maxmoveSpeed) {
+          changeY = maxmoveSpeed
+        }
+      }
+
       mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
       mapBox.style.top = mapBox.offsetTop + changeY + "px";
-
-      console.log("X: " +changeX + " Y: " +changeY)
+      if(this.count++%5==0) console.log("X: " +movementX + " Y: " +movementY)
     },
     // Applys the color of the building based on availability
     applyBuildingColors() {
