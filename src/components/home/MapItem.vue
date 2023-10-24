@@ -444,17 +444,16 @@ export default {
     });
   },
   methods: {
-    onMouseDrag({offsetX, offsetY}) {
-      // let x = window.innerWidth;
-      // let y = window.innerHeight;
-      // let ratio = x / y;
+    onMouseDrag({screenX, screenY}) {
+      let x = window.innerWidth;
+      let y = window.innerHeight;
+      let ratio = x / y;
       // let changeX=0, changeY=0;
       
-      let changeX = (offsetX-1919/2)/10;
-      let changeY = (offsetY-970/2)/10;
-      // console.log("X:"+changeX+" Y:"+changeY);
-      mapBox.style.left = `calc(${mapBox.style.leftValue}% + ${changeX}px)`; 
-      mapBox.style.top = `calc(${mapBox.style.topValue}% + ${changeY}px)`;
+      let changeX = (screenX-(x/2));
+      let changeY = (screenY-(y/2));
+      mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
+      mapBox.style.top = mapBox.offsetTop + changeY + "px";
 
       console.log("X: " +changeX + " Y: " +changeY)
     },
