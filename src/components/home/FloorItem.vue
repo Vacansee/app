@@ -1,5 +1,6 @@
 <script setup>
 import Floor from './Floor.vue'
+import './PopUpItem.vue'
 </script>
 
 <template>
@@ -57,11 +58,15 @@ export default {
     },
     'global.aspectRatio': {
       handler() {
+        var bBox = floorBox.getBoundingClientRect();
+        console.log(bBox.width);
         // If landscape mode
         if (this.global.aspectRatio <= 1.2) {
-   //       floorBox.style.transform = 
-     //     `translate(calc(${floorBBox.width}), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
-        } else { // If portrait mode
+    //      console.log(popup.width);
+          floorBox.style.transform = 
+          `translate(${bBox.width}),
+          calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+        } else { // If portrait
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
       }
@@ -100,10 +105,12 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
+    var bBox = floorBox.getBoundingClientRect();
     // If landscape mode
     if (this.global.aspectRatio <= 1.2) {
-      floorBox.style.transform = 
-      `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+      floorBox.style. = 
+      `translate(calc(33vw+((100vw-33vw-${bBox.width})/2)), 
+      calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
     } else { // If portrait mode
       floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
     }

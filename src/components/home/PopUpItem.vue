@@ -79,11 +79,6 @@ export default {
             }
         }
     },
-    data() {
-        return { // Local variables
-            boundingClientRectGroup = popup.getBoundingClientRect();
-        }
-    },
     mounted() {
         if (this.global.aspectRatio <= 1.2) {
                 popup.style.height = "100vh"
