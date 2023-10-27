@@ -1,0 +1,39 @@
+<svg version="1.1"  xmlns="http://www.w3.org/2000/svg" viewBox="-50 0 1204 1398.9">
+    <path  d="M95 200h123v2h652v-2h124v399H870v-2H219v2H95v-63H85v-4h-3v-36h-2v-4h18v-36H80v-4h2v-31h-2v-4h18v-36H80v-3h2v-32h-2v-4h18v-36H80v-4h2v-35h3v-4h10z" id="floor"/>
+    <path  d="M103 512h36l1 1 1 1v1h1v3l-1 1-1 1-1 1h-7v69h-29z" id="_excavated_stair"/>
+    <path  d="M133 560v30h46v-30z" id="_102"/>
+    <path  d="M183 582v-32h5v-9h-5v-41h70v42h-9v18h14v22z" id="_excavatedLAVM"/>
+    <path  d="M261 582v-25h-14v-12h9v-15h31v52z" id="_excavatedLAVX"/>
+    <path  d="M290 582v-82h63v82z" id="_123a"/>
+    <path  d="M356 500h92v82h-92z" id="_123"/>
+    <path  d="M451 582v-82h62v82z" id="_123b"/>
+    <path  d="M516 582v-82h92v82z" id="_124"/>
+    <path  d="M611 582v-82h74v82z" id="_125"/>
+    <path  d="M736 500h89v82h-89z" id="_127"/>
+    <path  d="M828 500h17v38h-17z" id="_128"/>
+    <path  d="M828 541h17v41h-17z" id="_129"/>
+    <path  d="M852 567v-45h43v45z" id="_131a"/>
+    <path  d="M898 495h87v95h-76v-23h-11z" id="_131"/>
+    <path  d="M898 492v-51h87v51z" id="_132"/>
+    <path  d="M898 437v-50h87v50z" id="_133"/>
+    <path  d="M898 383v-58h87v58z" id="_134"/>
+    <path  d="M896 322v-48h89v48z" id="_115"/>
+    <path  d="M852 277v-60h26v-6l4-1v-1h103v60h-94v8z" id="_excavatedstair"/>
+    <path  d="M772 217h73v81h-73z" id="_112"/>
+    <path  d="M706 217h63v81h-63z" id="_111"/>
+    <path  d="M641 298v-81h62v81z" id="_110"/>
+    <path  d="M575 298v-81h63v81z" id="_109"/>
+    <path  d="M498 217h74v81h-74z" id="_108"/>
+    <path  d="M421 217h74v81h-74z" id="_107"/>
+    <path  d="M290 217h128v81H290z" id="_106"/>
+    <path  d="M183 217h104v81H183v-40h5v-9h-5z" id="_104"/>
+    <path  d="M103 261v-52h76v82h-41v-30z" id="_excavatedLAVM"/>
+    <path  d="M103 291v-26h32v26z" id="_103a"/>
+    <path  d="M183 343h146v113H183z" id="_117"/>
+    <path  d="M332 456V343h142v113z" id="_117c"/>
+    <path  d="M478 343h45v37h-45z" id="_117a"/>
+    <path  d="M478 456v-73h45v73z" id="_117b"/>
+    <path  d="M527 343h158v113H527z" id="_118"/>
+    <path  d="M689 456V343h77v113z" id="_119"/>
+    <path  d="M770 456V343h75v113z" id="_119a"/>
+</svg>
