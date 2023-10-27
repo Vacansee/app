@@ -4,6 +4,7 @@ import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
 import AutoComplete from 'primevue/autocomplete';
 import Button from "primevue/button"
+import buildingSelect from '@/views/Home.vue'
 
 </script>
 
@@ -14,7 +15,7 @@ import Button from "primevue/button"
       <div class="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
         <div class="search">
-          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+          <AutoComplete v-model="selectedClass" placeholder="Search for a building or class..." :suggestions="filteredClasses" @complete="filterClasses" @item-select="searchFunc"></AutoComplete> 
         </div>
       </div>
 
@@ -34,6 +35,12 @@ import Button from "primevue/button"
 
 <script>
 export default {
+  data() {
+    return {
+      filteredClasses: [],
+      selectedClass: ""
+    }
+  },
   inject: ["global"],
   watch: {
     'global.bldg': {
@@ -45,6 +52,24 @@ export default {
           document.getElementById("header").style.opacity = "1";
 
       }
+    }
+  },
+  methods: {
+    filterClasses(event) {
+      setTimeout(() => {
+        if (!event.query.trim().length) {
+            this.filteredClasses = [...Object.keys(this.global.data)];
+        } else {
+            if(this.filteredClasses.length == 1) return buildingSelect(this.filteredClasses[0]);
+            this.filteredClasses = Object.keys(this.global.data).filter((enteredClass) => {
+                return enteredClass.toLowerCase().startsWith(event.query.toLowerCase());
+            });
+        }
+      }, 250);
+    },
+    searchFunc(event) {
+      // select building here
+      buildingSelect(this.selectedClass);
     }
   }
 }
