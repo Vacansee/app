@@ -46,11 +46,11 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (this.unselected && this.global.aspectRatio < 1) {
-          popup.style.transform = "TranslateY(25vh)"
+        if (this.unselected && this.global.aspectRatio < 1.2) {
+          popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else if (this.unselected){
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateY(50vh)"
         }
       }
     }
@@ -66,6 +66,15 @@ export default {
       b.addEventListener("mouseleave", this.nameTagDisappear)
       b.addEventListener("click", () => { this.buildingSelect(b) })
     }
+      // If landscape mode
+      // Fixes issue where transitions when unselected would show the popup for a split second
+      popup.style.transition = "transform .0s"
+      if (this.unselected && this.global.aspectRatio < 1.2) {
+        popup.style.transform = "TranslateX(-33vw)"
+      // If portrait mode
+      } else if (this.unselected){
+        popup.style.transform = "TranslateY(50vh)"
+      }
   },
   methods: {
     // Make the name tag pop up
@@ -73,7 +82,8 @@ export default {
       // Only show nametag on unselected buildings
       if (this.unselected) {
         this.ntVisible = 1
-        this.label = b.id.replace(/-/g, ' ')
+        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name.replace(/-/g, ' ')
+        else this.label = b.id.replace(/-/g, ' ')
       }
     },
     // Make the name tag go away
@@ -108,22 +118,22 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.unselected) {
-        var bBox = b.getBoundingClientRect()
-        var boxCenterX = bBox.x + bBox.width / 2
-        var boxCenterY = bBox.y + bBox.height / 2
+        let bBox = b.getBoundingClientRect()
+        let boxCenterX = bBox.x + bBox.width / 2
+        let boxCenterY = bBox.y + bBox.height / 2
 
         this.unselected = false
         this.bldgSVG = b
         this.global.bldg = b.id.replace(/-/g, ' ')
-
         this.ntVisible = 0 // hide nametag when building selected
 
-        mask.style.opacity = 0.8
+        mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
+        popup.style.minWidth = "400px"
       }
     },
     // On deselection of a building (when clicked off)
@@ -136,12 +146,13 @@ export default {
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
+        popup.style.minWidth = "unset"
         // Landscape mode
-        if (this.global.aspectRatio <= 1) {
-          popup.style.transform = "TranslateY(25vh)"
+        if (this.global.aspectRatio <= 1.2) {
+          popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
         } else {
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateY(50vh)"
         }
       } catch { /* pass */ }
 
@@ -153,12 +164,10 @@ export default {
 <style scoped>
 
 #mask {
-  /* Basic CSS Below */
   width: 100vw;
   height: 100vh;
   z-index: 5;
   opacity: 0;
-  /* display: none; */
   background: black !important;
   stroke: none !important;
   pointer-events: none;
