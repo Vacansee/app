@@ -61,11 +61,11 @@ export default {
         var bBox = floorBox.getBoundingClientRect();
         console.log(bBox.width);
         // If landscape mode
-        if (this.global.aspectRatio <= 1.2) {
+        if (this.global.aspectRatio <= 0.8) {
     //      console.log(popup.width);
-          floorBox.style.transform = 
-          `translate(${bBox.width}),
-          calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+    floorBox.style.transform = 
+      `translate(calc(${popup.style.width}px + (100vw - ${popup.style.width}px - ${bBox.width}px) / 2), calc(30vh)) 
+      scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
         } else { // If portrait
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
@@ -107,10 +107,13 @@ export default {
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
     var bBox = floorBox.getBoundingClientRect();
     // If landscape mode
-    if (this.global.aspectRatio <= 1.2) {
-      floorBox.style. = 
-      `translate(calc(33vw+((100vw-33vw-${bBox.width})/2)), 
-      calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+    if (this.global.aspectRatio <= 0.8) {
+  //    calc(33vw+(100vw-33vw-${bBox.width})/2);
+      floorBox.style.transform = 
+      `translate(calc(33vw + (100vw - 33vw - ${bBox.width}px) / 2), calc(30vh)) 
+      scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+     //floorBox.style.transform = 
+  //    `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
     } else { // If portrait mode
       floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
     }
@@ -151,7 +154,7 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 40%;
+  left: 0%;
   /* left: 50% */
   top: 15%;
   /* top: calc(50% - 125px); */
