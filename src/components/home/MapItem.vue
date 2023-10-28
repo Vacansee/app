@@ -383,7 +383,7 @@ export default {
     return {
       threshold: 1,
       doResize: "",
-      mapZoom: 0,
+      zoom: 0,
       count:0,
     }
   },
@@ -405,34 +405,7 @@ export default {
     window.addEventListener("resize", this.windowResizeTimeout)
     // Allow for the scroll wheel to zoom the map
     let portraitMode = false;
-    window.addEventListener("wheel", event => {
-        if (!this.global.buildingMapOpen){
-          let dirwheel = 0;
-          if (event.deltaY>0) {
-            dirwheel = -1;
-          } else if (event.deltaY<0) {
-            dirwheel = 1;
-          }
-
-          let x = window.innerWidth;
-          let y = window.innerHeight;
-          let ratio = x / y;
-          portraitMode = false;
-          if (this.ratio < this.threshold) {
-            portraitMode = true;
-          }
-          let zoom=0;
-          if (portraitMode) {
-            zoom = y/50+this.mapZoom+dirwheel*10;
-          } else {
-            zoom = x/50+this.mapZoom+dirwheel*10;
-          }
-          if (20<zoom&&zoom<200) {
-            this.mapZoom +=dirwheel*10;
-          }
-          this.windowEventHandler();
-        }
-      })
+    window.addEventListener("wheel", this.onMouseScroll);
     // Handles changes to the window
     this.windowEventHandler()
     window.addEventListener("mousedown", () => {
@@ -443,39 +416,69 @@ export default {
     });
   },
   methods: {
+    onMouseScroll({deltaX,deltaY}) {
+      if (!this.global.buildingMapOpen){
+        let dirwheel = 0;
+        if (deltaY>0) {
+          dirwheel = -1;
+        } else if (deltaY<0) {
+          dirwheel = 1;
+        }
+
+        let x = window.innerWidth;
+        let y = window.innerHeight;
+        let ratio = x / y;
+        let portraitMode = false;
+        if (this.ratio < this.threshold) {
+          portraitMode = true;
+        }
+        let tempZoom=0;
+        if (portraitMode) {
+          tempZoom = y/50+this.zoom+dirwheel*10;
+        } else {
+          tempZoom = x/50+this.zoom+dirwheel*10;
+        }
+        if (20<tempZoom&&tempZoom<200) {
+          this.zoom +=dirwheel*10;
+        }
+        this.windowEventHandler();
+      }
+    },
     onMouseDrag({movementX, movementY}) {
-      let mouseerr = 1.75;
-      let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
-      let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
-      // let changeX=0, changeY=0;
-      let maxmoveSpeed = 3*(this.mapZoom+100);
-      let changeX = (x*2*(this.mapZoom+100));
-      let changeY = (y*2*(this.mapZoom+100));
-      let dirX = (changeX<=0)?-1:1;
-      let dirY = (changeY<=0)?-1:1;
-      if (dirX<0) {
-        if (changeX<-maxmoveSpeed) {
-          changeX = -maxmoveSpeed
+      if (!this.global.buildingMapOpen) {
+        let mouseerr = 1.75;
+        let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
+        let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
+        // let changeX=0, changeY=0;
+        let maxmoveSpeed = 3*(this.zoom+100);
+        let changeX = (x*2*(this.zoom+100));
+        let changeY = (y*2*(this.zoom+100));
+        let dirX = (changeX<=0)?-1:1;
+        let dirY = (changeY<=0)?-1:1;
+        if (dirX<0) {
+          if (changeX<-maxmoveSpeed) {
+            changeX = -maxmoveSpeed
+          }
+        } else {
+          if (changeX>maxmoveSpeed) {
+            changeX = maxmoveSpeed
+          }
         }
-      } else {
-        if (changeX>maxmoveSpeed) {
-          changeX = maxmoveSpeed
-        }
-      }
 
-      if (dirY<0) {
-        if (changeY<-maxmoveSpeed) {
-          changeY = -maxmoveSpeed
+        if (dirY<0) {
+          if (changeY<-maxmoveSpeed) {
+            changeY = -maxmoveSpeed
+          }
+        } else {
+          if (changeY>maxmoveSpeed) {
+            changeY = maxmoveSpeed
+          }
         }
-      } else {
-        if (changeY>maxmoveSpeed) {
-          changeY = maxmoveSpeed
-        }
-      }
 
-      mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
-      mapBox.style.top = mapBox.offsetTop + changeY + "px";
-      if(this.count++%5==0) console.log("X: " +movementX + " Y: " +movementY)
+        mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
+        mapBox.style.top = mapBox.offsetTop + changeY + "px";
+        // if(this.count++%5==0) console.log("X: " +movementX + " Y: " +movementY)
+      }
     },
     // Applys the color of the building based on availability
     applyBuildingColors() {
@@ -532,12 +535,11 @@ export default {
       let x = window.innerWidth;
       let y = window.innerHeight;
       let ratio = x / y;
-      console.log(this.mapZoom);
       if (this.ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y/50+this.mapZoom})` + `rotate(90deg)`
+        map.style.transform = `scale(${y/50+this.zoom})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x/50+this.mapZoom})`
+        map.style.transform = `scale(${x/50+this.zoom})`
     }
   }
 }
