@@ -95,20 +95,91 @@ export default {
       btnUp: true,
       btnDown: true,
       floor: "",
+      zoom:0,
     }
   },
   mounted() {
     // On load, set floorBox transition
-    setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
-    // If landscape mode
-    if (this.global.aspectRatio <= 1.2) {
-      floorBox.style.transform = 
-      `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
-    } else { // If portrait mode
-      floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
-    }
+    setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
+    window.addEventListener("wheel", this.onMouseScroll);
+    window.addEventListener("mousedown", () => {
+      window.addEventListener("mousemove", this.onMouseDrag);
+    });
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseDrag);
+    });
+    this.windowEventHandler();
   },
   methods: {
+    onMouseScroll({deltaX,deltaY}) {
+      if (this.global.buildingMapOpen){
+        let dirwheel = 0;
+        if (deltaY>0) {
+          dirwheel = -1;
+        } else if (deltaY<0) {
+          dirwheel = 1;
+        }
+
+        let x = window.innerWidth;
+        let y = window.innerHeight;
+        let ratio = x / y;
+        let portraitMode = false;
+        if (this.ratio < this.threshold) {
+          portraitMode = true;
+        }
+        let tempZoom=0;
+        if (portraitMode) {
+          tempZoom = y/50+this.zoom+dirwheel*5;
+        } else {
+          tempZoom = x/50+this.zoom+dirwheel*5;
+        }
+        if (20<tempZoom&&tempZoom<200) {
+          this.zoom +=dirwheel*10;
+        }
+        this.windowEventHandler();
+      }
+    },
+    onMouseDrag({movementX, movementY}) {
+      if (this.global.buildingMapOpen) {
+        let mouseerr = 1.75;
+        let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
+        let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
+        // let changeX=0, changeY=0;
+        let mouseconst = 1/24;
+        console.log(floorBox.getBBox) 
+        let maxmoveSpeed = (this.zoom+100)*mouseconst;
+        let changeX = (x*(this.zoom+100));
+        let changeY = (y*(this.zoom+100));
+
+        let dirX = (changeX<=0)?-1:1;
+        let dirY = (changeY<=0)?-1:1;
+
+        if (dirX<0) {
+          if (changeX<-maxmoveSpeed) {
+            changeX = -maxmoveSpeed
+          }
+        } else {
+          if (changeX>maxmoveSpeed) {
+            changeX = maxmoveSpeed
+          }
+        }
+
+        if (dirY<0) {
+          if (changeY<-maxmoveSpeed) {
+            changeY = -maxmoveSpeed
+          }
+        } else {
+          if (changeY>maxmoveSpeed) {
+            changeY = maxmoveSpeed
+          }
+        }
+
+        floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
+        floorBox.style.top = floorBox.offsetTop + changeY + "px";
+        console.log("X: " +movementX + " Y: " +movementY)
+        console.log("X: " +floorBox.offsetLeft + " Y: " +floorBox.offsetTop)
+      }
+    },
     // gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
@@ -135,6 +206,15 @@ export default {
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
+      }
+    },
+    windowEventHandler() {
+      // If landscape mode
+      if (this.global.aspectRatio <= 1.2) {
+        floorBox.style.transform = 
+        `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50 + this.zoom})` + `rotate(90deg)`;
+      } else { // If portrait mode
+        floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65 + this.zoom})`;
       }
     }
   }
