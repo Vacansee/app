@@ -65,7 +65,7 @@ export default {
         'global.aspectRatio': {
             handler() {
                 // If landscape mode
-                if (this.global.aspectRatio <= 0.8) {
+                if (this.global.aspectRatio <= 1.2) {
                     popup.style.height = "100vh"
                     popup.style.width = "33vw"
                     popup.style.borderRadius = "0 15px 15px 0"
@@ -80,7 +80,7 @@ export default {
         }
     },
     mounted() {
-        if (this.global.aspectRatio <= 0.8) {
+        if (this.global.aspectRatio <= 1.2) {
                 popup.style.height = "100vh"
                 popup.style.width = "33vw"
                 popup.style.borderRadius = "0 15px 15px 0"

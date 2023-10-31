@@ -1,6 +1,5 @@
 <script setup>
 import Floor from './Floor.vue'
-import './PopUpItem.vue'
 </script>
 
 <template>
@@ -58,15 +57,11 @@ export default {
     },
     'global.aspectRatio': {
       handler() {
-        var bBox = floorBox.getBoundingClientRect();
-        console.log(bBox.width);
         // If landscape mode
-        if (this.global.aspectRatio <= 0.8) {
-    //      console.log(popup.width);
-    floorBox.style.transform = 
-      `translate(calc(${popup.style.width}px + (100vw - ${popup.style.width}px - ${bBox.width}px) / 2), calc(30vh)) 
-      scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
-        } else { // If portrait
+        if (this.global.aspectRatio <= 1.2) {
+          floorBox.style.transform = 
+      `translate(calc(15vw), calc(0%)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+        } else { // If portrait mode
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
       }
@@ -105,15 +100,11 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
-    var bBox = floorBox.getBoundingClientRect();
     // If landscape mode
-    if (this.global.aspectRatio <= 0.8) {
-  //    calc(33vw+(100vw-33vw-${bBox.width})/2);
+    var bBox = floorBox.getBoundingClientRect();
+    if (this.global.aspectRatio <= 1.2) {
       floorBox.style.transform = 
-      `translate(calc(33vw + (100vw - 33vw - ${bBox.width}px) / 2), calc(30vh)) 
-      scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
-     //floorBox.style.transform = 
-  //    `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
+      `translate(calc(15vw), calc(5vh + ${bBox.height}px * 50)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
     } else { // If portrait mode
       floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
     }
@@ -154,11 +145,11 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 0%;
+  left: 40%;
   /* left: 50% */
-  top: 15%;
+  top: 0%;
   /* top: calc(50% - 125px); */
-  transform: translate(-50%, calc(-50% + 125px)) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
+  transform: translate(-50%, 0%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
   justify-content: center;
   align-items: center;
