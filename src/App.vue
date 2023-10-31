@@ -4,7 +4,6 @@ import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
 import AutoComplete from 'primevue/autocomplete';
 import Button from "primevue/button"
-import buildingSelect from '@/views/Home.vue'
 
 </script>
 
@@ -60,7 +59,7 @@ export default {
         if (!event.query.trim().length) {
             this.filteredClasses = [...Object.keys(this.global.data)];
         } else {
-            if(this.filteredClasses.length == 1) return buildingSelect(this.filteredClasses[0]);
+            // if(this.filteredClasses.length == 1) return buildingSelect(this.filteredClasses[0]);
             this.filteredClasses = Object.keys(this.global.data).filter((enteredClass) => {
                 return enteredClass.toLowerCase().startsWith(event.query.toLowerCase());
             });
@@ -69,7 +68,7 @@ export default {
     },
     searchFunc(event) {
       // select building here
-      buildingSelect(this.selectedClass);
+      this.global.buildingSearch = this.selectedClass;
     }
   }
 }

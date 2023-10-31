@@ -53,6 +53,15 @@ export default {
           popup.style.transform = "TranslateY(50vh)"
         }
       }
+    },
+    'global.buildingSearch': {
+      handler() {
+        console.log(this.global.buildingSearch)
+        if (this.global.buildingSearch in [...Object.keys(this.global.data)]) {
+          
+          this.buildingSelect(buildings.children.find(b => b.id === this.global.buildingSearch))
+        }
+      }
     }
   },
   mounted() {
@@ -60,7 +69,6 @@ export default {
     // an action occurs
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
-
     for (const b of buildings.children) {
       b.addEventListener("mouseover", () => { this.nameTagAppear(b) })
       b.addEventListener("mouseleave", this.nameTagDisappear)
@@ -76,6 +84,11 @@ export default {
         popup.style.transform = "TranslateY(50vh)"
       }
   },
+  // created() {
+  //     this.$on('buildingSelect', (arg) => {
+  //             this.buildingSelect(arg);
+  //     })
+  // },
   methods: {
     // Make the name tag pop up
     nameTagAppear(b) {
@@ -117,6 +130,7 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.unselected) {
+        console.log(b)
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
         let boxCenterY = bBox.y + bBox.height / 2
@@ -124,6 +138,7 @@ export default {
         this.unselected = false
         this.bldgSVG = b
         this.global.bldg = b.id.replace(/-/g, ' ')
+        this.global.selectedBuilding = ''
         this.ntVisible = 0 // hide nametag when building selected
 
         mask.style.opacity = 0.65
