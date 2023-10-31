@@ -118,7 +118,6 @@ export default {
         } else if (deltaY<0) {
           dirwheel = 1;
         }
-
         let x = window.innerWidth;
         let y = window.innerHeight;
         let ratio = x / y;
@@ -132,51 +131,19 @@ export default {
         } else {
           tempZoom = x/50+this.zoom+dirwheel*5;
         }
-        if (20<tempZoom&&tempZoom<200) {
+        if (20<tempZoom&&tempZoom<100) {
           this.zoom +=dirwheel*10;
         }
+        console.log(this.zoom);
         this.windowEventHandler();
       }
     },
     onMouseDrag({movementX, movementY}) {
       if (this.global.buildingMapOpen) {
-        let mouseerr = 1.75;
-        let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
-        let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
-        // let changeX=0, changeY=0;
-        let mouseconst = 1/24;
-        console.log(floorBox.getBBox) 
-        let maxmoveSpeed = (this.zoom+100)*mouseconst;
-        let changeX = (x*(this.zoom+100));
-        let changeY = (y*(this.zoom+100));
-
-        let dirX = (changeX<=0)?-1:1;
-        let dirY = (changeY<=0)?-1:1;
-
-        if (dirX<0) {
-          if (changeX<-maxmoveSpeed) {
-            changeX = -maxmoveSpeed
-          }
-        } else {
-          if (changeX>maxmoveSpeed) {
-            changeX = maxmoveSpeed
-          }
-        }
-
-        if (dirY<0) {
-          if (changeY<-maxmoveSpeed) {
-            changeY = -maxmoveSpeed
-          }
-        } else {
-          if (changeY>maxmoveSpeed) {
-            changeY = maxmoveSpeed
-          }
-        }
-
+        let changeX = (movementX*((this.zoom+100)/100));
+        let changeY = (movementY*((this.zoom+100)/100));
         floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
         floorBox.style.top = floorBox.offsetTop + changeY + "px";
-        console.log("X: " +movementX + " Y: " +movementY)
-        console.log("X: " +floorBox.offsetLeft + " Y: " +floorBox.offsetTop)
       }
     },
     // gets the current building
