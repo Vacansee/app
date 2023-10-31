@@ -446,38 +446,14 @@ export default {
     },
     onMouseDrag({movementX, movementY}) {
       if (!this.global.buildingMapOpen) {
-        let mouseerr = 1.75;
-        let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
-        let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
-        // let changeX=0, changeY=0;
-        let maxmoveSpeed = 3*(this.zoom+100);
-        let changeX = (x*2*(this.zoom+100));
-        let changeY = (y*2*(this.zoom+100));
-        let dirX = (changeX<=0)?-1:1;
-        let dirY = (changeY<=0)?-1:1;
-        if (dirX<0) {
-          if (changeX<-maxmoveSpeed) {
-            changeX = -maxmoveSpeed
-          }
-        } else {
-          if (changeX>maxmoveSpeed) {
-            changeX = maxmoveSpeed
-          }
-        }
-
-        if (dirY<0) {
-          if (changeY<-maxmoveSpeed) {
-            changeY = -maxmoveSpeed
-          }
-        } else {
-          if (changeY>maxmoveSpeed) {
-            changeY = maxmoveSpeed
-          }
-        }
+        // let mouseerr = 0.0;
+        // let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
+        // let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
+        let changeX = (movementX*100*(this.zoom+100)/100);
+        let changeY = (movementY*100*(this.zoom+100)/100);
 
         mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
         mapBox.style.top = mapBox.offsetTop + changeY + "px";
-        // if(this.count++%5==0) console.log("X: " +movementX + " Y: " +movementY)
       }
     },
     // Applys the color of the building based on availability
