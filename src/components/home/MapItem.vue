@@ -445,16 +445,16 @@ export default {
       }
     },
     onMouseDrag({movementX, movementY}) {
-      if (!this.global.buildingMapOpen) {
-        // let mouseerr = 0.0;
-        // let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
-        // let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
-        let changeX = (movementX*100*(this.zoom+100)/100);
-        let changeY = (movementY*100*(this.zoom+100)/100);
+      // if (!this.global.buildingMapOpen) {
+      //   // let mouseerr = 0.0;
+      //   // let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
+      //   // let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;
+      //   let changeX = (movementX*100*(this.zoom+100)/100);
+      //   let changeY = (movementY*100*(this.zoom+100)/100);
 
-        mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
-        mapBox.style.top = mapBox.offsetTop + changeY + "px";
-      }
+      //   mapBox.style.left = mapBox.offsetLeft + changeX + "px"; 
+      //   mapBox.style.top = mapBox.offsetTop + changeY + "px";
+      // }
     },
     // Applys the color of the building based on availability
     applyBuildingColors() {
