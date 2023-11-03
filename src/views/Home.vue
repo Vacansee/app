@@ -54,12 +54,14 @@ export default {
         }
       }
     },
-    'global.buildingSearch': {
+    'global.bldg': {
       handler() {
-        console.log(this.global.buildingSearch)
-        if (this.global.buildingSearch in [...Object.keys(this.global.data)]) {
-          
-          this.buildingSelect(buildings.children.find(b => b.id === this.global.buildingSearch))
+        if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
+          for (const b of buildings.children) {
+            if (b.id === this.global.bldg) {
+              this.buildingSelect(b)
+            }
+          }
         }
       }
     }

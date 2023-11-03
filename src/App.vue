@@ -55,20 +55,25 @@ export default {
   },
   methods: {
     filterClasses(event) {
+      // filter buildings and classes
       setTimeout(() => {
+        console.log(this.selectedClass)
         if (!event.query.trim().length) {
+            console.log("here")
             this.filteredClasses = [...Object.keys(this.global.data)];
         } else {
-            // if(this.filteredClasses.length == 1) return buildingSelect(this.filteredClasses[0]);
-            this.filteredClasses = Object.keys(this.global.data).filter((enteredClass) => {
+            this.filteredClasses = Object.keys(this.global.data).map((element) => {
+                return element.replace(/_/g, ' ');
+            }).filter((enteredClass) => {
                 return enteredClass.toLowerCase().startsWith(event.query.toLowerCase());
             });
         }
       }, 250);
     },
-    searchFunc(event) {
-      // select building here
-      this.global.buildingSearch = this.selectedClass;
+    searchFunc() {
+      // select building or class here
+      this.global.bldg = this.selectedClass;
+      this.selectedClass = "";
     }
   }
 }
