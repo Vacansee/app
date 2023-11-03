@@ -75,6 +75,7 @@ export default {
       } else if (this.unselected){
         popup.style.transform = "TranslateY(50vh)"
       }
+      this.global.buildingMapOpen = false;
   },
   methods: {
     // Make the name tag pop up
