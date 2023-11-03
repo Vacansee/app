@@ -20,6 +20,17 @@ import moment from 'moment-timezone'
                 <p id="busy"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
             </div>
+            <!-- New box within the popup -->
+        <div id="info-box">
+            <!-- Title (bold and underlined) -->
+            <h3 style="font-weight: bold;">Tags</h3>
+            <!-- Placeholder for the tag -->
+            <p>Place holder for the tag</p>
+            <!-- Button to go to the URL -->
+            <a href="https://archives.rpi.edu/institute-history/building-histories/darrin-communication-center" class="button">
+                Get Building Info
+            </a>
+        </div>
             <p></p>
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
@@ -150,6 +161,12 @@ export default {
 </script>
 
 <style scoped>
+#info-box {
+  background-color: #ffffff;
+  border: 1px solid var(--softborder);
+  padding: 10px;
+  margin: 10px; 
+}
 #popup {
     width: 100vw;
     min-width: unset;
