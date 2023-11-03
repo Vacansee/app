@@ -57,12 +57,19 @@ export default {
     },
     'global.aspectRatio': {
       handler() {
+        var popupWidth = popup.style.width;
+        if (400 > 0.33 * window.innerWidth) {
+          popupWidth = "400px";
+        }
+        var bBox = floorBox.getBoundingClientRect();
         // If landscape mode
-        if (this.global.aspectRatio <= 1.2) {
+        if (this.global.aspectRatio <= 0.8) {
           floorBox.style.transform = 
-      `translate(calc(15vw), calc(0%)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+      `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
+      calc(5vh + (${bBox.height}px - 50px) / 2)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
         } else { // If portrait mode
-          floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+          floorBox.style.transform = 
+          `translate(calc(${bBox.width}px), calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
       }
     },
@@ -100,13 +107,19 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
+    var popupWidth = popup.style.width;
+      if (400 > 0.33 * window.innerWidth) {
+        popupWidth = "400px";
+      }
     // If landscape mode
     var bBox = floorBox.getBoundingClientRect();
-    if (this.global.aspectRatio <= 1.2) {
+    if (this.global.aspectRatio <= 0.8) {
       floorBox.style.transform = 
-      `translate(calc(15vw), calc(5vh + ${bBox.height}px * 50)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+      `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
+      calc(5vh + (${bBox.height}px - 50px) / 2)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
     } else { // If portrait mode
-      floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+      floorBox.style.transform = 
+      `translate(calc(${bBox.width}px), calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
     }
   },
   methods: {
@@ -145,11 +158,11 @@ export default {
 <style >
 #floorBox {
   position: absolute;
-  left: 40%;
+  left: 0%;
   /* left: 50% */
   top: 0%;
   /* top: calc(50% - 125px); */
-  transform: translate(-50%, 0%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
+  transform: translate(-50%, 5%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   will-change: transform;
   justify-content: center;
   align-items: center;
