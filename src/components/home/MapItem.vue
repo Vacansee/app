@@ -462,10 +462,10 @@ export default {
       let ratio = x / y
 
       if (ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y / 50})` + `rotate(90deg)`
+        map.style.transform = `scale(${y / 55})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x / 50})`
+        map.style.transform = `scale(${x / 55})`
     }
   }
 }
