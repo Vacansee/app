@@ -54,6 +54,7 @@ export default {
         buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
+
     },
     'global.aspectRatio': {
       handler() {
@@ -64,6 +65,15 @@ export default {
         } else { // If portrait mode
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
+      },
+    },
+    'global.buildingMapOpen' : {
+      // for whatever reason it will continuously set zoom to zero
+      handler() {
+        // if (!this.global.buildingMapOpen) {
+        //   this.zoom = 0;
+        //   console.log(this.global.buildingMapOpen);
+        // }
       }
     },
     // When floor num changes
@@ -78,13 +88,12 @@ export default {
     btnUp(newVar) {
       if (newVar) up.style.opacity = 1;
       else        up.style.opacity = 0.6;
-
     },
     // When button down changes
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    }
+    },
   },
   data() {
     // Local variables
@@ -111,7 +120,8 @@ export default {
     this.windowEventHandler();
   },
   methods: {
-    onMouseScroll({deltaX,deltaY}) {
+    //clientX and Y will be used to scroll about mouse
+    onMouseScroll({clientX, clientY, deltaX,deltaY}) {
       if (this.global.buildingMapOpen){
         let dirwheel = 0;
         if (deltaY>0) {
@@ -132,7 +142,7 @@ export default {
         } else {
           tempZoom = x/50+this.zoom+dirwheel*5;
         }
-        if (20<tempZoom&&tempZoom<100) {
+        if (20<tempZoom&&tempZoom<100 && tempZoom>0) {
           this.zoom +=dirwheel*10;
         }
         console.log(this.zoom);
@@ -141,6 +151,7 @@ export default {
     },
     onMouseDrag({movementX, movementY}) {
       if (this.global.buildingMapOpen) {
+        console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
         floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
