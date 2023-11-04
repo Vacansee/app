@@ -71,6 +71,7 @@ export default {
     // an action occurs
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
+
     for (const b of buildings.children) {
       b.addEventListener("mouseover", () => { this.nameTagAppear(b) })
       b.addEventListener("mouseleave", this.nameTagDisappear)
@@ -127,7 +128,6 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.unselected) {
-        console.log(b)
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
         let boxCenterY = bBox.y + bBox.height / 2
@@ -135,7 +135,6 @@ export default {
         this.unselected = false
         this.bldgSVG = b
         this.global.bldg = b.id.replace(/-/g, ' ')
-        this.global.selectedBuilding = ''
         this.ntVisible = 0 // hide nametag when building selected
 
         mask.style.opacity = 0.65

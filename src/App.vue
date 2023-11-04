@@ -57,11 +57,16 @@ export default {
     filterResults(event) {
       // filter buildings and classes
       setTimeout(() => {
-        if (!event.query.trim().length) {
-            this.filteredResults = [...Object.keys(this.global.data)];
-        } else {
-            this.filteredResults = Object.keys(this.global.data).map((element) => {
-                return element.replace(/_/g, ' ');
+        this.filteredResults = [];
+        Object.keys(this.global.data).map((bid) => {
+          this.filteredResults.push(this.global.data[bid].meta.name);
+          this.filteredResults.push(bid);
+        })
+        this.filteredResults.sort();
+        console.log(this.filteredResults)
+        if (event.query.trim().length) {
+            this.filteredResults = this.filteredResults.map((bid) => {
+                return bid.replace(/_/g, ' ');
             }).filter((result) => {
                 return result.toLowerCase().startsWith(event.query.toLowerCase());
             });
@@ -70,7 +75,15 @@ export default {
     },
     searchFunc() {
       // select building or class here
-      this.global.bldg = this.selection;
+      if(Object.keys(this.global.data).includes(this.selection)) {
+        this.global.bldg = this.selection;
+      } else {
+        Object.keys(this.global.data).forEach((bid) => {
+          if(this.global.data[bid].meta.name == this.selection) {
+            this.global.bldg = bid;
+          }
+        })
+      }
       this.selection = "";
     }
   }
