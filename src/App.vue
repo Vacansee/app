@@ -14,7 +14,7 @@ import Button from "primevue/button"
       <div class="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
         <div class="search">
-          <AutoComplete v-model="selectedClass" placeholder="Search for a building or class..." :suggestions="filteredClasses" @complete="filterClasses" @item-select="searchFunc"></AutoComplete> 
+          <AutoComplete v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete> 
         </div>
       </div>
 
@@ -36,8 +36,8 @@ import Button from "primevue/button"
 export default {
   data() {
     return {
-      filteredClasses: [],
-      selectedClass: ""
+      filteredResults: [],
+      selection: ""
     }
   },
   inject: ["global"],
@@ -54,26 +54,24 @@ export default {
     }
   },
   methods: {
-    filterClasses(event) {
+    filterResults(event) {
       // filter buildings and classes
       setTimeout(() => {
-        console.log(this.selectedClass)
         if (!event.query.trim().length) {
-            console.log("here")
-            this.filteredClasses = [...Object.keys(this.global.data)];
+            this.filteredResults = [...Object.keys(this.global.data)];
         } else {
-            this.filteredClasses = Object.keys(this.global.data).map((element) => {
+            this.filteredResults = Object.keys(this.global.data).map((element) => {
                 return element.replace(/_/g, ' ');
-            }).filter((enteredClass) => {
-                return enteredClass.toLowerCase().startsWith(event.query.toLowerCase());
+            }).filter((result) => {
+                return result.toLowerCase().startsWith(event.query.toLowerCase());
             });
         }
       }, 250);
     },
     searchFunc() {
       // select building or class here
-      this.global.bldg = this.selectedClass;
-      this.selectedClass = "";
+      this.global.bldg = this.selection;
+      this.selection = "";
     }
   }
 }

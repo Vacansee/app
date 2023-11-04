@@ -86,11 +86,6 @@ export default {
         popup.style.transform = "TranslateY(50vh)"
       }
   },
-  // created() {
-  //     this.$on('buildingSelect', (arg) => {
-  //             this.buildingSelect(arg);
-  //     })
-  // },
   methods: {
     // Make the name tag pop up
     nameTagAppear(b) {
