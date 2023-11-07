@@ -429,7 +429,7 @@ export default {
         let y = window.innerHeight;
         let ratio = x / y;
         let portraitMode = false;
-        if (this.ratio < this.threshold) {
+        if (ratio < this.threshold) {
           portraitMode = true;
         }
         let tempZoom=0;
@@ -438,9 +438,11 @@ export default {
         } else {
           tempZoom = x/50+this.zoom+dirwheel*10;
         }
-        if (20<tempZoom&&tempZoom<200) {
-          this.zoom +=dirwheel*10;
-        }
+        
+        this.zoom +=dirwheel*10;
+        if (this.zoom < 0) this.zoom  = 0;
+        if (this.zoom > 200) this.zoom  = 200;
+        console.log(this.zoom);
         this.windowEventHandler();
       }
     },
@@ -511,7 +513,7 @@ export default {
       let x = window.innerWidth;
       let y = window.innerHeight;
       let ratio = x / y;
-      if (this.ratio < this.threshold) { // portrait mode
+      if (ratio < this.threshold) { // portrait mode
         map.style.transform = `scale(${y/50+this.zoom})` + `rotate(90deg)`
       }
       else // landscape mode
