@@ -142,16 +142,17 @@ export default {
         } else {
           tempZoom = x/50+this.zoom+dirwheel*5;
         }
-        if (20<tempZoom&&tempZoom<100 && tempZoom>0) {
-          this.zoom +=dirwheel*10;
-        }
+
+        this.zoom +=dirwheel*10;
+        if (this.zoom < 0) this.zoom  = 0;
+        if (this.zoom > 100) this.zoom  = 100;
         console.log(this.zoom);
         this.windowEventHandler();
       }
     },
     onMouseDrag({movementX, movementY}) {
       if (this.global.buildingMapOpen) {
-        console.log(floorBox.offsetLeft, floorBox.offsetTop)
+        // console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
         floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
