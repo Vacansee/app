@@ -29,10 +29,11 @@ const global = reactive({ // The global reactive object!
 	floor: '1',
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
+	flipScreen: 1.2,
 	// Non current time during a busy part of the day (used for testing)
 	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
-	firstCalc: false,
 })
+const FlipScreen = 1;
 
 
 // Consider global.data a living document: most of it's values are pre-generated & retrieved from

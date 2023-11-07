@@ -63,13 +63,14 @@ export default {
         }
         var bBox = floorBox.getBoundingClientRect();
         // If landscape mode
-        if (this.global.aspectRatio <= 0.8) {
+        if (this.global.aspectRatio <= this.global.flipScreen) {
           floorBox.style.transform = 
-      `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
-      calc(5vh + (${bBox.height}px - 50px) / 2)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+          `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
+      calc(50vh)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
         } else { // If portrait mode
           floorBox.style.transform = 
-          `translate(calc(${bBox.width}px), calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+          `translate(calc(5vw + (${bBox.width}px - 50px) / 2), calc(20vh)) 
+          scale(${window.innerWidth * 0.9 / 50})`;
         }
       }
     },
@@ -113,13 +114,15 @@ export default {
       }
     // If landscape mode
     var bBox = floorBox.getBoundingClientRect();
-    if (this.global.aspectRatio <= 0.8) {
+    var resizeMult = bBox.width
+    if (this.global.aspectRatio <= this.global.flipScreen) {
       floorBox.style.transform = 
-      `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
-      calc(5vh + (${bBox.height}px - 50px) / 2)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+          `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
+      calc(50vh)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
     } else { // If portrait mode
       floorBox.style.transform = 
-      `translate(calc(${bBox.width}px), calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
+          `translate(calc(45vw), calc(20vh)) 
+          scale(${window.innerWidth * 0.9 / 50})`;
     }
   },
   methods: {
