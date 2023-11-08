@@ -59,31 +59,20 @@ export default {
       setTimeout(() => {
         this.filteredResults = [];
         Object.keys(this.global.data).map((bid) => {
-          this.filteredResults.push(this.global.data[bid].meta.name);
-          this.filteredResults.push(bid);
+          this.filteredResults.push(bid.toString() + " (" + this.global.data[bid].meta.name.toString() + ")");
         })
         this.filteredResults.sort();
-        console.log(this.filteredResults)
-        if (event.query.trim().length) {
-            this.filteredResults = this.filteredResults.map((bid) => {
-                return bid.replace(/_/g, ' ');
-            }).filter((result) => {
-                return result.toLowerCase().startsWith(event.query.toLowerCase());
-            });
-        }
+        this.filteredResults = this.filteredResults.map((bid) => {
+            return bid.replace(/_/g, ' ');
+        })
+        .filter((result) => {
+            return result.toLowerCase().includes(event.query.toLowerCase());
+        });
       }, 250);
     },
     searchFunc() {
       // select building or class here
-      if(Object.keys(this.global.data).includes(this.selection)) {
-        this.global.bldg = this.selection;
-      } else {
-        Object.keys(this.global.data).forEach((bid) => {
-          if(this.global.data[bid].meta.name == this.selection) {
-            this.global.bldg = bid;
-          }
-        })
-      }
+      this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
       this.selection = "";
     }
   }
