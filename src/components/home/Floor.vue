@@ -12,8 +12,11 @@ import tinycolor from "tinycolor2";
   
 <script>
 const getFloorSVG = async (floor) => {
-  const module = await import(`../../assets/floors/${floor}.svg`)
-  return module.default
+  try {
+    const module = await import(`../../assets/floors/${floor}.svg`)
+    return module.default
+  }
+  catch { console.error(`Map not yet implemented!`) }
 }
 
 export default {

@@ -1,18 +1,17 @@
 <script setup>
 import moment from 'moment-timezone'
+import Tag from 'primevue/tag';
 </script>
 
 <template>
     <!-- HTML for the popup -->
     <div id="popup">
-        <div id="popup-head"> 
-            <div id="popupbuild">
-                {{ global.bldg }}
-                <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
-                <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
-            </div>
+        <div id="breadcrumbs">
+            {{ global.bldg.replace(/-/g, ' ') }}
+            <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
+            <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
-        <div v-if="global.bldg" class="body">
+        <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
                 <div id="photo-box">
                     <img src="../../assets/photos/DCC.jpg" id="photo">
@@ -21,12 +20,16 @@ import moment from 'moment-timezone'
                 </div>
                 <p id="busy"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
+                <img src="../../assets/icons/info.svg" height="20" width="20" />
+                <a href="https://archives.rpi.edu/institute-history/building-histories/darrin-communication-center">
+                    <em> Get historical info&emsp;</em>
+                </a>
+                <Tag value="Tag placeholder" rounded></Tag> <!-- Placeholder for the tag -->
             </div>
-            <p></p>
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
             <div v-else> <!-- Room w/ data selected -->
-                <div class="block">
+                <div class="block"> <!-- Block #1: room information -->
                     <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
                     <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
@@ -44,8 +47,8 @@ import moment from 'moment-timezone'
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
                 </div>
-                <div class="block">
-                    <b v-if="getData().meta.next">Today</b>
+                <div v-if="getTodaysClasses().length" class="block"> <!-- Block #2: today's room schedule -->
+                    <b>Today</b>
                     <table>
                         <tr v-for="item in getTodaysClasses()">
                             {{ item[0] }}
@@ -55,8 +58,8 @@ import moment from 'moment-timezone'
                 </div>
             </div>
         </div>
+        <div v-else-if="global.bldg" class="block warn">No classes here!</div>
     </div>
-
 </template>
 
 <script>
@@ -99,7 +102,10 @@ export default {
         // return if a room is selected
         noneSelected() { return !this.global.room },
         // Returns the current building
-        getBldg() { return this.global.data[this.global.bldg] },
+        getBldg() {
+            let bldg = this.global.data[this.global.bldg]
+            return bldg ? bldg : console.error(`No classes here!`)
+        },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         getSecs(type) { 
             switch(type) {
@@ -151,7 +157,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    min-width: 400px;
+    min-width: unset;
     height: 50vh;
     position: absolute;
     pointer-events: all;
@@ -170,18 +176,11 @@ export default {
     overflow-y: auto;
 }
 
-#popup-head {
-    width: 100vw;
-    height: 6vh;
-    background-color: none;
+#breadcrumbs {
+    padding: 10px 0px 0px 20px;
     color: rgb(0, 0, 0);
-    position: absolute;
     font-weight: 600;
     font-size: x-large;
-}
-
-#popupbuild {
-    padding: 10px 20px;
 }
 
 #photo {
@@ -222,7 +221,7 @@ table {
 }
 
 td {
-  border-left: solid 1px var(--softborder);
+    border-left: solid 1px var(--softborder);
 }
 
 tr:nth-child(even) {
@@ -233,10 +232,6 @@ tr:nth-child(even) {
     color: red;
     text-align: center;
     font-weight: 500;
-}
-.code {
-    font-size: 15px;
-    color: #902a00;
 }
 
 .sec {
@@ -252,10 +247,6 @@ tr:nth-child(even) {
     padding: 10px;    
     border-radius: 10px;
     border: 1px solid var(--softborder);
-}
-
-.body {
-    margin-top: 50px;
 }
 
 li {

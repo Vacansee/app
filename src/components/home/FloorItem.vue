@@ -31,6 +31,7 @@ export default {
   // Get reference to global
   inject: ["global"],
   props: ['unselected'],
+  emits: ["roomHover"],
   components: {
     Floor
   },
@@ -40,8 +41,8 @@ export default {
       if (newVar) {
         this.floor = ""
         floorBox.style.opacity = 0;
-        up.style.opacity = 0;
-        down.style.opacity = 0;
+        up.style.opacity = down.style.opacity = 0;
+        buttonBox.style.pointerEvents = "none";
       } else {
         if (this.getBldg()) {
           this.floorNum = this.getBldg().meta.floors[2]
@@ -49,8 +50,8 @@ export default {
           this.global.floor = this.getBldg().meta.floors[2]
         }
         floorBox.style.opacity = 1;
-        up.style.opacity = 1;
-        down.style.opacity = 1;
+        up.style.opacity = down.style.opacity = 1;
+        buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
 
@@ -77,7 +78,7 @@ export default {
     },
     // When floor num changes
     floorNum(newVar) {
-      if (newVar == this.getBldg().meta.floors[1])
+      if (this.getBldg() && newVar == this.getBldg().meta.floors[1])
         this.btnUp = false 
       else this.btnUp = true
       if (newVar == 1) this.btnDown = false
@@ -171,7 +172,7 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.floorNum < this.getBldg().meta.floors[1]) {
+      if (this.getBldg() && this.floorNum < this.getBldg().meta.floors[1]) {
         this.floorNum++;
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
@@ -214,7 +215,6 @@ export default {
   transition: 800ms ease all;
   opacity: 0;
   pointer-events: none;
-
 }
 
 #buttonBox {
@@ -227,6 +227,7 @@ export default {
   height: 150px;
   display: flex;
   flex-wrap: wrap;
+  pointer-events: none;
 }
 
 .disabled {

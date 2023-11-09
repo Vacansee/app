@@ -17,7 +17,7 @@ a,
 }
 
 @media (hover: hover) {
-  a:hover {
+  .icon:hover {
     background-color: #d4e5e2;
   }
 }

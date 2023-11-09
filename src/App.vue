@@ -2,19 +2,30 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
+import AutoComplete from 'primevue/autocomplete';
+import Button from "primevue/button"
+
 </script>
 
 <template>
   <!-- HTML For Header -->
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    <Logo class="logo" width="75" height="75" />
+    
+      <div class="left-nav">
+        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
+        <div class="search">
+          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+        </div>
+      </div>
 
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+      <div class="right-nav">
+        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
+            <img src="./assets/icons/poll.svg" height="30" width="30" />
+        </Button></a>
+        <a href="https://github.com/Vacansee"><Button class="nav-btn">
+            <img src="./assets/icons/github.svg" height="30" width="30"/>
+        </Button></a>
+      </div>
   </header>
 
 
@@ -49,33 +60,38 @@ header {
   z-index: 7;
   display: flex;
   padding: 1rem;
-  pointer-events: none;
 }
 
 .logo {
   display: block;
   margin: 0 1rem 0 0;
-}
-
-nav {
-  line-height: 2;
-  font-size: 1rem;
-  text-align: left;
   pointer-events: all;
-  margin: 1.25rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-btn {
+  margin: .5rem;
+  pointer-events: all;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: none;
+.left-nav {
+  position: fixed;
+  display: flex;
+  pointer-events: none;
+  padding: .5rem 1rem;
+  top: 0;
+  left: 0;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.search {
+  align-self: center;
+  pointer-events: all;
+}
+
+.right-nav {
+  position: fixed;
+  pointer-events: none;
+  padding: .8rem 1rem;
+  top: 0;
+  right: 0;
 }
 </style>
