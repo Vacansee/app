@@ -389,7 +389,6 @@ export default {
       threshold: 1,
       doResize: "",
       zoom: 0,
-      count:0,
     }
   },
   updated() {
