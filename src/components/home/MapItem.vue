@@ -417,7 +417,7 @@ export default {
   },
   methods: {
     onMouseScroll({deltaX,deltaY}) {
-      if (!this.global.buildingMapOpen){
+      if (!this.global.bldg){
         let dirwheel = 0;
         if (deltaY>0) {
           dirwheel = -1;
@@ -439,15 +439,16 @@ export default {
           tempZoom = x/50+this.zoom+dirwheel*10;
         }
         
+        
         this.zoom +=dirwheel*10;
-        if (this.zoom < 0) this.zoom  = 0;
-        if (this.zoom > 200) this.zoom  = 200;
-        console.log(this.zoom);
+        if (dirwheel == -1 && this.zoom <= 40) this.zoom  = 37.5 - (40 - this.zoom)*0.75;
+        if (dirwheel == 1 && this.zoom >= 60) this.zoom  = 62.5 + (this.zoom - 60)*0.75;
+        // console.log(dirwheel, this.zoom)
         this.windowEventHandler();
       }
     },
     onMouseDrag({movementX, movementY}) {
-      // if (!this.global.buildingMapOpen) {
+      // if (!this.global.bldg) {
       //   // let mouseerr = 0.0;
       //   // let x = (-mouseerr<movementX&&movementX<mouseerr)?0:movementX;
       //   // let y = (-mouseerr<movementY&&movementY<mouseerr)?0:movementY;

@@ -75,7 +75,6 @@ export default {
       } else if (this.unselected){
         popup.style.transform = "TranslateY(50vh)"
       }
-      this.global.buildingMapOpen = false;
   },
   methods: {
     // Make the name tag pop up
@@ -134,7 +133,6 @@ export default {
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
-        this.global.buildingMapOpen = true
       }
     },
     // On deselection of a building (when clicked off)
@@ -154,7 +152,6 @@ export default {
         } else {
           popup.style.transform = "TranslateY(50vh)"
         }
-        this.global.buildingMapOpen = false
       } catch { /* pass */ }
 
     }

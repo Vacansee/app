@@ -66,12 +66,12 @@ export default {
         }
       },
     },
-    'global.buildingMapOpen' : {
+    'global.bldg' : {
       // for whatever reason it will continuously set zoom to zero
       handler() {
-        // if (!this.global.buildingMapOpen) {
+        // if (!this.global.bldg) { // ''
         //   this.zoom = 0;
-        //   console.log(this.global.buildingMapOpen);
+        // console.log("No building selected");
         // }
       }
     },
@@ -120,8 +120,8 @@ export default {
   },
   methods: {
     //clientX and Y will be used to scroll about mouse
-    onMouseScroll({clientX, clientY, deltaX,deltaY}) {
-      if (this.global.buildingMapOpen){
+    onMouseScroll({clientX, clientY, deltaX, deltaY}) {
+      if (this.global.bldg){
         let dirwheel = 0;
         if (deltaY>0) {
           dirwheel = -1;
@@ -143,14 +143,15 @@ export default {
         }
 
         this.zoom +=dirwheel*10;
-        if (this.zoom < 0) this.zoom  = 0;
+        if (dirwheel == -1 && this.zoom < 20) this.zoom  = 20 - (30 - this.zoom)*0.5;
+        if (dirwheel == 1 && this.zoom >= 20) this.zoom  = 20 + (this.zoom-10)*0.5;
         if (this.zoom > 100) this.zoom  = 100;
-        console.log(this.zoom);
+        // console.log(dirwheel, this.zoom)
         this.windowEventHandler();
       }
     },
     onMouseDrag({movementX, movementY}) {
-      if (this.global.buildingMapOpen) {
+      if (this.global.bldg) {
         // console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
