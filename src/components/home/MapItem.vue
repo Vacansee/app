@@ -388,8 +388,7 @@ export default {
     return {
       threshold: 1,
       doResize: "",
-      zoom: 0,
-    }
+          }
   },
   updated() {
     this.$nextTick(() => {
