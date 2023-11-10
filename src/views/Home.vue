@@ -124,7 +124,7 @@ export default {
 
         this.unselected = false
         this.bldgSVG = b
-        this.global.bldg = b.id.replace(/-/g, ' ')
+        this.global.bldg = b.id
         this.ntVisible = 0 // hide nametag when building selected
 
         mask.style.opacity = 0.65
