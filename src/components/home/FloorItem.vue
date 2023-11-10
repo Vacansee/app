@@ -54,6 +54,7 @@ export default {
         buttonBox.style.pointerEvents = "auto";
         down.style.transform = "rotate(180deg)";
       }
+
     },
     'global.aspectRatio': {
       handler() {
@@ -64,6 +65,15 @@ export default {
         } else { // If portrait mode
           floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
         }
+      },
+    },
+    'global.bldg' : {
+      // for whatever reason it will continuously set zoom to zero
+      handler() {
+        // if (!this.global.bldg) { // ''
+        //   this.zoom = 0;
+        // console.log("No building selected");
+        // }
       }
     },
     // When floor num changes
@@ -78,13 +88,12 @@ export default {
     btnUp(newVar) {
       if (newVar) up.style.opacity = 1;
       else        up.style.opacity = 0.6;
-
     },
     // When button down changes
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    }
+    },
   },
   data() {
     // Local variables
@@ -95,20 +104,62 @@ export default {
       btnUp: true,
       btnDown: true,
       floor: "",
+      zoom:0,
     }
   },
   mounted() {
     // On load, set floorBox transition
-    setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
-    // If landscape mode
-    if (this.global.aspectRatio <= 1.2) {
-      floorBox.style.transform = 
-      `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50})` + `rotate(90deg)`;
-    } else { // If portrait mode
-      floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65})`;
-    }
+    setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
+    window.addEventListener("wheel", this.onMouseScroll);
+    window.addEventListener("mousedown", () => {
+      window.addEventListener("mousemove", this.onMouseDrag);
+    });
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseDrag);
+    });
+    this.windowEventHandler();
   },
   methods: {
+    //clientX and Y will be used to scroll about mouse
+    onMouseScroll({clientX, clientY, deltaX, deltaY}) {
+      if (this.global.bldg){
+        let dirwheel = 0;
+        if (deltaY>0) {
+          dirwheel = -1;
+        } else if (deltaY<0) {
+          dirwheel = 1;
+        }
+        let x = window.innerWidth;
+        let y = window.innerHeight;
+        let ratio = x / y;
+        let portraitMode = false;
+        if (this.ratio < this.threshold) {
+          portraitMode = true;
+        }
+        let tempZoom=0;
+        if (portraitMode) {
+          tempZoom = y/50+this.zoom+dirwheel*5;
+        } else {
+          tempZoom = x/50+this.zoom+dirwheel*5;
+        }
+
+        this.zoom +=dirwheel*10;
+        if (dirwheel == -1 && this.zoom < 20) this.zoom  = 20 - (30 - this.zoom)*0.5;
+        if (dirwheel == 1 && this.zoom >= 20) this.zoom  = 20 + (this.zoom-10)*0.5;
+        if (this.zoom > 100) this.zoom  = 100;
+        // console.log(dirwheel, this.zoom)
+        this.windowEventHandler();
+      }
+    },
+    onMouseDrag({movementX, movementY}) {
+      if (this.global.bldg) {
+        // console.log(floorBox.offsetLeft, floorBox.offsetTop)
+        let changeX = (movementX*((this.zoom+100)/100));
+        let changeY = (movementY*((this.zoom+100)/100));
+        floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
+        floorBox.style.top = floorBox.offsetTop + changeY + "px";
+      }
+    },
     // gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
@@ -135,6 +186,15 @@ export default {
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
+      }
+    },
+    windowEventHandler() {
+      // If landscape mode
+      if (this.global.aspectRatio <= 1.2) {
+        floorBox.style.transform = 
+        `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50 + this.zoom})` + `rotate(90deg)`;
+      } else { // If portrait mode
+        floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65 + this.zoom})`;
       }
     }
   }
