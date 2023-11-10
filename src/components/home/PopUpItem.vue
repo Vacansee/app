@@ -18,7 +18,7 @@ import moment from 'moment-timezone'
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
                 <p id="busy"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
-                <p id="time" ref="mySpan">{{ global.aspectRatio }}</p>
+                <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
             </div>
             <p></p>
             <div v-if="noneSelected()" class="block warn">No room selected</div>

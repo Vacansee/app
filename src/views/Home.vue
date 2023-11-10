@@ -47,7 +47,7 @@ export default {
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
         if (this.unselected && this.global.aspectRatio < this.global.flipScreen) {
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else if (this.unselected){
           popup.style.transform = "TranslateY(50vh)"
@@ -70,7 +70,7 @@ export default {
       // Fixes issue where transitions when unselected would show the popup for a split second
       popup.style.transition = "transform .0s"
       if (this.unselected && this.global.aspectRatio < this.global.flipScreen) {
-        popup.style.transform = "TranslateX(-33vw)"
+        popup.style.transform = "TranslateX(-50vw)"
       // If portrait mode
       } else if (this.unselected){
         popup.style.transform = "TranslateY(50vh)"
@@ -147,7 +147,7 @@ export default {
         popup.style.transition = "transform .5s"
         // Landscape mode
         if (this.global.aspectRatio <= this.global.flipScreen) {
-          popup.style.transform = "TranslateX(-33vw)"
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else {
           popup.style.transform = "TranslateY(50vh)"

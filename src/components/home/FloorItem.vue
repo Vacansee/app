@@ -61,15 +61,14 @@ export default {
         if (400 > 0.33 * window.innerWidth) {
           popupWidth = "400px";
         }
-        var bBox = floorBox.getBoundingClientRect();
         // If landscape mode
         if (this.global.aspectRatio <= this.global.flipScreen) {
           floorBox.style.transform = 
-          `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
-      calc(50vh)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
+          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
+      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
         } else { // If portrait mode
           floorBox.style.transform = 
-          `translate(calc(5vw + (${bBox.width}px - 50px) / 2), calc(20vh)) 
+          `translate(calc(45vw), calc(20vh)) 
           scale(${window.innerWidth * 0.9 / 50})`;
         }
       }
@@ -112,18 +111,16 @@ export default {
       if (400 > 0.33 * window.innerWidth) {
         popupWidth = "400px";
       }
-    // If landscape mode
-    var bBox = floorBox.getBoundingClientRect();
-    var resizeMult = bBox.width
-    if (this.global.aspectRatio <= this.global.flipScreen) {
-      floorBox.style.transform = 
-          `translate(calc(${popupWidth} + (100vw - ${popupWidth} - ${bBox.width}px) / 2 + (${bBox.width}px) / 2 - 50px), 
-      calc(50vh)) scale(calc((${window.innerHeight} * 0.9) / 50))` + `rotate(90deg)`;
-    } else { // If portrait mode
-      floorBox.style.transform = 
+        // If landscape mode
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+          floorBox.style.transform = 
+          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
+      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
+        } else { // If portrait mode
+          floorBox.style.transform = 
           `translate(calc(45vw), calc(20vh)) 
           scale(${window.innerWidth * 0.9 / 50})`;
-    }
+        }
   },
   methods: {
     // gets the current building
