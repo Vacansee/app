@@ -26,6 +26,12 @@ import Button from "primevue/button"
             <img src="./assets/icons/github.svg" height="30" width="30"/>
         </Button></a>
       </div>
+
+      <div class="bot-right-nav">
+        <Button class="nav-btn" @click="getLocation">
+            <img src="./assets/icons/location.svg" height="30" width="30"/>
+        </Button>
+      </div>
   </header>
 
 
@@ -43,8 +49,20 @@ export default {
           document.getElementById("header").style.opacity = "0";
         else
           document.getElementById("header").style.opacity = "1";
-
       }
+    }
+  },
+  methods: {
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(this.locationObtained)
+    },
+    locationObtained(pos) {
+      const crd = pos.coords;
+
+      console.log("Your current position is:");
+      console.log(`Latitude : ${crd.latitude}`);
+      console.log(`Longitude: ${crd.longitude}`);
+      console.log(`More or less ${crd.accuracy} meters.`);
     }
   }
 }
@@ -92,6 +110,14 @@ header {
   pointer-events: none;
   padding: .8rem 1rem;
   top: 0;
+  right: 0;
+}
+
+.bot-right-nav {
+  position: fixed;
+  pointer-events: none;
+  padding: .8rem 1rem;
+  bottom: 0;
   right: 0;
 }
 </style>
