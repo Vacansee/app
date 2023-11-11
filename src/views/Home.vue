@@ -56,14 +56,15 @@ export default {
         if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
           for (const b of buildings.children) {
             if (b.id === this.global.bldg) {
-              console.log('Going to building', b.id)
               this.buildingSelect(b)
             }
           }
         }
       }
-    }
+    },
+    $route() { this.updateFromRoute() }
   },
+  created() { this.updateFromRoute() },
   mounted() {
     // addEventListeners allow the file to call a function when 
     // an action occurs
@@ -94,6 +95,10 @@ export default {
     }
   },
   methods: {
+    updateFromRoute() {
+      if (this.$route.params.bldg) this.global.bldg = this.$route.params.bldg
+      else this.global.bldg = ''
+    },
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
@@ -135,7 +140,6 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (!this.global.bldg) {
-        // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
         let boxCenterY = bBox.y + bBox.height / 2
@@ -143,6 +147,8 @@ export default {
         this.bldgSVG = b
         this.global.bldg = b.id
         this.ntVisible = 0 // hide nametag when building selected
+
+        this.$router.push({ name: 'places', params: { bldg: b.id } });
 
         mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
@@ -158,6 +164,9 @@ export default {
       try {
         this.bldgSVG = ""
         this.global.bldg = ""
+
+        this.$router.push({ name: 'home' });
+
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0

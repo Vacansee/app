@@ -19,11 +19,11 @@ const router = createRouter({
       name: 'home',
       component: Home
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: About // lazy-loaded
-    // }
+    {
+      path: '/:bldg',
+      name: 'places',
+      component: Home,
+    },
   ]
 })
 
