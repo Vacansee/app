@@ -2,12 +2,13 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
-import AutoComplete from 'primevue/autocomplete';
+import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
-
+import Toast from 'primevue/toast'
 </script>
 
 <template>
+  <Toast/>
   <!-- HTML For Header -->
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
     
@@ -44,12 +45,17 @@ export default {
   watch: {
     'global.bldg': {
       handler() {
+        this.$clearToasts()
         // Only shows header when a building is not selected
         if (this.global.bldg)
           document.getElementById("header").style.opacity = "0";
         else
           document.getElementById("header").style.opacity = "1";
-
+      }
+    },
+    'global.error': {
+      handler() {
+        if (this.global.error) this.$showToast({title: 'Failed to load data', body: this.global.error})
       }
     }
   },

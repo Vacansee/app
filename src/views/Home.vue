@@ -7,8 +7,6 @@ import FloorItem from '../components/home/FloorItem.vue'
 
 <template>
   <!-- Loads Data -->
-  <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
-  <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
   <!-- Creates mapitem, popupitem, flooritem -->
   <MapItem :unselected="unselected" :bldgSVG="bldgSVG" />
@@ -77,15 +75,23 @@ export default {
       b.addEventListener("mouseleave", this.nameTagDisappear)
       b.addEventListener("click", () => { this.buildingSelect(b) })
     }
-      // If landscape mode
-      // Fixes issue where transitions when unselected would show the popup for a split second
-      popup.style.transition = "transform .0s"
-      if (this.unselected && this.global.aspectRatio < 1.2) {
-        popup.style.transform = "TranslateX(-33vw)"
-      // If portrait mode
-      } else if (this.unselected){
-        popup.style.transform = "TranslateY(50vh)"
-      }
+
+    for (const o of other.children) {
+      o.addEventListener("mouseover", () => { this.nameTagAppear(o) })
+      o.addEventListener("mouseleave", this.nameTagDisappear)
+      o.addEventListener("click", () => {
+        this.$showToast({type: 'info', title: 'Unavailable', body: "This isn\'t a public facility", lasts: 2000}) })
+    }
+
+    // If landscape mode
+    // Fixes issue where transitions when unselected would show the popup for a split second
+    popup.style.transition = "transform .0s"
+    if (this.unselected && this.global.aspectRatio < 1.2) {
+      popup.style.transform = "TranslateX(-33vw)"
+    // If portrait mode
+    } else if (this.unselected){
+      popup.style.transform = "TranslateY(50vh)"
+    }
   },
   methods: {
     // Make the name tag pop up
@@ -182,10 +188,6 @@ export default {
   background: black !important;
   stroke: none !important;
   pointer-events: none;
-}
-
-.toast {
-  font-size: 18px !important;
 }
 
 #nametag {
