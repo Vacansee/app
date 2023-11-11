@@ -31,7 +31,6 @@ const global = reactive({ // The global reactive object!
 	bldg: '',
 	room: '',
 	floor: '1',
-	buildingSearch: '',
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// Non current time during a busy part of the day (used for testing)

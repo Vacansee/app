@@ -63,7 +63,7 @@ export default {
         })
         this.filteredResults.sort();
         this.filteredResults = this.filteredResults.map((bid) => {
-            return bid.replace(/_/g, ' ');
+            return bid.replace(/-/g, ' ');
         })
         .filter((result) => {
             return result.toLowerCase().includes(event.query.toLowerCase());
