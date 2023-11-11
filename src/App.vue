@@ -14,7 +14,7 @@ import Button from "primevue/button"
       <div class="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
         <div class="search">
-          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+          <AutoComplete v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete> 
         </div>
       </div>
 
@@ -34,6 +34,12 @@ import Button from "primevue/button"
 
 <script>
 export default {
+  data() {
+    return {
+      filteredResults: [],
+      selection: ""
+    }
+  },
   inject: ["global"],
   watch: {
     'global.bldg': {
@@ -45,6 +51,29 @@ export default {
           document.getElementById("header").style.opacity = "1";
 
       }
+    }
+  },
+  methods: {
+    filterResults(event) {
+      // filter buildings and classes
+      setTimeout(() => {
+        this.filteredResults = [];
+        Object.keys(this.global.data).map((bid) => {
+          this.filteredResults.push(bid.toString() + " (" + this.global.data[bid].meta.name.toString() + ")");
+        })
+        this.filteredResults.sort();
+        this.filteredResults = this.filteredResults.map((bid) => {
+            return bid.replace(/-/g, ' ');
+        })
+        .filter((result) => {
+            return result.toLowerCase().includes(event.query.toLowerCase());
+        });
+      }, 250);
+    },
+    searchFunc() {
+      // select building or class here
+      this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
+      this.selection = "";
     }
   }
 }

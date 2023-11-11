@@ -53,6 +53,17 @@ export default {
           popup.style.transform = "TranslateY(50vh)"
         }
       }
+    },
+    'global.bldg': {
+      handler() {
+        if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
+          for (const b of buildings.children) {
+            if (b.id === this.global.bldg) {
+              this.buildingSelect(b)
+            }
+          }
+        }
+      }
     }
   },
   mounted() {
