@@ -104,7 +104,7 @@ export default {
         // Returns the current building
         getBldg() {
             let bldg = this.global.data[this.global.bldg]
-            return bldg ? bldg : console.error(`No classes here!`)
+            return bldg ? bldg : console.warn(`No classes here!`)
         },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         getSecs(type) { 
