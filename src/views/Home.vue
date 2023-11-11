@@ -9,10 +9,10 @@ import FloorItem from '../components/home/FloorItem.vue'
   <!-- Loads Data -->
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
   <!-- Creates mapitem, popupitem, flooritem -->
-  <MapItem :unselected="unselected" :bldgSVG="bldgSVG" />
+  <MapItem :bldgSVG="bldgSVG" />
   <div id="mask"></div>
   <PopUpItem />
-  <FloorItem @room-hover="onRoomHover" :unselected="unselected"/>
+  <FloorItem @room-hover="onRoomHover" />
 </template>
 
 <script>
@@ -33,7 +33,6 @@ export default {
       ntVisible: 0,
       switch: 0,
       bldgSVG: "",
-      unselected: true,
       label: '',
     }
   },
@@ -44,10 +43,10 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (this.unselected && this.global.aspectRatio < 1.2) {
+        if (!this.global.bldg && this.global.aspectRatio < 1.2) {
           popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
-        } else if (this.unselected){
+        } else if (!this.global.bldg){
           popup.style.transform = "TranslateY(50vh)"
         }
       }
@@ -57,6 +56,7 @@ export default {
         if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
           for (const b of buildings.children) {
             if (b.id === this.global.bldg) {
+              console.log('Going to building', b.id)
               this.buildingSelect(b)
             }
           }
@@ -86,10 +86,10 @@ export default {
     // If landscape mode
     // Fixes issue where transitions when unselected would show the popup for a split second
     popup.style.transition = "transform .0s"
-    if (this.unselected && this.global.aspectRatio < 1.2) {
+    if (!this.global.bldg && this.global.aspectRatio < 1.2) {
       popup.style.transform = "TranslateX(-33vw)"
     // If portrait mode
-    } else if (this.unselected){
+    } else if (!this.global.bldg){
       popup.style.transform = "TranslateY(50vh)"
     }
   },
@@ -97,7 +97,7 @@ export default {
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
-      if (this.unselected) {
+      if (!this.global.bldg) {
         this.ntVisible = 1
         if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name.replace(/-/g, ' ')
         else this.label = b.id.replace(/-/g, ' ')
@@ -134,12 +134,12 @@ export default {
     },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
-      if (this.unselected) {
+      if (!this.global.bldg) {
+        // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
         let boxCenterY = bBox.y + bBox.height / 2
 
-        this.unselected = false
         this.bldgSVG = b
         this.global.bldg = b.id
         this.ntVisible = 0 // hide nametag when building selected
@@ -158,7 +158,6 @@ export default {
       try {
         this.bldgSVG = ""
         this.global.bldg = ""
-        this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
@@ -172,7 +171,6 @@ export default {
           popup.style.transform = "TranslateY(50vh)"
         }
       } catch { /* pass */ }
-
     }
   }
 }

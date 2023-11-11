@@ -240,17 +240,17 @@ import tinycolor from "tinycolor2";
 export default {
   // Adds use of global variables
   inject: ["global"],
-  props: ['unselected', 'bldgSVG'],
+  props: ['bldgSVG'],
   watch: {
-    // When unselected is changed
-    unselected(newVar) {
-      if (newVar) { // unselected
-        setTimeout(this.windowEventHandler, 800);
-        this.$refs.blurRef.setAttribute('stdDeviation', 0);
-      }
-      else { // selected
-        this.bringToFront(this.bldgSVG);
-        this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+    'global.bldg': {
+      handler() {
+        if (this.global.bldg) { // selected
+          this.bringToFront(this.bldgSVG);
+          this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+        } else { // unselected
+          setTimeout(this.windowEventHandler, 800);
+          this.$refs.blurRef.setAttribute('stdDeviation', 0);
+        }
       }
     },
     // This is run once, for a first calculation
@@ -386,8 +386,7 @@ export default {
     // Used so resizing isnt called forever, 
     // Stops calling when resize hasnt been changed for 300 seconds
     windowResizeTimeout() {
-      console.log(this.unselected)
-      if (this.unselected) {
+      if (!this.global.bldg) {
         clearTimeout(this.doResize);
         this.doResize = setTimeout(this.windowEventHandler, 300);
       }
@@ -470,6 +469,7 @@ export default {
 
 #walktop path {
   fill: none;
+  stroke: var(--walkpath);
   stroke-width: 1px;
 }
 
