@@ -22,7 +22,7 @@ import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
 // On page load, fetch building/room data from Vacansee/data:
-const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
+const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/data/data.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 

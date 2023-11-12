@@ -55,10 +55,7 @@ export default {
       handler() {
         if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
           for (const b of buildings.children) {
-            if (b.id === this.global.bldg) {
-              console.log('Going to building', b.id)
-              this.buildingSelect(b)
-            }
+            if (b.id === this.global.bldg) this.buildingSelect(b)
           }
         }
       }
@@ -94,13 +91,26 @@ export default {
     }
   },
   methods: {
+    runFind() {
+      console.clear()
+      let count = 0 
+      for (const b of buildings.children) {
+        console.log(b.id)
+        count++
+      }
+      console.log(count)
+
+      // for (const o of other.children) {
+      //   if (!(o.id in this.global.data)) console.log(o.id)
+      // }
+    },
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
       if (!this.global.bldg) {
         this.ntVisible = 1
-        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name.replace(/-/g, ' ')
-        else this.label = b.id.replace(/-/g, ' ')
+        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
+        else this.label = b.id.replace(/_/g, ' ')
       }
     },
     // Make the name tag go away

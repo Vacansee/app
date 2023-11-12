@@ -7,7 +7,7 @@ import Tag from 'primevue/tag';
     <!-- HTML for the popup -->
     <div id="popup">
         <div id="breadcrumbs">
-            {{ global.bldg.replace(/-/g, ' ') }}
+            {{ global.bldg.replace(/_/g, ' ') }}
             <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
             <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
