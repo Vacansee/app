@@ -410,7 +410,7 @@ export default {
 #mapBox {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 55%;
   will-change: transform;
   transform: translate(-50%, -50%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   justify-content: center;
