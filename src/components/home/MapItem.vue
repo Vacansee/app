@@ -168,13 +168,11 @@ import tinycolor from "tinycolor2";
 
         
         <!-- PIN PLACEHOLDER -->
-        <div id="pin" v-if="isPinned">
-          <foreignObject style="pointer-events: none;" x="1000" y="1000" width="100%" height="100%">
-            <div class = "map-overlays-icons">
-              <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;">ACJKSGHCJAOGHCJAS<span class="map-overlays-icons">📍</span></p>
-            </div>
-          </foreignObject>
-        </div>
+        <foreignObject style="pointer-events: none;" x="500" y="1000" width="100%" height="100%">
+          <div class = "map-overlays-icons">
+            <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
+          </div>
+        </foreignObject>
 
         <path id="CBIS"
           d="m444 941.4 2.3.7.7 1.7 3.1 2.1.9 2.5 5.2 2.1 5.4-.4.9-.5s1.2 2.7 3.3 3c2.2.1 2.9-2 2.9-2l8.6.4-1 13.6 84.2 4 3.5.1-.3 4.5 11.4.5 1.6-77.9-11-.1-.2 6.7-4.8-.3.6-12-11.7-.7.1 4-9.5-.6-.6 40.5-81-2.2v-2.6h-12l-1 2.6h1.7l-3.4 10.3Z" />
