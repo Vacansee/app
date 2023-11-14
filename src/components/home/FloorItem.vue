@@ -30,32 +30,11 @@ import Floor from './Floor.vue'
 export default {
   // Get reference to global
   inject: ["global"],
-  props: ['unselected'],
   emits: ["roomHover"],
   components: {
     Floor
   },
   watch: {
-    // When unselected changes
-    unselected(newVar) {
-      if (newVar) {
-        this.floor = ""
-        floorBox.style.opacity = 0;
-        up.style.opacity = down.style.opacity = 0;
-        buttonBox.style.pointerEvents = "none";
-      } else {
-        if (this.getBldg()) {
-          this.floorNum = this.getBldg().meta.floors[2]
-          this.floor = this.global.bldg + this.getBldg().meta.floors[2]
-          this.global.floor = this.getBldg().meta.floors[2]
-        }
-        floorBox.style.opacity = 1;
-        up.style.opacity = down.style.opacity = 1;
-        buttonBox.style.pointerEvents = "auto";
-        down.style.transform = "rotate(180deg)";
-      }
-
-    },
     'global.aspectRatio': {
       handler() {
         // If landscape mode
@@ -68,13 +47,25 @@ export default {
       },
     },
     'global.bldg' : {
-      // for whatever reason it will continuously set zoom to zero
       handler() {
-        // if (!this.global.bldg) { // ''
-        //   this.zoom = 0;
-        // console.log("No building selected");
-        // }
+        if (this.global.bldg) { // selected
+          if (this.getBldg()) {
+            this.floorNum = this.getBldg().meta.floors[2]
+            this.floor = this.global.bldg + this.getBldg().meta.floors[2]
+            this.global.floor = this.getBldg().meta.floors[2]
+          }
+          floorBox.style.opacity = 1;
+          up.style.opacity = down.style.opacity = 1;
+          buttonBox.style.pointerEvents = "auto";
+          down.style.transform = "rotate(180deg)";
+        } else { // unselected
+          this.floor = ""
+          floorBox.style.opacity = 0;
+          up.style.opacity = down.style.opacity = 0;
+          buttonBox.style.pointerEvents = "none";
+        } 
       }
+      
     },
     // When floor num changes
     floorNum(newVar) {
