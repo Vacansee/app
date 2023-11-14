@@ -40,7 +40,10 @@ export default {
           this.roomSVG = null;
           this.global.room = ""
         }
-        else this.floorSVG = await getFloorSVG(floor)
+        else {
+          this.floorSVG = await getFloorSVG(floor)
+          if (!this.floorSVG) this.$showToast({title: 'Map not yet implemented!'})
+        }
       },
       immediate: true,
     },

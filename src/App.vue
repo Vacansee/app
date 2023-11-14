@@ -2,19 +2,20 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
-import AutoComplete from 'primevue/autocomplete';
+import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
-
+import Toast from 'primevue/toast'
 </script>
 
 <template>
+  <Toast/>
   <!-- HTML For Header -->
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
     
       <div class="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
         <div class="search">
-          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+          <AutoComplete v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete> 
         </div>
       </div>
 
@@ -34,17 +35,51 @@ import Button from "primevue/button"
 
 <script>
 export default {
+  data() {
+    return {
+      filteredResults: [],
+      selection: ""
+    }
+  },
   inject: ["global"],
   watch: {
     'global.bldg': {
       handler() {
+        this.$clearToasts()
         // Only shows header when a building is not selected
         if (this.global.bldg)
           document.getElementById("header").style.opacity = "0";
         else
           document.getElementById("header").style.opacity = "1";
-
       }
+    },
+    'global.error': {
+      handler() {
+        if (this.global.error) this.$showToast({title: 'Failed to load data', body: this.global.error})
+      }
+    }
+  },
+  methods: {
+    filterResults(event) {
+      // filter buildings and classes
+      setTimeout(() => {
+        this.filteredResults = [];
+        Object.keys(this.global.data).map((bid) => {
+          this.filteredResults.push(bid.toString() + " (" + this.global.data[bid].meta.name.toString() + ")");
+        })
+        this.filteredResults.sort();
+        this.filteredResults = this.filteredResults.map((bid) => {
+            return bid.replace(/_/g, ' ');
+        })
+        .filter((result) => {
+            return result.toLowerCase().includes(event.query.toLowerCase());
+        });
+      }, 250);
+    },
+    searchFunc() {
+      // select building or class here
+      this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
+      this.selection = "";
     }
   }
 }
