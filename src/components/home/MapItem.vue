@@ -168,7 +168,7 @@ import tinycolor from "tinycolor2";
 
         
         <!-- PIN PLACEHOLDER -->
-        <foreignObject style="pointer-events: none;" x="500" y="1000" width="100%" height="100%">
+        <foreignObject style="pointer-events: none;" x="500" y="1000" width="100%" height="100%" v-if="pinned">
           <div class = "map-overlays-icons">
             <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
           </div>
@@ -277,7 +277,7 @@ export default {
       threshold: 1,
       doResize: "",
       zoom: 0,
-      isPinned: true,
+      pinned: true,
     }
   },
   updated() {
