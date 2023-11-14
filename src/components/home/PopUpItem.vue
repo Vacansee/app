@@ -28,6 +28,7 @@ import Tag from 'primevue/tag';
                 </span>
                 <Tag value="Tag placeholder" rounded></Tag> <!-- Placeholder for the tag -->
             </div>
+            <p></p>
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
             <div v-else> <!-- Room w/ data selected -->
@@ -170,6 +171,12 @@ export default {
 </script>
 
 <style scoped>
+#info-box {
+  background-color: #ffffff;
+  border: 1px solid var(--softborder);
+  padding: 10px;
+  margin: 10px; 
+}
 #popup {
     width: 100vw;
     min-width: unset;

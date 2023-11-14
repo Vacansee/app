@@ -397,10 +397,10 @@ export default {
       let y = window.innerHeight;
       let ratio = x / y;
       if (ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y/50+this.zoom})` + `rotate(90deg)`
+        map.style.transform = `scale(${y/55+this.zoom})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x/50+this.zoom})`
+        map.style.transform = `scale(${x/55+this.zoom})`
     }
   }
 }
@@ -410,7 +410,7 @@ export default {
 #mapBox {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 55%;
   will-change: transform;
   transform: translate(-50%, -50%) scale(1) scaleX(1) scaleY(1) rotate(0) skew(0deg, 0deg);
   justify-content: center;
