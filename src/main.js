@@ -18,10 +18,11 @@ import './assets/main.css'
 
 // Primevue resources
 import PrimeVue from 'primevue/config';
+import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
 // On page load, fetch building/room data from Vacansee/data:
-const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/rooms.json'
+const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/data/data.json'
 const { data, isFetching, error } = useFetch(URL).get().json()
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 
@@ -116,6 +117,13 @@ const app = createApp(App)
 app.provide('global', global);
 app.use(Router)
 app.use(Moment)
+app.use(ToastService)
 app.use(PrimeVue, { ripple: true })
+
+app.config.globalProperties.$showToast =
+function({ type = 'error', title = 'Default', body = '', lasts = '' } = {}) {
+	this.$toast.add({ severity: type, summary: title, detail: body, life: lasts });
+}
+app.config.globalProperties.$clearToasts = function() { this.$toast.removeAllGroups() } 
 
 app.mount('#app')
