@@ -12,8 +12,11 @@ import tinycolor from "tinycolor2";
   
 <script>
 const getFloorSVG = async (floor) => {
-  const module = await import(`../../assets/floors/${floor}.svg`)
-  return module.default
+  try {
+    const module = await import(`../../assets/floors/${floor}.svg`)
+    return module.default
+  }
+  catch { console.error(`Map not yet implemented!`) }
 }
 
 export default {
@@ -37,7 +40,10 @@ export default {
           this.roomSVG = null;
           this.global.room = ""
         }
-        else this.floorSVG = await getFloorSVG(floor)
+        else {
+          this.floorSVG = await getFloorSVG(floor)
+          if (!this.floorSVG) this.$showToast({title: 'Map not yet implemented!'})
+        }
       },
       immediate: true,
     },

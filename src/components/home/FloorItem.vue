@@ -30,31 +30,11 @@ import Floor from './Floor.vue'
 export default {
   // Get reference to global
   inject: ["global"],
-  props: ['unselected'],
   emits: ["roomHover"],
   components: {
     Floor
   },
   watch: {
-    // When unselected changes
-    unselected(newVar) {
-      if (newVar) {
-        this.floor = ""
-        floorBox.style.opacity = 0;
-        up.style.opacity = down.style.opacity = 0;
-        buttonBox.style.pointerEvents = "none";
-      } else {
-        if (this.getBldg()) {
-          this.floorNum = this.getBldg().meta.floors[2]
-          this.floor = this.global.bldg + this.getBldg().meta.floors[2]
-          this.global.floor = this.getBldg().meta.floors[2]
-        }
-        floorBox.style.opacity = 1;
-        up.style.opacity = down.style.opacity = 1;
-        buttonBox.style.pointerEvents = "auto";
-        down.style.transform = "rotate(180deg)";
-      }
-    },
     'global.aspectRatio': {
       handler() {
         var popupWidth = popup.style.width;
@@ -71,7 +51,28 @@ export default {
           `translate(calc(45vw), calc(20vh)) 
           scale(${window.innerWidth * 0.9 / 50})`;
         }
+      },
+    },
+    'global.bldg' : {
+      handler() {
+        if (this.global.bldg) { // selected
+          if (this.getBldg()) {
+            this.floorNum = this.getBldg().meta.floors[2]
+            this.floor = this.global.bldg + this.getBldg().meta.floors[2]
+            this.global.floor = this.getBldg().meta.floors[2]
+          }
+          floorBox.style.opacity = 1;
+          up.style.opacity = down.style.opacity = 1;
+          buttonBox.style.pointerEvents = "auto";
+          down.style.transform = "rotate(180deg)";
+        } else { // unselected
+          this.floor = ""
+          floorBox.style.opacity = 0;
+          up.style.opacity = down.style.opacity = 0;
+          buttonBox.style.pointerEvents = "none";
+        } 
       }
+      
     },
     // When floor num changes
     floorNum(newVar) {
@@ -85,13 +86,12 @@ export default {
     btnUp(newVar) {
       if (newVar) up.style.opacity = 1;
       else        up.style.opacity = 0.6;
-
     },
     // When button down changes
     btnDown(newVar) {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
-    }
+    },
   },
   data() {
     // Local variables
@@ -102,27 +102,76 @@ export default {
       btnUp: true,
       btnDown: true,
       floor: "",
+      zoom:0,
     }
   },
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
     var popupWidth = popup.style.width;
-      if (400 > 0.33 * window.innerWidth) {
-        popupWidth = "400px";
-      }
-        // If landscape mode
-        if (this.global.aspectRatio <= this.global.flipScreen) {
-          floorBox.style.transform = 
-          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
+    if (400 > 0.33 * window.innerWidth) {
+      popupWidth = "400px";
+    }
+    // If landscape mode
+    if (this.global.aspectRatio <= this.global.flipScreen) {
+      floorBox.style.transform = 
+      `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
       calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
-        } else { // If portrait mode
-          floorBox.style.transform = 
-          `translate(calc(45vw), calc(20vh)) 
-          scale(${window.innerWidth * 0.9 / 50})`;
-        }
+    } else { // If portrait mode
+      floorBox.style.transform = 
+      `translate(calc(45vw), calc(20vh)) 
+      scale(${window.innerWidth * 0.9 / 50})`;
+    }
+    window.addEventListener("wheel", this.onMouseScroll);
+    window.addEventListener("mousedown", () => {
+      window.addEventListener("mousemove", this.onMouseDrag);
+    });
+    window.addEventListener("mouseup", () => {
+      window.removeEventListener("mousemove", this.onMouseDrag);
+    });
+    this.windowEventHandler();
   },
   methods: {
+    //clientX and Y will be used to scroll about mouse
+    onMouseScroll({clientX, clientY, deltaX, deltaY}) {
+      if (this.global.bldg){
+        let dirwheel = 0;
+        if (deltaY>0) {
+          dirwheel = -1;
+        } else if (deltaY<0) {
+          dirwheel = 1;
+        }
+        let x = window.innerWidth;
+        let y = window.innerHeight;
+        let ratio = x / y;
+        let portraitMode = false;
+        if (this.ratio < this.threshold) {
+          portraitMode = true;
+        }
+        let tempZoom=0;
+        if (portraitMode) {
+          tempZoom = y/50+this.zoom+dirwheel*5;
+        } else {
+          tempZoom = x/50+this.zoom+dirwheel*5;
+        }
+
+        this.zoom +=dirwheel*10;
+        if (dirwheel == -1 && this.zoom < 20) this.zoom  = 20 - (30 - this.zoom)*0.5;
+        if (dirwheel == 1 && this.zoom >= 20) this.zoom  = 20 + (this.zoom-10)*0.5;
+        if (this.zoom > 100) this.zoom  = 100;
+        // console.log(dirwheel, this.zoom)
+        this.windowEventHandler();
+      }
+    },
+    onMouseDrag({movementX, movementY}) {
+      if (this.global.bldg) {
+        // console.log(floorBox.offsetLeft, floorBox.offsetTop)
+        let changeX = (movementX*((this.zoom+100)/100));
+        let changeY = (movementY*((this.zoom+100)/100));
+        floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
+        floorBox.style.top = floorBox.offsetTop + changeY + "px";
+      }
+    },
     // gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
     bringToFront(f) {
@@ -149,6 +198,15 @@ export default {
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
+      }
+    },
+    windowEventHandler() {
+      // If landscape mode
+      if (this.global.aspectRatio <= 1.2) {
+        floorBox.style.transform = 
+        `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50 + this.zoom})` + `rotate(90deg)`;
+      } else { // If portrait mode
+        floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65 + this.zoom})`;
       }
     }
   }

@@ -1,32 +1,39 @@
 <script setup>
 import moment from 'moment-timezone'
+import Tag from 'primevue/tag';
 </script>
 
 <template>
     <!-- HTML for the popup -->
     <div id="popup">
         <div id="breadcrumbs">
-            {{ global.bldg }}
+            {{ global.bldg.replace(/_/g, ' ') }}
             <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
             <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
-        <div v-if="global.bldg" class="body">
+        <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
                 <div id="photo-box">
-                    <img src="../../assets/photos/DCC.jpg" id="photo">
+                    <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
                     <!-- <img :src="`../../assets/photos/${global.bldg}.jpg`" id="photo"> -->
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
                 <p id="busy"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
+                <span v-if="getHist()"> 
+                    <img src="../../assets/icons/info.svg" height="20" width="20" />
+                    <a :href="'https://archives.rpi.edu/institute-history/building-histories/' + getHist()">
+                        <em> Get historical info&emsp;</em>
+                    </a>
+                </span>
+                <Tag value="Tag placeholder" rounded></Tag> <!-- Placeholder for the tag -->
             </div>
-            <p></p>
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
             <div v-else> <!-- Room w/ data selected -->
-                <div class="block">
+                <div class="block"> <!-- Block #1: room information -->
                     <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
-                    <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
+                    <span v-if="!getPrinters()">Printers: none</span>
                     <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
                         <b>{{ getCur().hours() }}h</b> and
                         <b>{{ getCur().minutes() }}m</b>
@@ -42,8 +49,8 @@ import moment from 'moment-timezone'
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
                 </div>
-                <div class="block">
-                    <b v-if="getData().meta.next">Today</b>
+                <div v-if="getTodaysClasses().length" class="block"> <!-- Block: today's room schedule -->
+                    <b>Today</b>
                     <table>
                         <tr v-for="item in getTodaysClasses()">
                             {{ item[0] }}
@@ -51,8 +58,17 @@ import moment from 'moment-timezone'
                         </tr>
                     </table>
                 </div>
+                <div v-if="getPrinters()" class="block"> <!-- Block: printers -->
+                    <b>Printer{{ getPrinters().length > 1 ? 's' : '' }}</b>
+                    <div v-for="p in getPrinters()" style="line-height: 0.5;">
+                        <p><h4>{{p[0]}}</h4></p>
+                        <p>Dimensions: {{p[1]}}&emsp;&emsp;Resolution: {{p[2]}}</p>
+                        <p>Color: {{p[3]}}&emsp;&emsp;Duplex: {{p[4]}}</p>
+                    </div>
+                </div>
             </div>
         </div>
+        <div v-else-if="global.bldg" class="block warn">No classes here!</div>
     </div>
 </template>
 
@@ -96,7 +112,10 @@ export default {
         // return if a room is selected
         noneSelected() { return !this.global.room },
         // Returns the current building
-        getBldg() { return this.global.data[this.global.bldg] },
+        getBldg() {
+            let bldg = this.global.data[this.global.bldg]
+            return bldg ? bldg : console.warn(`No classes here!`)
+        },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
         getSecs(type) { 
             switch(type) {
@@ -120,8 +139,8 @@ export default {
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
         // Returns the printers in a building
         getPrinters() {
-            if (!this.getBldg().meta.hasOwnProperty("printers")) return 'none'
-            else return this.getBldg().meta.printers
+            if (!this.getData().meta.hasOwnProperty("printers")) return false
+            else return this.getData().meta.printers
         },
         // Gathers the classes for the building
         getTodaysClasses() {
@@ -140,6 +159,11 @@ export default {
             else if (heat > 40) return 'usual'
             else if (heat > 10) return 'not busy'
             else return 'vacant'
+        },
+        getHist() {
+            let hist = this.getBldg().meta.hist
+            if (hist === "") hist = this.getBldg().meta.name.toLowerCase().replace(/ /g, "-")
+            return hist // for case: false
         }
     }
 }
@@ -148,7 +172,7 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
-    min-width: 400px;
+    min-width: unset;
     height: 50vh;
     position: absolute;
     pointer-events: all;
@@ -223,10 +247,6 @@ tr:nth-child(even) {
     color: red;
     text-align: center;
     font-weight: 500;
-}
-.code {
-    font-size: 15px;
-    color: #902a00;
 }
 
 .sec {
