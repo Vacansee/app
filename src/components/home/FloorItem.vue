@@ -94,6 +94,7 @@ export default {
       floorNum: 1,
       btnUp: true,
       btnDown: true,
+      onPopup: false,
       floor: "",
       zoom:0,
     }
@@ -101,6 +102,8 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
+    popup.addEventListener("mouseleave", () => { this.onPopup = false; console.log(this.onPopup) })
+    popup.addEventListener("mouseenter", () => { this.onPopup = true; console.log(this.onPopup) })
     window.addEventListener("wheel", this.onMouseScroll);
     window.addEventListener("mousedown", () => {
       window.addEventListener("mousemove", this.onMouseDrag);
@@ -113,7 +116,7 @@ export default {
   methods: {
     //clientX and Y will be used to scroll about mouse
     onMouseScroll({clientX, clientY, deltaX, deltaY}) {
-      if (this.global.bldg){
+      if (!this.onPopup && this.global.bldg){
         let dirwheel = 0;
         if (deltaY>0) {
           dirwheel = -1;
