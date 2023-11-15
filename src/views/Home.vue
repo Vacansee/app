@@ -43,10 +43,10 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (!this.global.bldg && this.global.aspectRatio < 1.2) {
+        if (!this.bldgSVG && this.global.aspectRatio < 1.2) {
           popup.style.transform = "TranslateX(-33vw)"
         // If portrait mode
-        } else if (!this.global.bldg){
+        } else if (!this.bldgSVG){
           popup.style.transform = "TranslateY(50vh)"
         }
       }
@@ -83,10 +83,10 @@ export default {
     // If landscape mode
     // Fixes issue where transitions when unselected would show the popup for a split second
     popup.style.transition = "transform .0s"
-    if (!this.global.bldg && this.global.aspectRatio < 1.2) {
+    if (!this.bldgSVG && this.global.aspectRatio < 1.2) {
       popup.style.transform = "TranslateX(-33vw)"
     // If portrait mode
-    } else if (!this.global.bldg){
+    } else if (!this.bldgSVG){
       popup.style.transform = "TranslateY(50vh)"
     }
   },
@@ -107,7 +107,7 @@ export default {
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
-      if (!this.global.bldg) {
+      if (this.global.data && !this.bldgSVG) {
         this.ntVisible = 1
         if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
         else this.label = b.id.replace(/_/g, ' ')
@@ -144,7 +144,7 @@ export default {
     },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
-      if (!this.global.bldg) {
+      if (this.global.data && !this.bldgSVG) {
         // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2

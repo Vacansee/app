@@ -242,9 +242,9 @@ export default {
   inject: ["global"],
   props: ['bldgSVG'],
   watch: {
-    'global.bldg': {
+    'bldgSVG': {
       handler() {
-        if (this.global.bldg) { // selected
+        if (this.bldgSVG) { // selected
           this.bringToFront(this.bldgSVG);
           this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
         } else { // unselected
