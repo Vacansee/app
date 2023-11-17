@@ -37,10 +37,6 @@ export default {
   watch: {
     'global.aspectRatio': {
       handler() {
-        var popupWidth = popup.style.width;
-        if (400 > 0.33 * window.innerWidth) {
-          popupWidth = "400px";
-        }
         // If landscape mode
         if (this.global.aspectRatio <= this.global.flipScreen) {
           floorBox.style.transform = 
@@ -108,20 +104,20 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500)
-    var popupWidth = popup.style.width;
-    if (400 > 0.33 * window.innerWidth) {
-      popupWidth = "400px";
-    }
-    // If landscape mode
-    if (this.global.aspectRatio <= this.global.flipScreen) {
-      floorBox.style.transform = 
-      `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
+        var popupWidth = popup.style.width;
+        if (400 > 0.33 * window.innerWidth) {
+          popupWidth = "400px";
+        }
+        // If landscape mode
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+          floorBox.style.transform = 
+          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
       calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
-    } else { // If portrait mode
-      floorBox.style.transform = 
-      `translate(calc(45vw), calc(20vh)) 
-      scale(${window.innerWidth * 0.9 / 50})`;
-    }
+        } else { // If portrait mode
+          floorBox.style.transform = 
+          `translate(calc(45vw), calc(20vh)) 
+          scale(${window.innerWidth * 0.9 / 50})`;
+        }
     window.addEventListener("wheel", this.onMouseScroll);
     window.addEventListener("mousedown", () => {
       window.addEventListener("mousemove", this.onMouseDrag);
