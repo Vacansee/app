@@ -260,6 +260,11 @@ export default {
           this.applyBuildingColors();
         }
       }
+    },
+    'global.userCoords': {
+      handler() {
+        this.showUserLocation()
+      }
     }
   },
   // General local variables
@@ -382,6 +387,28 @@ export default {
     bringToFront(b) {
       let group = b.parentNode
       group.appendChild(b)
+    },
+    showUserLocation() {
+      // Check if a foreignObject already exists
+      const existingForeignObject = buildings.querySelector('foreignObject');
+
+      // If a foreignObject exists, remove it
+      if (existingForeignObject) {
+        buildings.removeChild(existingForeignObject);
+      }
+
+      const foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject')
+      foreignObject.setAttribute('x', this.global.userCoords[0])
+      foreignObject.setAttribute('y', this.global.userCoords[1])
+      foreignObject.setAttribute('width', '100%'); // Set the width
+      foreignObject.setAttribute('height', '100%');
+
+      console.log("coords: " + this.global.userCoords[0] + " " + this.global.userCoords[1])
+      const content = document.createElement('div');
+      content.textContent = 'o';
+
+      foreignObject.appendChild(content)
+      buildings.appendChild(foreignObject)
     },
     // Used so resizing isnt called forever, 
     // Stops calling when resize hasnt been changed for 300 seconds

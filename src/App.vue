@@ -92,13 +92,33 @@ export default {
     getLocation() {
       navigator.geolocation.getCurrentPosition(this.locationObtained)
     },
+    locationError(err) {
+      this.$showToast({title: 'Failed to get location', body: err.message})
+    },
     locationObtained(pos) {
       const crd = pos.coords;
+      if (crd.accuracy > 50)  {
+        this.$showToast({title: 'Location is too inaccurate to locate user', body: 'The accuracy is off by +/- ' + crd.accuracy + ' meters. Try checking your wifi connection.'})
+        return
+      }
 
-      console.log("Your current position is:");
-      console.log(`Latitude : ${crd.latitude}`);
-      console.log(`Longitude: ${crd.longitude}`);
-      console.log(`More or less ${crd.accuracy} meters.`);
+      const eigthAndSageCoords = [42.733133, -73.683511]
+      const fifteenthAndCollegeCoords = [42.726863, -73.678078]
+
+      const scaleY = (crd.latitude - fifteenthAndCollegeCoords[0]) / (eigthAndSageCoords[0] - fifteenthAndCollegeCoords[0])
+      const scaleX = (crd.longitude - fifteenthAndCollegeCoords[1]) / (eigthAndSageCoords[1] - fifteenthAndCollegeCoords[1])
+      const svgX = 600 + scaleX * (65 - 600)
+      const svgY = 1060 + scaleY * (478 - 1060)
+      if(svgX < 0 || svgX > 1000 || svgY < 0 || svgY > 1200) {
+        this.$showToast({title: 'Location is too far away from map'})
+        return;
+      }
+      this.global.userCoords = [svgX, svgY]
+      // console.log("Your current position is:");
+      // console.log(`Latitude : ${crd.latitude}`);
+      // console.log(`Longitude: ${crd.longitude}`);
+      // console.log('svg coords: ' + svgX + ' '  + svgY)
+      // console.log(`More or less ${crd.accuracy} meters.`);
     }
   }
 }
