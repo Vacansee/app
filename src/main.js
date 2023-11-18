@@ -27,7 +27,6 @@ const { data, isFetching, error } = useFetch(URL).get().json()
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 
 	data: data,
-	loading: isFetching,
 	error: error,
 	bldg: '',
 	room: '',
