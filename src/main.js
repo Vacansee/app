@@ -36,6 +36,7 @@ const global = reactive({ // The global reactive object!
 	flipScreen: 1,
 	// Non current time during a busy part of the day (used for testing)
 	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
+	firstCalc: false,
 })
 const FlipScreen = 1;
 
@@ -117,5 +118,11 @@ const app = createApp(App)
 app.provide('global', global);
 app.use(Router)
 app.use(Moment)
-
+app.use(ToastService)
+app.use(PrimeVue, { ripple: true })
+app.config.globalProperties.$showToast =
+function({ type = 'error', title = 'Default', body = '', lasts = '' } = {}) {
+	this.$toast.add({ severity: type, summary: title, detail: body, life: lasts });
+}
+app.config.globalProperties.$clearToasts = function() { this.$toast.removeAllGroups() } 
 app.mount('#app')

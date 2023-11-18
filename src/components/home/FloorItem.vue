@@ -37,16 +37,7 @@ export default {
   watch: {
     'global.aspectRatio': {
       handler() {
-        // If landscape mode
-        if (this.global.aspectRatio <= this.global.flipScreen) {
-          floorBox.style.transform = 
-          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
-      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
-        } else { // If portrait mode
-          floorBox.style.transform = 
-          `translate(calc(45vw), calc(20vh)) 
-          scale(${window.innerWidth * 0.9 / 50})`;
-        }
+        this.moveMap();
       },
     },
     'global.bldg' : {
@@ -105,20 +96,7 @@ export default {
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
-        var popupWidth = popup.style.width;
-        if (400 > 0.33 * window.innerWidth) {
-          popupWidth = "400px";
-        }
-        // If landscape mode
-        if (this.global.aspectRatio <= this.global.flipScreen) {
-          floorBox.style.transform = 
-          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
-      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
-        } else { // If portrait mode
-          floorBox.style.transform = 
-          `translate(calc(45vw), calc(20vh)) 
-          scale(${window.innerWidth * 0.9 / 50})`;
-        }
+    this.moveMap();
     popup.addEventListener("mouseleave", () => { this.onPopup = false; console.log(this.onPopup) })
     popup.addEventListener("mouseenter", () => { this.onPopup = true; console.log(this.onPopup) })
     window.addEventListener("wheel", this.onMouseScroll);
@@ -128,9 +106,35 @@ export default {
     window.addEventListener("mouseup", () => {
       window.removeEventListener("mousemove", this.onMouseDrag);
     });
-    this.windowEventHandler();
   },
   methods: {
+    moveMap() {
+      var popupWidth = popup.style.width;
+        if (400 > 0.33 * window.innerWidth) {
+          popupWidth = "400px";
+        }
+        // If thinner landscape mode
+        if ((this.global.aspectRatio <= this.global.flipScreen)
+        && (this.global.aspectRatio >= 0.5)) {
+          floorBox.style.transform = 
+          `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
+      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
+      // If wide landscape
+        } else if (this.global.aspectRatio <= this.global.flipScreen) {
+          floorBox.style.transform = 
+          `translate(calc(67vw - 25px), calc(45vh)) 
+          scale(${(window.innerWidth) * 0.57 / 50})`;
+      // If portrait wide mode
+        } else if (this.global.aspectRatio <= 1.85) {
+          floorBox.style.transform = 
+          `translate(calc(50vw - 25px), calc((${window.innerHeight}px - ${popup.style.height}) / 2)) 
+          scale(${window.innerWidth * 0.9 / 50})`;
+      // If potrait tall mode
+        } else {
+          floorBox.style.transform = 
+          `translate(calc(45vw - 25px), calc(25vh - 25px)) scale(calc(${window.innerHeight * 0.45 / 50}))` + `rotate(90deg)`;
+        }
+    },
     //clientX and Y will be used to scroll about mouse
     onMouseScroll({clientX, clientY, deltaX, deltaY}) {
       if (!this.onPopup && this.global.bldg){
@@ -159,7 +163,7 @@ export default {
         if (dirwheel == 1 && this.zoom >= 20) this.zoom  = 20 + (this.zoom-10)*0.5;
         if (this.zoom > 100) this.zoom  = 100;
         // console.log(dirwheel, this.zoom)
-        this.windowEventHandler();
+        this.moveMap();
       }
     },
     onMouseDrag({movementX, movementY}) {
@@ -197,15 +201,6 @@ export default {
         this.global.floor = this.floorNum;
         this.floor = this.global.bldg + this.floorNum
         this.global.room = ""
-      }
-    },
-    windowEventHandler() {
-      // If landscape mode
-      if (this.global.aspectRatio <= 1.2) {
-        floorBox.style.transform = 
-        `translate(calc(15vw), calc(30vh)) scale(${(window.innerHeight - 150) / 50 + this.zoom})` + `rotate(90deg)`;
-      } else { // If portrait mode
-        floorBox.style.transform = `translate(-50%, calc(-50% + 100px)) scale(${window.innerWidth / 65 + this.zoom})`;
       }
     }
   }
