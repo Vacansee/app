@@ -118,21 +118,21 @@ export default {
         && (this.global.aspectRatio >= 0.5)) {
           floorBox.style.transform = 
           `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 50px), 
-      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50}))` + `rotate(90deg)`;
+      calc(45vh)) scale(calc(${window.innerHeight * 0.9 / 50 + this.zoom}))` + `rotate(90deg)`;
       // If wide landscape
         } else if (this.global.aspectRatio <= this.global.flipScreen) {
           floorBox.style.transform = 
           `translate(calc(67vw - 25px), calc(45vh)) 
-          scale(${(window.innerWidth) * 0.57 / 50})`;
+          scale(${(window.innerWidth) * 0.57 / 50 + this.zoom})`;
       // If portrait wide mode
         } else if (this.global.aspectRatio <= 1.85) {
           floorBox.style.transform = 
           `translate(calc(50vw - 25px), calc((${window.innerHeight}px - ${popup.style.height}) / 2)) 
-          scale(${window.innerWidth * 0.9 / 50})`;
+          scale(${window.innerWidth * 0.9 / 50 + this.zoom})`;
       // If potrait tall mode
         } else {
           floorBox.style.transform = 
-          `translate(calc(45vw - 25px), calc(25vh - 25px)) scale(calc(${window.innerHeight * 0.45 / 50}))` + `rotate(90deg)`;
+          `translate(calc(45vw - 25px), calc(25vh - 25px)) scale(calc(${window.innerHeight * 0.45 / 50 + this.zoom}))` + `rotate(90deg)`;
         }
     },
     //clientX and Y will be used to scroll about mouse
