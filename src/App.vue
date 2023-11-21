@@ -97,23 +97,27 @@ export default {
     },
     locationObtained(pos) {
       const crd = pos.coords;
-      if (crd.accuracy > 50)  {
-        this.$showToast({title: 'Location is too inaccurate to locate user', body: 'The accuracy is off by +/- ' + crd.accuracy + ' meters. Try checking your wifi connection.'})
-        return
-      }
+      // if (crd.accuracy > 50)  {
+      //   this.$showToast({title: 'Location is too inaccurate to locate user', body: 'The accuracy is off by +/- ' + crd.accuracy + ' meters. Try checking your wifi connection.'})
+      //   return
+      // }
+      const DCCLocation = [42.72939854575586, -73.67956579999999]
+      const westLocation = [42.73178763583408, -73.68341264293338]
+      const commonsLocation = [42.728455878577684, -73.67448701676955]
 
-      const eigthAndSageCoords = [42.733133, -73.683511]
-      const fifteenthAndCollegeCoords = [42.726863, -73.678078]
-
-      const scaleY = (crd.latitude - fifteenthAndCollegeCoords[0]) / (eigthAndSageCoords[0] - fifteenthAndCollegeCoords[0])
-      const scaleX = (crd.longitude - fifteenthAndCollegeCoords[1]) / (eigthAndSageCoords[1] - fifteenthAndCollegeCoords[1])
-      const svgX = 600 + scaleX * (65 - 600)
-      const svgY = 1060 + scaleY * (478 - 1060)
-      if(svgX < 0 || svgX > 1000 || svgY < 0 || svgY > 1200) {
+      const eigthAndSageCoords = [42.733139437397675, -73.68350452317202, 65, 478]
+      const burdettAndTibbitsCoords = [42.724868915490866, -73.67381709414943, 970, 1205]
+      
+      const scaleY = (/*crd.latitude*/ DCCLocation[0] - burdettAndTibbitsCoords[0]) / (eigthAndSageCoords[0] - burdettAndTibbitsCoords[0])
+      const scaleX = (/*crd.longitude*/ DCCLocation[1] - burdettAndTibbitsCoords[1]) / (eigthAndSageCoords[1] - burdettAndTibbitsCoords[1])
+      const svgX = burdettAndTibbitsCoords[2] + scaleX * (eigthAndSageCoords[2] - burdettAndTibbitsCoords[2])
+      const svgY = burdettAndTibbitsCoords[3] + scaleY * (eigthAndSageCoords[3] - burdettAndTibbitsCoords[3])
+      if(svgX < 0 || svgX > 1100 || svgY < 0 || svgY > 1300) {
         this.$showToast({title: 'Location is too far away from map'})
         return;
       }
       this.global.userCoords = [svgX, svgY]
+      // this.global.userCoords = [svgX2, svgY2]
       // console.log("Your current position is:");
       // console.log(`Latitude : ${crd.latitude}`);
       // console.log(`Longitude: ${crd.longitude}`);
