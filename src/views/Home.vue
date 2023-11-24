@@ -43,8 +43,8 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (!this.bldgSVG && this.global.aspectRatio < 1.2) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else if (!this.bldgSVG){
           popup.style.transform = "TranslateY(50vh)"
@@ -83,8 +83,8 @@ export default {
     // If landscape mode
     // Fixes issue where transitions when unselected would show the popup for a split second
     popup.style.transition = "transform .0s"
-    if (!this.bldgSVG && this.global.aspectRatio < 1.2) {
-      popup.style.transform = "TranslateX(-33vw)"
+    if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+      popup.style.transform = "TranslateX(-50vw)"
     // If portrait mode
     } else if (!this.bldgSVG){
       popup.style.transform = "TranslateY(50vh)"
@@ -161,6 +161,7 @@ export default {
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
         popup.style.minWidth = "400px"
+        FloorItem.moveMap();
       }
     },
     // On deselection of a building (when clicked off)
@@ -174,8 +175,8 @@ export default {
         popup.style.transition = "transform .5s"
         popup.style.minWidth = "unset"
         // Landscape mode
-        if (this.global.aspectRatio <= 1.2) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else {
           popup.style.transform = "TranslateY(50vh)"
