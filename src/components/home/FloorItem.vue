@@ -89,6 +89,8 @@ export default {
       btnUp: true,
       btnDown: true,
       onPopup: false,
+      dragging: false,
+      dsHist: 0,
       floor: "",
       zoom:0,
     }
@@ -105,6 +107,8 @@ export default {
     });
     window.addEventListener("mouseup", () => {
       window.removeEventListener("mousemove", this.onMouseDrag);
+      this.dragging = false
+      this.dsHist = 0
     });
   },
   methods: {
@@ -171,8 +175,15 @@ export default {
         // console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
-        floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
-        floorBox.style.top = floorBox.offsetTop + changeY + "px";
+        let dsCur =  Math.abs(changeX) + Math.abs(changeY)
+        // console.log(dsCur, this.dsHist)
+        if (this.dragging || (dsCur > 1 && this.dsHist > 10)) {
+          floorBox.style.left = floorBox.offsetLeft + changeX + "px"; 
+          floorBox.style.top = floorBox.offsetTop + changeY + "px";
+          this.dragging = true
+        }
+        if (dsCur > 1) this.dsHist++
+        // else this.dsHist = 0
       }
     },
     // gets the current building

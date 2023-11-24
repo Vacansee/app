@@ -161,7 +161,6 @@ export default {
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
         popup.style.minWidth = "400px"
-        FloorItem.moveMap();
       }
     },
     // On deselection of a building (when clicked off)
