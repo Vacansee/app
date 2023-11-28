@@ -27,15 +27,14 @@ const { data, isFetching, error } = useFetch(URL).get().json()
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 
 	data: data,
-	loading: isFetching,
 	error: error,
 	bldg: '',
 	room: '',
 	floor: '1',
+	flipScreen: 1,
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
-	// Non current time during a busy part of the day (used for testing)
-	// time: Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm'),
+	// time: Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm'), // Test time
 	firstCalc: false,
 })
 
@@ -47,7 +46,8 @@ const global = reactive({ // The global reactive object!
 function checkActive() {
 	// Loop through the global reactive variable data
 	for (let b in global.data) {
-		let bldg = global.data[b], sum = 0, longest = 0
+		let bldg = global.data[b],
+			sum = 0, longest = 0, outflow = 0, inflow = 0
 		// If heat isn't in bldg.meta, set heat to 0
 		if (!('heat' in bldg.meta)) bldg.meta.heat = 0
 		// Loop thorugh building data
@@ -70,7 +70,17 @@ function checkActive() {
 					// Sum up max people in all rooms used
 					sum += room.meta.max
 				}
-				if (beg > now) { // reached the end of the day
+				let [dBeg, tBeg] = beg.split(':'), [dEnd, tEnd] = end.split(':'),
+					[dNow, tNow] = now.split(':')
+				if (dNow === dEnd && tNow > tEnd) {
+					outflow += 1/(tNow - tEnd) * room.meta.max
+					// console.log('outflow:', tNow, '-' , tEnd, '=', tNow - tEnd, '\n\n')
+				}
+				if (now < beg) {
+					if (dNow === dBeg) {
+						inflow += 1/(tBeg - tNow) * room.meta.max
+						// console.log('inflow:', tBeg, '-' , tNow, '=', tBeg - tNow)
+					}
 					const i = Moment(now, 'e:HHmm'), f = Moment(beg, 'e:HHmm')
                     const until = Moment.duration(f.diff(i))
 					if (until.asMinutes() > longest) longest = until.asMinutes()
@@ -82,6 +92,8 @@ function checkActive() {
 		}
 		// Sum/total people that can exist in the building = % filled
 		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
+		bldg.meta.flow = (1 - Math.exp((-2/(bldg.meta.max/5))*(inflow + outflow)))
+		// console.log(b, bldg.meta.flow.toFixed(2), bldg.meta.max, (logisitc).toFixed(2) )
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)
 	}
@@ -89,14 +101,13 @@ function checkActive() {
 
 setInterval(() => { // Update current time every second
 	global.time = Moment.tz('America/New_York').format('e:HHmm')
-	// Old time used for testing
-	// global.time = Moment.tz('2023-09-14 12:30', 'America/New_York').format('e:HHmm')
+	// global.time = Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm') // Test time
 	let seconds = Number(Moment.tz('America/New_York').format('ss'))
-	// let seconds = Number(Moment.tz('2023-09-14 12:30', 'America/New_York').format('ss'))
+	// let seconds = Number(Moment.tz('2023-11-28 11:55', 'America/New_York').format('ss')) // Test time
 	// Every 5 minutes, check data for buildings (update heat and room availability)
 	if (!(global.time.split(':')[1] % 5) && !seconds) { // update states every 5m (on the dot)
-		checkActive()
-		console.log(`Updating states @ ${global.time}:${seconds}`)
+		// checkActive()
+		// console.log(`Updating states @ ${global.time}:${seconds}`)
 	}
 	// else console.log(`${global.time}:${seconds}`)
 }, 1000)
@@ -119,11 +130,9 @@ app.use(Router)
 app.use(Moment)
 app.use(ToastService)
 app.use(PrimeVue, { ripple: true })
-
 app.config.globalProperties.$showToast =
 function({ type = 'error', title = 'Default', body = '', lasts = '' } = {}) {
 	this.$toast.add({ severity: type, summary: title, detail: body, life: lasts });
 }
 app.config.globalProperties.$clearToasts = function() { this.$toast.removeAllGroups() } 
-
 app.mount('#app')
