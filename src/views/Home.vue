@@ -7,14 +7,12 @@ import FloorItem from '../components/home/FloorItem.vue'
 
 <template>
   <!-- Loads Data -->
-  <div v-if="global.loading" class="toast" id="nametag">Loading data...</div>
-  <div v-else-if="global.error" class="toast" id="nametag">Failed to retrieve data</div>
   <div id="nametag" :style="{ top: mouseTop + 'px', left: mouseLeft + 'px', opacity: ntVisible }"> {{ label }}</div>
   <!-- Creates mapitem, popupitem, flooritem -->
-  <MapItem :unselected="unselected" :bldgSVG="bldgSVG" />
+  <MapItem :bldgSVG="bldgSVG" />
   <div id="mask"></div>
   <PopUpItem />
-  <FloorItem @room-hover="onRoomHover" :unselected="unselected"/>
+  <FloorItem @room-hover="onRoomHover" />
 </template>
 
 <script>
@@ -35,7 +33,6 @@ export default {
       ntVisible: 0,
       switch: 0,
       bldgSVG: "",
-      unselected: true,
       label: '',
     }
   },
@@ -46,11 +43,20 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (this.unselected && this.global.aspectRatio < 1) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
-        } else if (this.unselected){
+        } else if (!this.bldgSVG){
           popup.style.transform = "TranslateY(50vh)"
+        }
+      }
+    },
+    'global.bldg': {
+      handler() {
+        if ([...Object.keys(this.global.data)].includes(this.global.bldg)) {
+          for (const b of buildings.children) {
+            if (b.id === this.global.bldg) this.buildingSelect(b)
+          }
         }
       }
     }
@@ -66,23 +72,45 @@ export default {
       b.addEventListener("mouseleave", this.nameTagDisappear)
       b.addEventListener("click", () => { this.buildingSelect(b) })
     }
-      // If landscape mode
-      // Fixes issue where transitions when unselected would show the popup for a split second
-      popup.style.transition = "transform .0s"
-      if (this.unselected && this.global.aspectRatio < 1) {
-        popup.style.transform = "TranslateX(-33vw)"
-      // If portrait mode
-      } else if (this.unselected){
-        popup.style.transform = "TranslateY(50vh)"
-      }
+
+    for (const o of other.children) {
+      o.addEventListener("mouseover", () => { this.nameTagAppear(o) })
+      o.addEventListener("mouseleave", this.nameTagDisappear)
+      o.addEventListener("click", () => {
+        this.$showToast({type: 'info', title: 'Unavailable', body: "This isn\'t a public facility", lasts: 2000}) })
+    }
+
+    // If landscape mode
+    // Fixes issue where transitions when unselected would show the popup for a split second
+    popup.style.transition = "transform .0s"
+    if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+      popup.style.transform = "TranslateX(-50vw)"
+    // If portrait mode
+    } else if (!this.bldgSVG){
+      popup.style.transform = "TranslateY(50vh)"
+    }
   },
   methods: {
+    runFind() {
+      console.clear()
+      let count = 0 
+      for (const b of buildings.children) {
+        console.log(b.id)
+        count++
+      }
+      console.log(count)
+
+      // for (const o of other.children) {
+      //   if (!(o.id in this.global.data)) console.log(o.id)
+      // }
+    },
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
-      if (this.unselected) {
+      if (this.global.data && !this.bldgSVG) {
         this.ntVisible = 1
-        this.label = b.id.replace(/-/g, ' ')
+        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
+        else this.label = b.id.replace(/_/g, ' ')
       }
     },
     // Make the name tag go away
@@ -116,23 +144,23 @@ export default {
     },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
-      if (this.unselected) {
-        var bBox = b.getBoundingClientRect()
-        var boxCenterX = bBox.x + bBox.width / 2
-        var boxCenterY = bBox.y + bBox.height / 2
+      if (this.global.data && !this.bldgSVG) {
+        // this.$router.push({ name: 'home', params: { bldg } });
+        let bBox = b.getBoundingClientRect()
+        let boxCenterX = bBox.x + bBox.width / 2
+        let boxCenterY = bBox.y + bBox.height / 2
 
-        this.unselected = false
         this.bldgSVG = b
-        this.global.bldg = b.id.replace(/-/g, ' ')
-
+        this.global.bldg = b.id
         this.ntVisible = 0 // hide nametag when building selected
 
-        mask.style.opacity = 0.8
+        mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
+        popup.style.minWidth = "400px"
       }
     },
     // On deselection of a building (when clicked off)
@@ -140,20 +168,19 @@ export default {
       try {
         this.bldgSVG = ""
         this.global.bldg = ""
-        this.unselected = true
         mapBox.style.transform = "scale(1) translate(-50%, -50%)"
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
+        popup.style.minWidth = "unset"
         // Landscape mode
-        if (this.global.aspectRatio <= 1) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else {
           popup.style.transform = "TranslateY(50vh)"
         }
       } catch { /* pass */ }
-
     }
   }
 }
@@ -162,19 +189,13 @@ export default {
 <style scoped>
 
 #mask {
-  /* Basic CSS Below */
   width: 100vw;
   height: 100vh;
   z-index: 5;
   opacity: 0;
-  /* display: none; */
   background: black !important;
   stroke: none !important;
   pointer-events: none;
-}
-
-.toast {
-  font-size: 18px !important;
 }
 
 #nametag {
