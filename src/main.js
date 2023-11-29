@@ -31,7 +31,7 @@ const global = reactive({ // The global reactive object!
 	bldg: '',
 	room: '',
 	floor: '1',
-	flipScreen: 1,
+	flipScreen: 1.25,
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm'), // Test time
@@ -90,12 +90,25 @@ function checkActive() {
 				}
 			}
 		}
+
+		if ("dining" in bldg.meta) {
+			if (isNaN(Object.keys(bldg.meta.dining)[0][0]))
+				for (let d in bldg.meta.dining) checkOpen(bldg.meta.dining[d])
+			else checkOpen(bldg.meta.dining)
+		}
 		// Sum/total people that can exist in the building = % filled
 		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
 		bldg.meta.flow = (1 - Math.exp((-2/(bldg.meta.max/5))*(inflow + outflow)))
 		// console.log(b, bldg.meta.flow.toFixed(2), bldg.meta.max, (logisitc).toFixed(2) )
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)
+	}
+}
+
+function checkOpen(times) {
+	for (let t in times) {
+		if (t == "url") continue
+		// console.log(t, times[t])
 	}
 }
 
