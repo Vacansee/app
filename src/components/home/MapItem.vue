@@ -175,6 +175,16 @@ import tinycolor from "tinycolor2";
             <p id="test2" style=" position:absolute; color:black; font-weight:1000;"><span class="map-overlays-icons">o</span></p>
           </div>
         </foreignObject>
+        <foreignObject style="pointer-events: none;" x="65" y="1205" width="100%" height="100%">
+          <div class = "map-overlays-icons">
+            <p id="test2" style=" position:absolute; color:black; font-weight:1000;"><span class="map-overlays-icons">o</span></p>
+          </div>
+        </foreignObject>
+        <foreignObject style="pointer-events: none;" x="970" y="478" width="100%" height="100%">
+          <div class = "map-overlays-icons">
+            <p id="test2" style=" position:absolute; color:black; font-weight:1000;"><span class="map-overlays-icons">o</span></p>
+          </div>
+        </foreignObject>
         <!-- <foreignObject style="pointer-events: none;" x="416.0862838916114" y="904.2429596911697" width="100%" height="100%">
           <div class = "map-overlays-icons">
             <p id="test3" style=" position:absolute; color:black; font-weight:1000;"><span class="map-overlays-icons">o</span></p>
