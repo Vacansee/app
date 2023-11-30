@@ -1,5 +1,6 @@
 <script setup>
 import moment from 'moment-timezone'
+import { average } from 'color.js'
 import Tag from 'primevue/tag';
 </script>
 
@@ -13,7 +14,7 @@ import Tag from 'primevue/tag';
         </div>
         <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
-                <div id="photo-box">
+                <div id="photoBox">
                     <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
@@ -104,6 +105,18 @@ export default {
                     popup.style.borderRadius = "15px 15px 0 0"
                     if (window.innerWidth > 800) buttonBox.style.bottom = "3vw"
                     else buttonBox.style.bottom = "52vh"
+                }
+            }
+        },
+        'global.bldg': {
+            handler() {
+                if (this.global.bldg) {
+                    average(`src/assets/photos/${this.global.bldg}.jpg`, { format: 'hex' })
+                    .then(color => { 
+                        console.log(color)
+                        photoBox.style.backgroundColor = `${color}10`
+                        photoBox.style.outlineColor = `${color}20`
+                    })
                 }
             }
         }
@@ -232,18 +245,20 @@ export default {
 }
 
 #photo {
-    min-width: 300px;
-    max-width: 70%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-    border-radius: 10px;
+    width: 100%;
+    border-radius: 9px 9px 0 0;
     display: flex;
 }
 
-#photo-box {
+#photoBox {
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
+    line-height: 2.5;
+    outline: 3px solid;
+    border-radius: 10px;
 }
 
 #busy {
@@ -277,7 +292,7 @@ tr:nth-child(even) {
 }
 
 .warn {
-    color: red;
+    color: #dc3545;
     text-align: center;
     font-weight: 500;
 }
@@ -296,6 +311,13 @@ tr:nth-child(even) {
     padding: 10px;    
     border-radius: 10px;
     border: 1px solid var(--softborder);
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.info {
+    margin: 0 4px -4px 0;
+    height: 20px;
+    width: 20px;
 }
 
 li {

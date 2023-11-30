@@ -66,6 +66,10 @@ export default {
     // an action occurs
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
+    Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
+      btn.addEventListener("mouseover", () => { this.nameTagAppear(btn) })
+      btn.addEventListener("mouseleave", this.nameTagDisappear)
+    })
 
     for (const b of buildings.children) {
       b.addEventListener("mouseover", () => { this.nameTagAppear(b) })
@@ -109,7 +113,8 @@ export default {
       // Only show nametag on unselected buildings
       if (this.global.data && !this.bldgSVG) {
         this.ntVisible = 1
-        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
+        if (b.ariaLabel) this.label = b.ariaLabel
+        else if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
         else this.label = b.id.replace(/_/g, ' ')
       }
     },
@@ -121,7 +126,9 @@ export default {
     nameTagMove(c) {
       let clickX = c.clientX
       let clickY = c.clientY
-      this.mouseTop = clickY - 50
+      if (this.label == "GitHub" || this.label == "Feedback")
+        this.mouseTop = clickY + 30
+      else this.mouseTop = clickY - 50
 
       let tagWidth = 20
       if (this.ntVisible == 1)
@@ -199,7 +206,7 @@ export default {
 }
 
 #nametag {
-  z-index: 6;
+  z-index: 10;
   color: black;
   font-size: 14px;
   position: absolute;

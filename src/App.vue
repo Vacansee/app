@@ -13,18 +13,19 @@ import Toast from 'primevue/toast'
   <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
     
       <div class="left-nav">
-        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
+        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
+        </RouterLink>
         <div class="search">
           <AutoComplete v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete> 
         </div>
       </div>
 
       <div class="right-nav">
-        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
-            <img src="./assets/icons/poll.svg" height="30" width="30" />
+        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn" aria-label="Feedback" >
+            <img src="./assets/icons/poll.svg" height="25" width="25"/>
         </Button></a>
-        <a href="https://github.com/Vacansee"><Button class="nav-btn">
-            <img src="./assets/icons/github.svg" height="30" width="30"/>
+        <a href="https://github.com/Vacansee"><Button class="nav-btn" aria-label="GitHub" >
+            <img src="./assets/icons/github.svg" height="25" width="25"/>
         </Button></a>
       </div>
   </header>
@@ -98,13 +99,18 @@ header {
 }
 
 .logo {
-  display: block;
   margin: 0 1rem 0 0;
   pointer-events: all;
 }
 
 .nav-btn {
   margin: .5rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  justify-content: center;
+  background-color: var(--unusedfill);
+  border: 2px solid var(--buildbord);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
   pointer-events: all;
 }
 
@@ -118,6 +124,9 @@ header {
 }
 
 .search {
+  border: 2px solid var(--walkpath);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  border-radius: 10px;
   align-self: center;
   pointer-events: all;
 }
