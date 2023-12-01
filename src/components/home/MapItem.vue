@@ -165,15 +165,6 @@ import tinycolor from "tinycolor2";
         </g>
       </g>
       <g id="buildings">
-
-        
-        <!-- PIN PLACEHOLDER -->
-        <foreignObject style="pointer-events: none;" x="500" y="1000" width="100%" height="100%" v-if="pinned">
-          <div class = "map-overlays-icons">
-            <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
-          </div>
-        </foreignObject>
-
         <path id="CBIS"
           d="m444 941.4 2.3.7.7 1.7 3.1 2.1.9 2.5 5.2 2.1 5.4-.4.9-.5s1.2 2.7 3.3 3c2.2.1 2.9-2 2.9-2l8.6.4-1 13.6 84.2 4 3.5.1-.3 4.5 11.4.5 1.6-77.9-11-.1-.2 6.7-4.8-.3.6-12-11.7-.7.1 4-9.5-.6-.6 40.5-81-2.2v-2.6h-12l-1 2.6h1.7l-3.4 10.3Z" />
         <path id="EMPAC"
@@ -224,7 +215,13 @@ import tinycolor from "tinycolor2";
         <path id="Lally" d="m234.4 812 30.5.5v-2l.3-11.3-15.3-.3-15.3-.2-.2 13.3Z" />
         <path id="Union"
           d="m626.5 768.2 3.2.3 2.1.1-.1 10 9.1.2 5.5.1v1.9l.6 1.6 1.2 2 1.1 1.1 1.3.8 1.3.6 10.5.3 1.8-.2 2-1.1 1.5-1.5 1.2-1.8.7-2.3-.2-8.4 4.7.2h1.6l13.3.7.2-56.2-40.5-1.7-17.2-.7-.5 7.8H628l-1.6 46.2Z" />
-      </g>
+        <!-- PIN PLACEHOLDER -->
+        <foreignObject style="pointer-events: none;" x="460" y="825" width="100%" height="100%" v-if="pinned">
+          <div class = "map-overlays-icons">
+            <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
+          </div>
+        </foreignObject>
+        </g>
       <g id="roadtop">
         <path d="m611.8 823-32.1-.7" />
         <path d="m440.1 816.5 86.8-1M406.2 810.8l13.3-.3 8.2 6" />
