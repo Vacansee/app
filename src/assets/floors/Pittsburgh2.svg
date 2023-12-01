@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1056 816">
+    <path  d="M216 317h127v-90l21-6 15-4 14-3 14-3 13-2 14-3 20-3 14-1 14-1h94l12 1 16 2 12 2 10 1 9 2 13 2 13 3 14 3 16 3 5 2 18 5v90h127v385h-8v34h-65v-4H646v27h-20v6h-43v21H475v-21h-44v-6h-20v-21H230v21h-14z" id="floor"/>
+    <path  d="M230 331h48v14h9v69h-57z" id="_2118"/>
+    <path  d="M230 416h87v57h-87z" id="_2116"/>
+    <path  d="M230 476h87v56h-87z" id="_2114"/>
+    <path  d="M230 534h87v56h-87z" id="_2112"/>
+    <path  d="M230 593h87v30h-30v65h-57z" id="_2110"/>
+    <path  d="M290 625h75v63h-75z" id="_2106"/>
+    <path  d="M698 625h69v63h-69z" id="_2204"/>
+    <path  d="M740 623h30v65h57v-95h-87z" id="_2206"/>
+    <path  d="M740 590v-56h87v56z" id="_2208"/>
+    <path  d="M740 532v-56h87v56z" id="_2210"/>
+    <path  d="M770 414v-69h9v-14h48v83z" id="_2214"/>
+    <path  d="M710 331h67v12h-10v71h-57z" id="_2216"/>
+    <path  d="M647 331h60v83h-60z" id="_2218"/>
+    <path  d="M578 331h66v83h-66z" id="_2220"/>
+    <path  d="M611 458h94v66h-94z" id="_2224"/>
+    <path  d="M611 596v-70h94v70z" id="_2226"/>
+    <path  d="M352 512h94v84h-94z" id="_2129"/>
+    <path  d="M352 458h94v52h-94z" id="_2128"/>
+    <path  d="M290 414v-71h-10v-12h67v83z" id="_2120"/>
+    <path  d="M350 414v-83h60v83z" id="_2122"/>
+    <path  d="M413 414v-83h66v83z" id="_2124"/>
+    <path  d="M354 277v-27h38v27z" id="_2306"/>
+    <path  d="M394 278v-42h50v42z" id="_excavated_ele"/>
+    <path  d="M368 688v-63h66v4h12v59z" id="_2104"/>
+    <path  d="M626 688v-63h69v63z" id="_2202"/>
+    <path  d="M827 473h-87v-57h87z" id="_2212"/>
+    <path  d="M527 596v-51h-62v8h-16v43z" id="_2008"/>
+    <path  d="M530 596v-51h63v8h16v43z" id="_2004"/>
+    <path  d="M603 317v-37h12v-64l11 2 4 1h4l3 1 6 1 5 1 5 1 4 1 6 1 6 1 5 1 5 2 6 1 6 1 5 2 8 2-1 82z" id="_excavated_stair"/>
+    <path  d="M505 542v-81h1v-4h45v4h1v81z" id="_excavated_stair"/>
+    <path  d="M451 273v-58l11-2 20-2h93l13 2 18 2v58h-33v4h-88v-4z" id="_2304"/>
+    <path  d="M581 679h-37v39h-42v-96h42v33h37z" id="_2006"/>
+</svg>
