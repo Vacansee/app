@@ -73,9 +73,8 @@ function checkActive() {
 	// Loop through the global reactive variable data
 	for (let b in global.data) {
 		let bldg = global.data[b],
-			sum = 0, longest = 0, outflow = 0, inflow = 0
+		sum = 0, longest = 0, outflow = 0, inflow = 0
 		// If heat isn't in bldg.meta, set heat to 0
-		if (!('heat' in bldg.meta)) bldg.meta.heat = 0
 		// Loop thorugh building data
 		for (let r in bldg) {
 			if (r == 'meta') continue // skip meta properties
@@ -123,8 +122,10 @@ function checkActive() {
 			else checkOpen(bldg.meta.dining)
 		}
 		// Sum/total people that can exist in the building = % filled
-		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
+		bldg.meta.occu = (sum/bldg.meta.max)
 		bldg.meta.flow = (1 - Math.exp((-2/(bldg.meta.max/5))*(inflow + outflow)))
+		bldg.meta.heat = parseFloat((bldg.meta.occu + 0.8*bldg.meta.flow).toFixed(2))
+		bldg.meta.heat = (bldg.meta.heat > 1.0) ? 1.0 : bldg.meta.heat
 		// console.log(b, bldg.meta.flow.toFixed(2), bldg.meta.max, (logisitc).toFixed(2) )
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)

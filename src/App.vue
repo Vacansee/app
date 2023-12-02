@@ -10,9 +10,8 @@ import Toast from 'primevue/toast'
 <template>
   <Toast/>
   <!-- HTML For Header -->
-  <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    
-      <div class="left-nav">
+  <header id="header">
+      <div id="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
         </RouterLink>
         <div class="search">
@@ -20,11 +19,11 @@ import Toast from 'primevue/toast'
         </div>
       </div>
 
-      <div class="right-nav">
-        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn" aria-label="Feedback" >
+      <div id="right-nav">
+        <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
             <img src="./assets/icons/poll.svg" height="25" width="25"/>
         </Button></a>
-        <a href="https://github.com/Vacansee"><Button class="nav-btn" aria-label="GitHub" >
+        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
             <img src="./assets/icons/github.svg" height="25" width="25"/>
         </Button></a>
       </div>
@@ -83,18 +82,15 @@ export default {
 <style scoped>
 @import './assets/main.css';
 /* Everything from here on in the file is  basic css */
-.homePageLogo {
-  position: absolute;
-}
 
 header {
-  z-index: 7;
-  display: flex;
-  padding: 1rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 6;
 }
 
 .logo {
-  margin: 0 1rem 0 0;
+  margin-right: 1rem; 
   pointer-events: all;
 }
 
@@ -109,13 +105,9 @@ header {
   pointer-events: all;
 }
 
-.left-nav {
-  position: fixed;
+#left-nav {
   display: flex;
-  pointer-events: none;
   padding: .5rem 1rem;
-  top: 0;
-  left: 0;
 }
 
 .search {
@@ -126,9 +118,8 @@ header {
   pointer-events: all;
 }
 
-.right-nav {
+#right-nav {
   position: fixed;
-  pointer-events: none;
   padding: .8rem 1rem;
   top: 0;
   right: 0;

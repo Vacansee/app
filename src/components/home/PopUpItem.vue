@@ -18,8 +18,9 @@ import Tag from 'primevue/tag';
                     <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
-                <p id="busy" v-if="!isNaN(getBldg().meta.heat)"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
-                <p id="busy" v-else><b>N/A</b></p>
+                <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat*100 }}%)</p>
+                <p id="heat" v-else><b>N/A</b></p>
+                <p id="flow" v-if="interpretFlow()">+ {{ interpretFlow() }} (~{{ getBldg().meta.flow.toFixed(2)*100 }}%)&emsp;</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
                 <span v-if="getHist()"> 
                     <img class="info" src="../../assets/icons/info.svg" />
@@ -196,11 +197,19 @@ export default {
         // Turns the heat from a number into a representative phrase
         interpretHeat() {
             let heat = this.getBldg().meta.heat
-            if (heat > 80) return 'very busy'
-            else if (heat > 60) return 'busy'
-            else if (heat > 40) return 'usual'
-            else if (heat > 10) return 'not busy'
+            if (isNaN(heat)) return false
+            if (heat > .8) return 'very busy'
+            else if (heat > .6) return 'busy'
+            else if (heat > .4) return 'usual'
+            else if (heat > .1) return 'not busy'
             else return 'vacant'
+        },
+        interpretFlow() {
+            let flow = this.getBldg().meta.flow
+            if (flow > .8) return 'heavy foot traffic'
+            else if (flow > .5) return 'foot traffic'
+            else if (flow > .2) return 'some foot traffic'
+            else return false
         },
         getHist() {
             let hist = this.getBldg().meta.hist
@@ -261,8 +270,14 @@ export default {
     border-radius: 10px;
 }
 
-#busy {
+#heat {
     font-size: larger;
+    line-height: 0;
+    padding-bottom: .5rem;
+    text-align: center;
+}
+
+#flow {
     line-height: 0;
     text-align: center;
 }
