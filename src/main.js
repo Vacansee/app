@@ -26,7 +26,7 @@ const global = reactive({ // The global reactive object!
 	searchData: null,
 	bldg: '',
 	room: '',
-	floor: '1',
+	floor: null,
 	flipScreen: 1.25,
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),

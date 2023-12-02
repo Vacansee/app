@@ -114,7 +114,6 @@ export default {
                 if (this.global.bldg) {
                     average(`src/assets/photos/${this.global.bldg}.jpg`, { format: 'hex' })
                     .then(color => { 
-                        console.log(color)
                         photoBox.style.backgroundColor = `${color}10`
                         photoBox.style.outlineColor = `${color}20`
                     })

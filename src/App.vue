@@ -72,7 +72,9 @@ export default {
       }, 250);
     },
     searchFunc() {
-      // select building or class here
+      // Select any floor, room, or building directly:
+      // this.global.floor = 1
+      // this.global.room = "174"
       this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
       this.selection = "";
     }
