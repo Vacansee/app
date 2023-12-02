@@ -53,11 +53,6 @@ export default {
         else
           document.getElementById("header").style.opacity = "1";
       }
-    },
-    'global.error': {
-      handler() {
-        if (this.global.error) this.$showToast({title: 'Failed to load data', body: this.global.error})
-      }
     }
   },
   methods: {
