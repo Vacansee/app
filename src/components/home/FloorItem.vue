@@ -99,8 +99,8 @@ export default {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
     this.moveMap();
-    popup.addEventListener("mouseleave", () => { this.onPopup = false; console.log(this.onPopup) })
-    popup.addEventListener("mouseenter", () => { this.onPopup = true; console.log(this.onPopup) })
+    popup.addEventListener("mouseleave", () => { this.onPopup = false })
+    popup.addEventListener("mouseenter", () => { this.onPopup = true })
     window.addEventListener("wheel", this.onMouseScroll);
     window.addEventListener("mousedown", () => {
       window.addEventListener("mousemove", this.onMouseDrag);
@@ -171,7 +171,7 @@ export default {
       }
     },
     onMouseDrag({movementX, movementY}) {
-      if (this.global.bldg) {
+      if (!this.onPopup && this.global.bldg) {
         // console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
@@ -239,7 +239,7 @@ export default {
   justify-content: center;
   align-items: right;
   right: 4vw;
-  bottom: 5vh;
+  bottom: 3vw;
   width: 60px;
   height: 150px;
   display: flex;
