@@ -15,7 +15,7 @@ import Toast from 'primevue/toast'
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
         </RouterLink>
         <div class="search">
-          <AutoComplete v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete> 
+          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete>
         </div>
       </div>
 
@@ -113,6 +113,7 @@ header {
 }
 
 .search {
+  width: 250px;
   border: 2px solid var(--walkpath);
   box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
   border-radius: 10px;
