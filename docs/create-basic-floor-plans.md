@@ -17,12 +17,23 @@ After choosing a building to work on, let us select a floor plan from these [QuA
 ## 2. Open the image
 Launch your program, click on **'File'** from the menu, then select **'Open'**. Navigate to the location where your floor plan pdf is saved, select it, and click Open.
 
+Now with the correct pdf open, we want to work towards an end goal of a floorplan svg with an approximate width of 3200px (taken from DCC floorplan to keep sizing and wall strokes in the app similar so that the floors don't look too different). To achieve this we will need to do some scaling, but this can be done either at the end of the floorplan or at the beginning. You have the option of scaling the image down first so that it is easier to work with and then scale it up, or you have the option of keeping the image the same size and scaling it up, or you can scale up immediately and then not have to worry about it later. I suggest trying out different methods for different floorplans and see what works best for you.
+
+In order to scale the pdf or end svg, you will need to:
+1. Go to `File` -> `Document Properties`. Press the chain looking icon next to the width/height to lock the scale to evenly enlargen it. Then increase the width dimension to the appropriate size to scale the document (note: this scales the document and not the contents of the document --> onto step 2)
+![](.embed/create-basic-floor-plans-10.png)
+2. Press `Ctrl-A` to select all svg elements, then with the cursor tool, hold `Ctrl`, grab the bottom right arrow, and scale evenly to the bottom right of the document size. You may want to play around with positioning of your contents in the document frame, as it seems a bit of empty space is good for displaying the svg in the app (otherwise a part of the svg may be cut off --> you will need to test out your svg in the app after completion and it may need some tweaking). A DCC floorplan silhouette example is shown below to help gauge spacing.
+![](.embed/create-basic-floor-plans-11.png)
+
+Here's an example of the DCC floorplan silhouette with a white background for the document:
+![](.embed/create-basic-floor-plans-12.png)
+
 ## 3. Trace inner rooms and outer floor
 First, create a new layer to work on so that we are not directly editing the pdf layer (this will help us later when just exporting our traced floor).
 
 ![](.embed/create-basic-floor-plans-1.png)
 
-Any room that is labeled with an id we will capture in the floor plan (stay away from capturing staircases). Use the pen tool with the paraxial line segment option selected (this will create 90 degree angles for square rooms; you can also hold `Ctrl` to do achieve this), zoom in on the first corner of a room and carefully select it.
+Any room that is labeled with an id we will capture in the floor plan (stay away from capturing staircases). Use the pen tool (hold `Ctrl` to create 90 degree angles), zoom in on the first corner of a room and carefully select it.
 
 I suggest watching [this video](https://www.youtube.com/watch?v=ijZlMHJJ0F0&ab_channel=LogosByNick) if you have a unique wall that you cannot trace with just right angles (curved walls, etc).
 
