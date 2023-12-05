@@ -43,9 +43,9 @@ Do the same with the second corner, and from there Inkscape should only make per
 
 ![](.embed/create-basic-floor-plans-3.png)
 
-If your room is now filled in black from the path, you can easily change the color to make it stand out and change the opacity on the bottom left of the screen. Then, press `Shift + Ctrl + X` (or go to `Edit -> XML Editor`) and rename the `id` tag to the room number preceded by a `_`. FYI, just renaming the label (by double clicking the name and renaming it to `_room#` for example) will add a tag called `inkscape_label` and not actually change the `id` tag that we need.
+If your room is now filled in black from the path, you can easily change the color to make it stand out and change the opacity on the bottom left of the screen. Then, press `Shift + Ctrl + X` (or go to `Edit -> XML Editor`) and rename the `id` tag to the room number preceded by a `_` (or if you are adding a room that needs a name instead of a room #, like the health center, write the name with `-`'s instead of spaces preceded by a `_`, like `_Health-Center`). FYI, just renaming the label (by double clicking the name and renaming it to `_308` for example) will add a tag called `inkscape_label` and not actually change the `id` tag that we need.
 
-Some rooms don't have numbers but are essential in the foundation of the building or the shape of the floor. These rooms can be given the `id=unexcavated#` where `#` is replaced with an integer starting at 1 and increasing with every extra room of this kind (see `Sage1.svg` for example).
+Some rooms don't have numbers but are essential in the foundation of the building or the shape of the floor. These rooms can be given the `id=unexcavated#` where `#` is replaced with an integer starting at 1 and increasing with every extra room of this kind (see `Sage1.svg` for example). Also, some floors in non-academic buildings that are unused for the average student (like the first floor of academy hall) can be simplified (especially if there are a lot of random office buildings). You can do this by utilizing the unexcavated ids to gray out that area, but make sure to leave empty space for hallways.
 
 ![](.embed/create-basic-floor-plans-4.png)
 
