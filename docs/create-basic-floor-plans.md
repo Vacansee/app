@@ -77,3 +77,6 @@ Also, SVGs are layered, so make sure your path with the `floor` id is the top on
 ![](.embed/create-basic-floor-plans-12.png)
 
 ![](.embed/create-basic-floor-plans-13.png)
+
+## 5. Check!
+Perhaps the most important step of the process is to check your work. If you put the svg in the correct folder (`src\assets\floors`) then you should be able to see your floor when you run the app, click on your building, and navigate to the correct floor. If your svg looks funky or if the placement on the screen is off, make the appropriate changes before you ask others to review it! One common issue is the placement of the svg when you load it in the app (the floor svg could look cut off or way too big when you first open the building). This most likely has to do with the background document frame you are working with (take a look at the scaling notes in `Step 2: Open the image` and don't be afraid to leave some space outside of the floorplan itself to aid in viewing in the app). 
