@@ -21,11 +21,15 @@ Now with the correct pdf open, we want to work towards an end goal of a floorpla
 
 In order to scale the pdf or end svg, you will need to:
 1. Go to `File` -> `Document Properties`. Press the chain looking icon next to the width/height to lock the scale to evenly enlargen it. Then increase the width dimension to the appropriate size to scale the document (note: this scales the document and not the contents of the document --> onto step 2)
+
 ![](.embed/create-basic-floor-plans-1.png)
-2. Press `Ctrl-A` to select all svg elements, then with the cursor tool, hold `Ctrl`, grab the bottom right arrow, and scale evenly to the bottom right of the document size. You may want to play around with positioning of your contents in the document frame, as it seems a bit of empty space is good for displaying the svg in the app (otherwise a part of the svg may be cut off --> you will need to test out your svg in the app after completion and it may need some tweaking). A DCC floorplan silhouette example is shown below to help gauge spacing.
+
+1. Press `Ctrl-A` to select all svg elements, then with the cursor tool, hold `Ctrl`, grab the bottom right arrow, and scale evenly to the bottom right of the document size. You may want to play around with positioning of your contents in the document frame, as it seems a bit of empty space is good for displaying the svg in the app (otherwise a part of the svg may be cut off --> you will need to test out your svg in the app after completion and it may need some tweaking). A DCC floorplan silhouette example is shown below to help gauge spacing.
+
 ![](.embed/create-basic-floor-plans-2.png)
 
 Here's an example of the DCC floorplan silhouette with a white background for the document (note: the floor and rooms are both black so they blend in with each other; the colors in the previous photo do not match what the colors mean in this photo, and the outer floor that is in white and the background that is transparent in the previous photo are black and white respectively in this image):
+
 ![](.embed/create-basic-floor-plans-3.png)
 
 ## 3. Trace inner rooms and outer floor
@@ -52,6 +56,7 @@ Some rooms don't have numbers but are essential in the foundation of the buildin
 Tracing the outer floor is the VERY LAST step in the process of creating a floorplan after tracing all the inner rooms. To create the outer floor, you want to follow the path of the outermost inner rooms (tracing along their outer edge) while keeping in mind the shape of the building. Make sure to rename the `id` tag to `floor` and try to capture the parts of the floor that have valid rooms in them (eg. some parts of a floor can be left out if they dont connect rooms).
 
 Here's the first pittsburgh floor as an example next to the pdf floorplan from quacs. Notice how the outer floor encompasses all of the inner rooms but does not add extra gaps or walkways outside of the building, except for the defining arch of the building at the top for the lounge. The key to capturing the best outer floor and floorplan as a whole is to capture the essence of the building while making it neat and simple (definitely easier said then done, but look at other svgs along with their actual quacs floorplan for inspiration!).
+
 ![](.embed/create-basic-floor-plans-8.png)
 ![](.embed/create-basic-floor-plans-9.png)
 
