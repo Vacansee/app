@@ -1,51 +1,68 @@
 <script setup>
 import moment from 'moment-timezone'
+import { average } from 'color.js'
+import Tag from 'primevue/tag';
 </script>
 
 <template>
     <!-- HTML for the popup -->
     <div id="popup">
-        <div id="popup-head"> 
-            <div id="popupbuild">
-                {{ global.bldg }}
-                <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
-                <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
-            </div>
+        <div id="breadcrumbs">
+            {{ global.bldg.replace(/_/g, ' ') }}
+            <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
+            <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
-        <div v-if="global.bldg" class="body">
+        <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
-                <div id="photo-box">
-                    <img src="../../assets/photos/DCC.jpg" id="photo">
-                    <!-- <img :src="`../../assets/photos/${global.bldg}.jpg`" id="photo"> -->
+                <div id="photoBox">
+                    <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
-                <p id="busy"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
+                <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat*100 }}%)</p>
+                <p id="heat" v-else><b>N/A</b></p>
+                <p id="flow" v-if="interpretFlow()">+ {{ interpretFlow() }} (~{{ getBldg().meta.flow.toFixed(2)*100 }}%)&emsp;</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
+                <span v-if="getHist()"> 
+                    <img class="info" src="../../assets/icons/info.svg" />
+                    <a :href="'https://archives.rpi.edu/institute-history/building-histories/' + getHist()">
+                        <em> Get historical info&emsp;</em>
+                    </a>
+                </span>
+                <Tag value="Tag placeholder" rounded></Tag> <!-- Placeholder for the tag -->
             </div>
-            <p></p>
+            <div v-if="getDining()" class="block"> <!-- Block: dining -->
+                <b>Dining&emsp;</b>
+                <img class="info" src="../../assets/icons/info.svg" />
+                <a :href="'https://rpi.sodexomyway.com/dining-near-me/' + getDining().url">
+                    <em> More info</em>
+                </a>
+                <p v-for="d in parseDiners()"> &emsp;{{ d }}: </p>
+                <p>Test</p>
+            </div>
             <div v-if="noneSelected()" class="block warn">No room selected</div>
             <div v-else-if="noData()" class="block warn">No classes in room</div>
             <div v-else> <!-- Room w/ data selected -->
-                <div class="block">
-                    <span>Capacity: ~{{ getData().meta.max }}&emsp;&emsp;</span>
-                    <span>Printers: {{ getPrinters() }}&emsp;&emsp;</span>
-                    <p v-if="getData().meta.cur"><b>{{ getData().meta.cur[0] }}</b> ends in
+                <div class="block"> <!-- Block #1: room information -->
+                    <b>Overview</b><br><br>
+                    <span>Capacity: ~{{ getRoom().meta.max }}&emsp;&emsp;</span>
+                    <span v-if="!getPrinters()">Printers: none</span>
+                    <p v-if="getRoom().meta.cur"><b>{{ getRoom().meta.cur[0] }}</b> ends in
                         <b>{{ getCur().hours() }}h</b> and
                         <b>{{ getCur().minutes() }}m</b>
-                        <span v-if="hasSecs('cur')"> for sections </span>
-                        <span v-for="item in getData().meta.cur[1]" class="sec">{{ item }}</span>
+                        <span v-if="getSecs('cur')>0"> for section{{(getSecs('cur') > 1) ? 's ':' '}}</span>
+                        <span v-for="item in getRoom().meta.cur[1]" class="sec">{{ item }}</span>
                     </p>
                     <p v-else>No class in session</p>
-                    <p v-if="getData().meta.next">Next class (<b>{{ getData().meta.next[0] }}</b>) starts in
+                    <p v-if="getRoom().meta.next">Next class (<b>{{ getRoom().meta.next[0] }}</b>) starts in
                         <b>{{ getNext().hours() }}h</b> and
                         <b>{{ getNext().minutes() }}m</b>
-                        <span v-if="hasSecs('next')"> for sections </span>
-                        <span v-for="item in getData().meta.next[1]" class="sec">{{ item }}</span>
+                        <span v-if="getSecs('next')>0"> for section{{(getSecs('next') > 1) ? 's ':' '}}</span>
+                        <span v-for="item in getRoom().meta.next[1]" class="sec">{{ item }}</span>
                     </p>
                     <p v-else class="warn"> No more classes this week</p>
                 </div>
-                <div class="block">
-                    <b v-if="getData().meta.next">Today</b>
+                <div v-if="getTodaysClasses().length" class="block"> <!-- Block: today's room schedule -->
+                    <b>Today</b>
                     <table>
                         <tr v-for="item in getTodaysClasses()">
                             {{ item[0] }}
@@ -53,10 +70,18 @@ import moment from 'moment-timezone'
                         </tr>
                     </table>
                 </div>
+                <div v-if="getPrinters()" class="block"> <!-- Block: printers -->
+                    <b>Printer{{ getPrinters().length > 1 ? 's' : '' }}</b>
+                    <div v-for="p in getPrinters()" style="line-height: 0.5;">
+                        <p><h4>{{p[0]}}</h4></p>
+                        <p>Dimensions: {{p[1]}}&emsp;&emsp;Resolution: {{p[2]}}</p>
+                        <p>Color: {{p[3]}}&emsp;&emsp;Duplex: {{p[4]}}</p>
+                    </div>
+                </div>
             </div>
         </div>
+        <div v-else-if="global.bldg" class="block warn">No classes here!</div>
     </div>
-
 </template>
 
 <script>
@@ -66,71 +91,103 @@ export default {
     inject: ['global'],
     watch: {
         'global.aspectRatio': {
-            deep: true,
             handler() {
                 // If landscape mode
-                if (this.global.aspectRatio <= 1) {
+                if (this.global.aspectRatio <= this.global.flipScreen) {
                     popup.style.height = "100vh"
                     popup.style.width = "33vw"
+                    popup.style.left = "unset"
                     popup.style.borderRadius = "0 15px 15px 0"
-                    buttonBox.style.bottom = "5vh"
+                    buttonBox.style.bottom = "3vw"
                 } else { // If portrait mode
                     popup.style.height = "50vh"
                     popup.style.width = "100vw"
+                    popup.style.left = `${(window.innerWidth-popup.offsetWidth)/2}px`
                     popup.style.borderRadius = "15px 15px 0 0"
-                    buttonBox.style.bottom = "52vh"
+                    if (window.innerWidth > 800) buttonBox.style.bottom = "3vw"
+                    else buttonBox.style.bottom = "52vh"
+                }
+            }
+        },
+        'global.bldg': {
+            handler() {
+                if (this.global.bldg) {
+                    average(`src/assets/photos/${this.global.bldg}.jpg`, { format: 'hex' })
+                    .then(color => { 
+                        photoBox.style.backgroundColor = `${color}10`
+                        photoBox.style.outlineColor = `${color}20`
+                    })
                 }
             }
         }
     },
     mounted() {
-        if (this.global.aspectRatio <= 1) {
-                popup.style.height = "100vh"
-                popup.style.width = "33vw"
-                popup.style.borderRadius = "0 15px 15px 0"
-                buttonBox.style.bottom = "5vh"
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+            popup.style.height = "100vh"
+            popup.style.width = "33vw"
+            popup.style.left = "unset"
+            popup.style.borderRadius = "0 15px 15px 0"
+            buttonBox.style.bottom = "3vw"
         } else { // If portrait mode
-                popup.style.height = "50vh"
-                popup.style.width = "100vw"
-                popup.style.borderRadius = "15px 15px 0 0"
-                buttonBox.style.bottom = "52vh"
+            popup.style.height = "50vh"
+            popup.style.width = "100vw"
+            popup.style.left = `${(window.innerWidth-popup.offsetWidth)/2}px`
+            popup.style.borderRadius = "15px 15px 0 0"
+            if (window.innerWidth > 800) buttonBox.style.bottom = "3vw"
+            else buttonBox.style.bottom = "52vh"
         }
     },
     methods: {
         // return if a room is selected
         noneSelected() { return !this.global.room },
         // Returns the current building
-        getBldg() { return this.global.data[this.global.bldg] },
+        getBldg() {
+            let bldg = this.global.data[this.global.bldg]
+            return bldg ? bldg : console.warn(`No classes here!`)
+        },
         noData() { return !this.getBldg().hasOwnProperty(this.global.room) },
-        hasSecs(type) { 
+        getSecs(type) { 
             switch(type) {
-                case  'cur': return (this.getData().meta.cur[1].length > 0)
-                case 'next': return (this.getData().meta.next[1].length > 0)
+                case  'cur': return this.getRoom().meta.cur[1].length
+                case 'next': return this.getRoom().meta.next[1].length
             }
         },
         // Gets the cur from meta data
         getCur() {
-            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.cur[2]
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getRoom().meta.cur[2]
             return moment.duration(f.diff(i))
         },
         // Gets next from meta data
         getNext() {
-            const i = moment(this.global.time, 'e:HHmm'), f = this.getData().meta.next[2]
+            const i = moment(this.global.time, 'e:HHmm'), f = this.getRoom().meta.next[2]
             return moment.duration(f.diff(i))
         },
         // Returns all data for the current room
-        getData() { return this.getBldg()[this.global.room] },
+        getRoom() { return this.getBldg()[this.global.room] },
         // Gets the current time
         getRealTime(date) { return moment(date, 'e:HHmm').tz('America/New_York').format('h:mm A') },
         // Returns the printers in a building
         getPrinters() {
-            if (!this.getBldg().meta.hasOwnProperty("printers")) return 'none'
-            else return this.getBldg().meta.printers
+            if (!this.getRoom().meta.hasOwnProperty("printers")) return false
+            else return this.getRoom().meta.printers
+        },
+        getDining() {
+            if (!this.getBldg().meta.hasOwnProperty("dining")) return false
+            else return this.getBldg().meta.dining
+        },
+        parseDiners() { // Test
+            if (isNaN(Object.keys(this.getBldg().meta.dining)[0][0])) {
+                let diners = []        
+                for (let diner in this.getBldg().meta.dining) {
+                    if (diner == "url") continue
+                    diners.push(diner)
+                } return diners
+            }
         },
         // Gathers the classes for the building
         getTodaysClasses() {
             let classes = []
-            let roomData = this.getData() 
+            let roomData = this.getRoom() 
             for (let time in roomData) {
                 if (time.split(':')[0] == this.global.time.split(':')[0])
                     classes.push([roomData[time][0], this.getRealTime(time)])
@@ -139,11 +196,24 @@ export default {
         // Turns the heat from a number into a representative phrase
         interpretHeat() {
             let heat = this.getBldg().meta.heat
-            if (heat > 80) return 'very busy'
-            else if (heat > 60) return 'busy'
-            else if (heat > 40) return 'usual'
-            else if (heat > 10) return 'not busy'
+            if (isNaN(heat)) return false
+            if (heat > .8) return 'very busy'
+            else if (heat > .6) return 'busy'
+            else if (heat > .4) return 'usual'
+            else if (heat > .1) return 'not busy'
             else return 'vacant'
+        },
+        interpretFlow() {
+            let flow = this.getBldg().meta.flow
+            if (flow > .8) return 'heavy foot traffic'
+            else if (flow > .5) return 'foot traffic'
+            else if (flow > .2) return 'some foot traffic'
+            else return false
+        },
+        getHist() {
+            let hist = this.getBldg().meta.hist
+            if (hist === "") hist = this.getBldg().meta.name.toLowerCase().replace(/ /g, "-")
+            return hist // for case: false
         }
     }
 }
@@ -152,55 +222,61 @@ export default {
 <style scoped>
 #popup {
     width: 100vw;
+    min-width: unset;
+    max-width: 600px;
     height: 50vh;
     position: absolute;
     pointer-events: all;
-    display:inline-block;
     bottom: 0;
+    left: unset;
     z-index: 6;
+    user-select: none;
     transform: translateY(250px);
-    transition: transform .5s;
+    transition: all 1.5s;
     box-sizing: border-box;
     background-color: white;
     border: 3px solid var(--softborder);
     border-bottom-style: none;
-    box-shadow: 0px -2px 25px rgba(0, 0, 0, 0.08);
+    box-shadow: 0px -2px 40px rgba(0, 0, 0, 0.20);
     border-radius: 15px 15px 0 0;
     overflow-x: hidden;
     overflow-y: auto;
+    scrollbar-color: var(--hardborder) transparent;
+    scroll-snap-stop: always;
 }
 
-#popup-head {
-    width: 100vw;
-    height: 6vh;
-    background-color: none;
+#breadcrumbs {
+    padding: 10px 0px 0px 20px;
     color: rgb(0, 0, 0);
-    position: absolute;
     font-weight: 600;
     font-size: x-large;
 }
 
-#popupbuild {
-    padding: 10px 20px;
-}
-
 #photo {
-    min-width: 300px;
-    max-width: 70%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-    border-radius: 10px;
+    width: 100%;
+    border-radius: 9px 9px 0 0;
     display: flex;
 }
 
-#photo-box {
+#photoBox {
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 2.5;
+    outline: 3px solid;
+    border-radius: 10px;
+}
+
+#heat {
+    font-size: larger;
+    line-height: 0;
+    padding-bottom: .5rem;
     text-align: center;
 }
 
-#busy {
-    font-size: larger;
+#flow {
     line-height: 0;
     text-align: center;
 }
@@ -222,7 +298,7 @@ table {
 }
 
 td {
-  border-left: solid 1px var(--softborder);
+    border-left: solid 1px var(--softborder);
 }
 
 tr:nth-child(even) {
@@ -230,18 +306,15 @@ tr:nth-child(even) {
 }
 
 .warn {
-    color: red;
+    color: #dc3545;
     text-align: center;
     font-weight: 500;
 }
-.code {
-    font-size: 15px;
-    color: #902a00;
-}
 
 .sec {
-    padding: 1px 5px 2px 5px;
-    margin: 3px;
+    font-family: monospace;
+    padding: 4px 5px 1px 5px;
+    margin: 0 5px 0 0;
     background-color: var(--roomfill);
     border-radius: 30%;
 }
@@ -252,10 +325,13 @@ tr:nth-child(even) {
     padding: 10px;    
     border-radius: 10px;
     border: 1px solid var(--softborder);
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.05);
 }
 
-.body {
-    margin-top: 50px;
+.info {
+    margin: 0 4px -4px 0;
+    height: 20px;
+    width: 20px;
 }
 
 li {

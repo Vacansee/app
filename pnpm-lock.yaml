@@ -8,12 +8,18 @@ dependencies:
   '@vueuse/core':
     specifier: ^9.13.0
     version: 9.13.0(vue@3.3.4)
+  color.js:
+    specifier: ^1.2.0
+    version: 1.2.0
   moment:
     specifier: ^2.29.4
     version: 2.29.4
   moment-timezone:
     specifier: ^0.5.43
     version: 0.5.43
+  primevue:
+    specifier: ^3.37.0
+    version: 3.37.0(vue@3.3.4)
   tinycolor2:
     specifier: ^1.6.0
     version: 1.6.0
@@ -1897,6 +1903,10 @@ packages:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
     dev: true
 
+  /color.js@1.2.0:
+    resolution: {integrity: sha512-0ajlNgWWOR7EK9N6l2h0YKsZPzMCLQG5bheCoTGpGfhkR8tB5eQNItdua1oFHDTeq9JKgSzQJqo+Gp3V/xW+Lw==}
+    dev: false
+
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
@@ -2746,6 +2756,14 @@ packages:
     resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}
     engines: {node: ^14.13.1 || >=16.0.0}
     dev: true
+
+  /primevue@3.37.0(vue@3.3.4):
+    resolution: {integrity: sha512-azwnnQS4+HHJHrh07P0cz+8Nvqo6C08znwvPDyiILwVPkwIrTtgNVmYQtQ9HjLgwax+lC7scMetJpdKcNQU//g==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.3.4
+    dev: false
 
   /punycode@2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
