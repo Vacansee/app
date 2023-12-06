@@ -1,26 +1,21 @@
-<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1057.3 817.3">
-  <path d="M99 250v308h788V250H541v-7h-17v7h-63v-7h-16v8H99Z" id="floor"/>
-  <path d="M739 548h79V427h-40v37h-39v84z"  id="_103"/>
-  <path d="M822 260v36h-2v25h57v-61h-55z"  id="_115A"/>
-  <path d="M814 260v21l-5 5h-15v7l-26 1v-34z"  id="_115.03"/>
-  <path d="M290 427v121h170l-1-113h-6v-8z"  id="_120"/>
-  <path d="M463 486v21h13v-21h-13Z" id="unexcavated1"/>
-  <path d="M617 427v121h79V427h-79z"  id="_102"/>
-  <path d="M779 382h-66v-1h-15v-39h30v4h2v-16h12v-28h38v-3h38l1 49h-40z"  id="_115.01"/>
-  <path d="M821 487v61h56v-61h-56z"  id="_105"/>
-  <path d="M766 260h-68v80h30v-12h12l-1-34h27z"  id="_115C"/>
-  <path d="M526 427h49v9l-49 13z"  id="_101A"/>
-  <path d="M577 427h37v121h-88v-97l61-16-1-2-9 2z"  id="_101"/>
-  <path d="M821 427v58h56v-58h-56z"  id="_106"/>
-  <path d="M791 348v19l5 5h13v-24z"  id="_115.02"/>
-  <path d="M478 486v21h10v-21h-10z" id="_122"/>
-  <path d="M698 452v31h37v-55h-30v24h-7z"  id="_103A"/>
-  <path d="M696 260h-80l1 121h79z"  id="_116"/>
-  <path d="M575 381h-40v-19l40 10z"  id="_117A"/>
-  <path d="M287 548H109l-1-288h179l1 288z"  id="_119"/>
-  <path d="M821 381v-57h56v57h-56z"  id="_115B"/>
-  <path d="M698 548h39v-62h-39v62z"  id="_104"/>
-  <path d="M463 510h60v38h-60v-38z"  id="_121"/>
-  <path d="m614 260 1 121h-38v-8l9 2 1-2-52-13V260z"  id="_117"/>
-  <path d="M290 260h161v121H290V260z"  id="_118"/>
+<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 2702.9">
+  <path  d="M7 75v2621h3189V73H1794V15h-66v62h-254V15h-67v63H7Z" id="floor"/> 
+ <!-- <path  d="M2767 1644v231h-145v-231z" id="_excavated_ele1"/> -->
+  <path d="M2453 2695h160v-567h-160v567z"  id="_104"/>
+  <path d="M2962 1593v524h234v-524l-234 1z"  id="_106"/>
+  <path  d="M1477 2129v195h54v-196h-54z" id="unexcavated1"/>
+  <path d="m2114 1594 1 1101 328-1V1594h-329z"  id="_102"/>
+  <path d="M2962 2139v556l234 1v-557h-234z"  id="_105"/>
+  <path d="m1477 2346 249 1v348h-249v-349z"  id="_121"/>
+  <path d="m2444 77-331 1 1 1102 331-1z"  id="_116"/>
+  <path  d="M1541 2130v194h41v-195h-41z" id="_122"/>
+  <path d="m759 76 669 2-1 1103-668-1V76z"  id="_118"/>
+  <path  d="M3195 78v1102h-423v8h-319V78Z" id="_115"/>
+  <path  d="M2105 78v1102h-330V78Z" id="_117"/>
+  <path  d="M2952 1594v1101h-329v-589h-170v-283h27v-220h125v331h179v-340z" id="_103"/>
+  <path  d="M1739 1595h366v1100h-366z" id="_101"/>
+ <!-- <path  d="M1581 2106v-213h8v-83h-115v296z" id="_excavated_stair1"/> -->
+  <path  d="M1463 1668v1027H759V1595h678v73z" id="_120"/>
+  <path  d="M749 78v2617H7V78Z" id="_119"/>
+  <!-- <path  d="M3072 1202v370h-288v-370z" id="_excavated_stair2"/> -->
 </svg>
