@@ -1,5 +1,5 @@
-<svg version="1.1" id="svg1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816">
-  <path d="M412 102v378h-99V354H28v125H14v59h14v168h147v-54h301v14h102v-15h303v56h146V537h13v-58h-13V354H735v-57h12V137h-45v21h-60v-56H412Z" id="floor"/>
-  <path d="M412 102v378h-98V354H28v123h77v62H28v167h147v-55h301v-72h70V467h96V102H412Z" id="_Registrar"/>
-  <path d="M636 536v44h-53v72h297v55h147V536H636Z" id="_Archer-Center"/>
+<svg xmlns="http://www.w3.org/2000/svg" id="svg1" version="1.1" viewBox="0 0 2991.5 1764">
+  <path id="floor" d="M1160 0v1102H872V735H41v364H0v172h41v490h428v-157h878v40h297v-43h884v163h426v-496h37v-169h-37V735h-852V569h35V102h-131v61h-175V0Z"/>
+  <path id="_Registrar" d="M1160 0v1102H875V735H41v358h224v181H41v487h428v-160h878v-210h204v-327h280V0Z"/>
+  <path id="_Archer-Center" d="M1814 1265v129h-155v210h866v160h429v-499z"/>
 </svg>

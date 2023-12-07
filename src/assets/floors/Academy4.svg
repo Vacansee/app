@@ -1,5 +1,5 @@
-<svg version="1.1" id="svg1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816">
-  <path d="M417 159v304h-80V361H109v103H99v44h13v136h117v-44h244v12h80v-12h246v44h118V508h10v-44h-10V361H684v-44h10V189h-38v16h-47v-46z" id="floor"/>
-  <path d="M109 361v99h78v48h-75v136h117v-44h244v-92h-50v-45h-85V361H109Z" id="_Dean-of-Students-Office"/>
-  <path d="M809 361v102h-90v45h110v-47h88V361z" id="_Counseling-Center"/>
+<svg xmlns="http://www.w3.org/2000/svg" id="svg1" version="1.1" viewBox="0 0 3007.9 1761.9">
+  <path id="floor" d="M1155 0v1104H865V734H36v374H0v160h47v494h425v-160h887v44h290v-44h894v160h429v-494h36v-160h-36V734h-847V574h37V109h-139v58h-170V0Z"/>
+  <path id="_Dean-of-Students-Office" d="M36 734v359h284v175H47v494h425v-160h887v-334h-182v-164H868V734Z"/>
+  <path id="_Counseling-Center" d="M2579 734v370h-327v164h400v-171h320V734Z"/>
 </svg>
