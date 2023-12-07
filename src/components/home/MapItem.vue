@@ -357,23 +357,23 @@ export default {
         "#d7434b", // >90%
       ]
       for (const b of buildings.children) {
-        let bldngHeat = 0
+        let bldgHeat = 0, fill = ''
         try {
-          bldngHeat = this.global.data[b.id].meta.heat
+          bldgHeat = this.global.data[b.id].meta.heat
         } catch { console.warn(`Can't color buildings w/o classes`) }
-        let fill = ''
-        if (bldngHeat >= 90)      fill = colors[9]
-        else if (bldngHeat >= 80) fill = colors[8]
-        else if (bldngHeat >= 70) fill = colors[7]
-        else if (bldngHeat >= 60) fill = colors[6]
-        else if (bldngHeat >= 50) fill = colors[5]
-        else if (bldngHeat >= 40) fill = colors[4]
-        else if (bldngHeat >= 30) fill = colors[3]
-        else if (bldngHeat >= 20) fill = colors[2]
-        else if (bldngHeat >= 10) fill = colors[1]
-        else                      fill = colors[0]
+        if (bldgHeat >= .9)      fill = colors[9]
+        else if (bldgHeat >= .8) fill = colors[8]
+        else if (bldgHeat >= .7) fill = colors[7]
+        else if (bldgHeat >= .6) fill = colors[6]
+        else if (bldgHeat >= .5) fill = colors[5]
+        else if (bldgHeat >= .4) fill = colors[4]
+        else if (bldgHeat >= .3) fill = colors[3]
+        else if (bldgHeat >= .2) fill = colors[2]
+        else if (bldgHeat >= .1) fill = colors[1]
+        else                    fill = colors[0]
 
         b.style.fill = fill
+        document.documentElement.style.setProperty('--heatColor', tinycolor(fill).darken(50).toString());
         let border = tinycolor(fill).darken(25).toString()
         b.style.stroke = border
 

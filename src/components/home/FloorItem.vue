@@ -7,7 +7,7 @@ import Floor from './Floor.vue'
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
   <div id='floorBox'>
-    <Floor @room-hover="onRoomHover" :floor="floor" />
+    <Floor @room-hover="onRoomHover" :floorName="floorName" />
   </div>
 
   <div id='buttonBox'>
@@ -31,8 +31,20 @@ export default {
   // Get reference to global
   inject: ["global"],
   emits: ["roomHover"],
-  components: {
-    Floor
+  components: { Floor },
+  data() {
+    // Local variables
+    return {
+      threshold: 1,
+      doResize: "",
+      btnUp: true,
+      btnDown: true,
+      onPopup: false,
+      dragging: false,
+      dsHist: 0,
+      floorName: "",
+      zoom:0,
+    }
   },
   watch: {
     'global.aspectRatio': {
@@ -44,16 +56,17 @@ export default {
       handler() {
         if (this.global.bldg) { // selected
           if (this.getBldg()) {
-            this.floorNum = this.getBldg().meta.floors[2]
-            this.floor = this.global.bldg + this.getBldg().meta.floors[2]
-            this.global.floor = this.getBldg().meta.floors[2]
+            if (!this.global.floor) this.global.floor = this.getBldg().meta.floors[2]
+            // else: floor already requested (search, routing)
+            this.floorName = this.global.bldg + this.global.floor
           }
           floorBox.style.opacity = 1;
           up.style.opacity = down.style.opacity = 1;
           buttonBox.style.pointerEvents = "auto";
           down.style.transform = "rotate(180deg)";
         } else { // unselected
-          this.floor = ""
+          this.floorName = ""
+          this.global.floor = null
           floorBox.style.opacity = 0;
           up.style.opacity = down.style.opacity = 0;
           buttonBox.style.pointerEvents = "none";
@@ -62,12 +75,17 @@ export default {
       
     },
     // When floor num changes
-    floorNum(newVar) {
-      if (this.getBldg() && newVar == this.getBldg().meta.floors[1])
-        this.btnUp = false 
-      else this.btnUp = true
-      if (newVar == 1) this.btnDown = false
-      else this.btnDown = true
+    'global.floor': {
+      handler() {
+        // console.log(this.global.floor)
+        // Highest floor: limit
+        if (this.getBldg() && this.global.floor == this.getBldg().meta.floors[1])
+          this.btnUp = false 
+        else this.btnUp = true
+        //  Lowest floor: limit
+        if (this.global.floor == 1) this.btnDown = false
+        else this.btnDown = true
+      }
     },
     // When button up changes
     btnUp(newVar) {
@@ -79,21 +97,6 @@ export default {
       if (newVar) down.style.opacity = 1;
       else        down.style.opacity = 0.6;
     },
-  },
-  data() {
-    // Local variables
-    return {
-      threshold: 1,
-      doResize: "",
-      floorNum: 1,
-      btnUp: true,
-      btnDown: true,
-      onPopup: false,
-      dragging: false,
-      dsHist: 0,
-      floor: "",
-      zoom:0,
-    }
   },
   mounted() {
     // On load, set floorBox transition
@@ -198,19 +201,19 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.getBldg() && this.floorNum < this.getBldg().meta.floors[1]) {
-        this.floorNum++;
-        this.global.floor = this.floorNum;
-        this.floor = this.global.bldg + this.floorNum
+      if (this.getBldg() && this.global.floor < this.getBldg().meta.floors[1]) {
+        this.global.floor++;
+        this.global.floor = this.global.floor;
+        this.floorName = this.global.bldg + this.global.floor
         this.global.room = ""
       }
     },
     // Decreases the floor
     decreaseFloor() {
-      if (this.floorNum != 1) {
-        this.floorNum--;
-        this.global.floor = this.floorNum;
-        this.floor = this.global.bldg + this.floorNum
+      if (this.global.floor != 1) {
+        this.global.floor--;
+        this.global.floor = this.global.floor;
+        this.floorName = this.global.bldg + this.global.floor
         this.global.room = ""
       }
     }

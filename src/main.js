@@ -12,7 +12,6 @@ import Router from './router'
 // Imports ability to check time
 import Moment from 'moment-timezone'
 // useFetch is used to fetch data (fitting name)
-import { useFetch } from '@vueuse/core';
 // Basic CSS
 import './assets/main.css'
 
@@ -21,22 +20,49 @@ import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
-// On page load, fetch building/room data from Vacansee/data:
-const URL = 'https://raw.githubusercontent.com/Vacansee/data/main/data/data.json'
-const { data, isFetching, error } = useFetch(URL).get().json()
 const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that reference it: 
-	data: data,
-	error: error,
+	data: null,
+	searchData: null,
 	bldg: '',
 	room: '',
-	floor: '1',
+	floor: null,
 	flipScreen: 1.25,
 	aspectRatio: window.innerHeight/window.innerWidth,
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm'), // Test time
 	firstCalc: false,
 })
+
+// On page load, fetch building/room and search data from Vacansee/data:
+Promise.all([
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/data.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'data.json': ${resp.status}`)
+	  return resp.json()
+	}),
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/byCRN.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'byCRN.json': ${resp.status}`)
+	  return resp.json()
+	}),
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/dept_to_CRN.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'dept_to_CRN.json': ${resp.status}`)
+	  return resp.json()
+	}),
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/title_to_CRN.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'title_to_CRN.json': ${resp.status}`)
+	  return resp.json()
+	}),
+  ])
+  .then(data => { // data is an array of the resolved values from promises
+		global.data = data.shift()
+		global.searchData = data
+		// Adds an event listener to update resize when the window is resized
+		window.addEventListener("resize", updateAspectRatio)
+		console.log('Data loaded!')
+		checkActive()
+		global.firstCalc = true
+	})
+  .catch(error => { this.$showToast({title: 'Failed to load data', body: error}) })
 
 
 // Consider global.data a living document: most of it's values are pre-generated & retrieved from
@@ -47,9 +73,8 @@ function checkActive() {
 	// Loop through the global reactive variable data
 	for (let b in global.data) {
 		let bldg = global.data[b],
-			sum = 0, longest = 0, outflow = 0, inflow = 0
+		sum = 0, longest = 0, outflow = 0, inflow = 0
 		// If heat isn't in bldg.meta, set heat to 0
-		if (!('heat' in bldg.meta)) bldg.meta.heat = 0
 		// Loop thorugh building data
 		for (let r in bldg) {
 			if (r == 'meta') continue // skip meta properties
@@ -97,8 +122,10 @@ function checkActive() {
 			else checkOpen(bldg.meta.dining)
 		}
 		// Sum/total people that can exist in the building = % filled
-		bldg.meta.heat = (sum/bldg.meta.max * 100).toFixed(2)
+		bldg.meta.occu = (sum/bldg.meta.max)
 		bldg.meta.flow = (1 - Math.exp((-2/(bldg.meta.max/5))*(inflow + outflow)))
+		bldg.meta.heat = parseFloat((bldg.meta.occu + 0.8*bldg.meta.flow).toFixed(2))
+		bldg.meta.heat = (bldg.meta.heat > 1.0) ? 1.0 : bldg.meta.heat
 		// console.log(b, bldg.meta.flow.toFixed(2), bldg.meta.max, (logisitc).toFixed(2) )
 		bldg.meta.longest = longest
 		// if (oldHeat != bldg.meta.heat) console.log(`${oldHeat} -> ${bldg.meta.heat}`)
@@ -128,14 +155,6 @@ setInterval(() => { // Update current time every second
 function updateAspectRatio() { // Updates the aspect ratio globally
 	global.aspectRatio = window.innerHeight/window.innerWidth
 }
-watch(data, () => { // perform first calculations only after data is loaded
-	if (global.data) {
-		// Adds an event listener to update resize when the window is resized
-		window.addEventListener("resize", updateAspectRatio)
-		checkActive()
-		global.firstCalc = true
-	}
-})
 // Creates the app 
 const app = createApp(App)
 app.provide('global', global);

@@ -1,5 +1,6 @@
 <script setup>
 import moment from 'moment-timezone'
+import { average } from 'color.js'
 import Tag from 'primevue/tag';
 </script>
 
@@ -13,12 +14,13 @@ import Tag from 'primevue/tag';
         </div>
         <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
-                <div id="photo-box">
+                <div id="photoBox">
                     <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
-                <p id="busy" v-if="!isNaN(getBldg().meta.heat)"><b>{{ interpretHeat() }}</b> ({{ getBldg().meta.heat }}%)</p>
-                <p id="busy" v-else><b>N/A</b></p>
+                <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat*100 }}%)</p>
+                <p id="heat" v-else><b>N/A</b></p>
+                <p id="flow" v-if="interpretFlow()">+ {{ interpretFlow() }} (~{{ getBldg().meta.flow.toFixed(2)*100 }}%)&emsp;</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
                 <span v-if="getHist()"> 
                     <img class="info" src="../../assets/icons/info.svg" />
@@ -106,6 +108,17 @@ export default {
                     else buttonBox.style.bottom = "52vh"
                 }
             }
+        },
+        'global.bldg': {
+            handler() {
+                if (this.global.bldg) {
+                    average(`src/assets/photos/${this.global.bldg}.jpg`, { format: 'hex' })
+                    .then(color => { 
+                        photoBox.style.backgroundColor = `${color}10`
+                        photoBox.style.outlineColor = `${color}20`
+                    })
+                }
+            }
         }
     },
     mounted() {
@@ -183,11 +196,19 @@ export default {
         // Turns the heat from a number into a representative phrase
         interpretHeat() {
             let heat = this.getBldg().meta.heat
-            if (heat > 80) return 'very busy'
-            else if (heat > 60) return 'busy'
-            else if (heat > 40) return 'usual'
-            else if (heat > 10) return 'not busy'
+            if (isNaN(heat)) return false
+            if (heat > .8) return 'very busy'
+            else if (heat > .6) return 'busy'
+            else if (heat > .4) return 'usual'
+            else if (heat > .1) return 'not busy'
             else return 'vacant'
+        },
+        interpretFlow() {
+            let flow = this.getBldg().meta.flow
+            if (flow > .8) return 'heavy foot traffic'
+            else if (flow > .5) return 'foot traffic'
+            else if (flow > .2) return 'some foot traffic'
+            else return false
         },
         getHist() {
             let hist = this.getBldg().meta.hist
@@ -232,22 +253,30 @@ export default {
 }
 
 #photo {
-    min-width: 300px;
-    max-width: 70%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-    border-radius: 10px;
+    width: 100%;
+    border-radius: 9px 9px 0 0;
     display: flex;
 }
 
-#photo-box {
+#photoBox {
+    max-width: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    line-height: 2.5;
+    outline: 3px solid;
+    border-radius: 10px;
+}
+
+#heat {
+    font-size: larger;
+    line-height: 0;
+    padding-bottom: .5rem;
     text-align: center;
 }
 
-#busy {
-    font-size: larger;
+#flow {
     line-height: 0;
     text-align: center;
 }
@@ -277,7 +306,7 @@ tr:nth-child(even) {
 }
 
 .warn {
-    color: red;
+    color: #dc3545;
     text-align: center;
     font-weight: 500;
 }
@@ -296,6 +325,13 @@ tr:nth-child(even) {
     padding: 10px;    
     border-radius: 10px;
     border: 1px solid var(--softborder);
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.info {
+    margin: 0 4px -4px 0;
+    height: 20px;
+    width: 20px;
 }
 
 li {
