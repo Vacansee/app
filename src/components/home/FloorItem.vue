@@ -56,7 +56,7 @@ export default {
       handler() {
         if (this.global.bldg) { // selected
           if (this.getBldg()) {
-            if (!this.global.floor) this.global.floor = this.getBldg().meta.floors[2]
+            if (!this.global.floor) this.global.floor = this.getBldg().meta.floors[1]
             // else: floor already requested (search, routing)
             this.floorName = this.global.bldg + this.global.floor
           }
@@ -79,7 +79,7 @@ export default {
       handler() {
         // console.log(this.global.floor)
         // Highest floor: limit
-        if (this.getBldg() && this.global.floor == this.getBldg().meta.floors[1])
+        if (this.getBldg() && this.global.floor == this.getBldg().meta.floors[0])
           this.btnUp = false 
         else this.btnUp = true
         //  Lowest floor: limit
@@ -201,7 +201,7 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.getBldg() && this.global.floor < this.getBldg().meta.floors[1]) {
+      if (this.getBldg() && this.global.floor < this.getBldg().meta.floors[0]) {
         this.global.floor++;
         this.global.floor = this.global.floor;
         this.floorName = this.global.bldg + this.global.floor
