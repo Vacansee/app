@@ -1,21 +1,20 @@
-<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 2702.9">
-  <path  d="M7 75v2621h3189V73H1794V15h-66v62h-254V15h-67v63H7Z" id="floor"/> 
- <!-- <path  d="M2767 1644v231h-145v-231z" id="_excavated_ele1"/> -->
-  <path d="M2453 2695h160v-567h-160v567z"  id="_104"/>
-  <path d="M2962 1593v524h234v-524l-234 1z"  id="_106"/>
-  <path  d="M1477 2129v195h54v-196h-54z" id="unexcavated1"/>
-  <path d="m2114 1594 1 1101 328-1V1594h-329z"  id="_102"/>
-  <path d="M2962 2139v556l234 1v-557h-234z"  id="_105"/>
-  <path d="m1477 2346 249 1v348h-249v-349z"  id="_121"/>
-  <path d="m2444 77-331 1 1 1102 331-1z"  id="_116"/>
-  <path  d="M1541 2130v194h41v-195h-41z" id="_122"/>
-  <path d="m759 76 669 2-1 1103-668-1V76z"  id="_118"/>
-  <path  d="M3195 78v1102h-423v8h-319V78Z" id="_115"/>
-  <path  d="M2105 78v1102h-330V78Z" id="_117"/>
-  <path  d="M2952 1594v1101h-329v-589h-170v-283h27v-220h125v331h179v-340z" id="_103"/>
-  <path  d="M1739 1595h366v1100h-366z" id="_101"/>
- <!-- <path  d="M1581 2106v-213h8v-83h-115v296z" id="_excavated_stair1"/> -->
-  <path  d="M1463 1668v1027H759V1595h678v73z" id="_120"/>
-  <path  d="M749 78v2617H7V78Z" id="_119"/>
-  <!-- <path  d="M3072 1202v370h-288v-370z" id="_excavated_stair2"/> -->
+<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3200 1200">
+  <path  d="M3200 1200H0V0h3200z" id="floor"/>
+  <!-- <path  d="M2769 718v106h-146V718Z" id="_excavated_ele1"/>
+  <path  d="M3075 515v170h-289V515Z" id="_excavated_stair1"/>
+  <path  d="M1580 930h-108v-98h108z" id="_excavated_stair2"/> -->
+  <path  d="M745 0v1200H0V0Z" id="_119"/>
+  <path  d="M1425 0v505H755V0Z" id="_118"/>
+  <path  d="M1461 696v504H755V696Z" id="_120"/>
+  <path  d="M2105 0v505h-331V0Z" id="_117"/>
+  <path  d="M2445 0v505h-331V0Z" id="_116"/>
+  <path  d="M3199 0v505h-745V0Z" id="_115"/>
+  <path  d="M3200 695v240h-235V695Z" id="_106"/>
+  <path  d="M3200 945v255h-235V945Z" id="_105"/>
+  <path  d="M2955 695v505h-330V930h-170V699h151v152h180V695Z" id="_103"/>
+  <path  d="M2615 940v260h-160V940Z" id="_104"/>
+  <path  d="M2444 1200h-329V695h329z" id="_102"/>
+  <path  d="M2105 1200h-367V696h367z" id="_101"/>
+  <path  d="M1579 940v90h-39v-90z" id="_122"/>
+  <path  d="M1725 1040v160h-250V940h54v100z" id="_121"/>
 </svg>
