@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
+    "color.js": "^1.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
+    "primevue": "^3.37.0",
     "tinycolor2": "^1.6.0",
     "vite-svg-loader": "^4.0.0",
     "vue": "^3.3.4",

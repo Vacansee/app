@@ -20,3 +20,15 @@ Moment.tz('America/New_York').subtract(5, 'hours').format('e:HHmm')
 
 Also, any errors and console logs can be viewed in the `F12` Devtools menu in your browser preview.
 
+## Codebase introduction
+For the Fall '23 RCOS class, the new team that led development on the project met with the original developer to gain an overview of the codebase. That video can be found [here](https://drive.google.com/file/d/1N-sEflGNpD0a7PdGBSsbbGNePsH7WFmB/view?usp=sharing).
+
+## Getting started on an issue
+Once the project is cloned and you have found an issue that you want to work on ([for the frontend app](https://github.com/Vacansee/app/issues) or [for the backend data processing](https://github.com/Vacansee/data/issues)), you will then create a branch off of the dev branch (in app) or the main branch (in data) by either:
+
+1.  adding a branch on github, running `git fetch` and then running `git checkout -b branch_name` in your terminal
+2.  or by running the command `git checkout -b branch_name` while on the correct branch and then running `git push --set-upstream origin branch_name` in your terminal when you are ready to push your changes
+
+The `branch_name` should be of the form `issue#-short-description` (e.g. 22-make-map-zoomable).
+
+Once finished with your changes, you will add your files (`git add whatever-file`, or simply `git add .` if you want to commit all changed files) that you changed and commit your changes (`git commit -m "commit message"`) to your new branch. A good practice to adopt is to continuously run `git status` to see what branch you're on, what files you have staged to commit, and what files are untracked.

@@ -1,42 +1,57 @@
 <script setup>
+// Basic imports
 import moment from 'moment-timezone'
 import tinycolor from "tinycolor2";
 </script>
 
 <template>
   <div id="svgFloor">
-    <component :is="svg" ref="svgComponent"></component>
+    <component :is="floorSVG" ref="svgComponent"></component>
   </div>
 </template>
   
 <script>
-const getSvgFloor = async (floor) => {
-  const module = await import(`../../assets/floors/${floor}.svg`)
-  return module.default
+const getFloorSVG = async (floorName) => {
+  try {
+    const module = await import(`../../assets/floors/${floorName}.svg`)
+    return module.default
+  }
+  catch { console.error(`Map not yet implemented!`) }
 }
 
 export default {
+  // Get references to global
   inject: ["global"],
-  props: ["floor"],
+  props: ["floorName"],
   data() {
-    return {
-      svg: null,
-      currRoom: null,
-      roomLabel: "",
+    return { // Local variables
+      floorSVG: null,
+      roomSVG: null,
+      colors: [
+        "#66e099", // 4 hours (240 minutes)
+        "#aeea77", // 2 hours (120 minutes)
+        "#d8ed80", // 1 hour (60 minutes)
+        "#fce68e", // 30 minutes free
+        "#fdc675", // 15 minutes free
+        "#f99a57", // 10 minutes free
+        "#fc4e58", // occupied
+      ]
     }
   },
   watch: {
-    floor: {
-      async handler(floor) {
-        if (floor == "") {
-          this.svg = null;
-          if (this.currRoom != null)
-            this.currRoom.removeAttribute("id", "selected");
-          this.currRoom = null;
-          this.roomLabel = "";
+    "floorName": {
+      async handler(floorName) {
+        if (floorName == "") {
+          this.floorSVG = null;
+          if (this.roomSVG != null)
+            this.roomSVG.removeAttribute("id", "selected");
+          this.roomSVG = null;
           this.global.room = ""
         }
-        else this.svg = await getSvgFloor(floor)
+        else {
+          this.floorSVG = await getFloorSVG(floorName)
+          if (!this.floorSVG) this.$showToast({title: 'Map not yet implemented!'})
+        }
       },
       immediate: true,
     },
@@ -47,61 +62,71 @@ export default {
     })
   },
   methods: {
+    // Gets the current building
     getBldg() { return this.global.data[this.global.bldg] },
-    getColor(minutes) {
-      const colors = [
-        "#66e099", // 4 hours (240 minutes)
-        "#aeea77", // 2 hours (120 minutes)
-        "#d8ed80", // 1 hour (60 minutes)
-        "#fce68e", // 30 minutes free
-        "#fdc675", // 15 minutes free
-        "#f99a57", // 10 minutes free
-        "#fc4e58", // occupied
-      ]
-
-      if (minutes >= 240) return colors[0]
-      if (minutes >= 120) return colors[1]
-      if (minutes >= 60)  return colors[2]
-      if (minutes >= 30)  return colors[3]
-      if (minutes >= 15)  return colors[4]
-      if (minutes >= 10)  return colors[5]
-      else return colors[6]
+    // get room color corresponding to room availability
+    getRoomColor(minutes) {
+      if (minutes >= 240) return this.colors[0]
+      if (minutes >= 120) return this.colors[1]
+      if (minutes >=  60) return this.colors[2]
+      if (minutes >=  30) return this.colors[3]
+      if (minutes >=  15) return this.colors[4]
+      if (minutes >=  10) return this.colors[5]
+      else return this.colors[6]
     },
-    roomSelect(path) {
+    getFloorColor(flow) {
+      if (flow <= .15) return this.colors[0]
+      if (flow <= .30) return this.colors[1]
+      if (flow <= .45) return this.colors[2]
+      if (flow <= .60) return this.colors[3]
+      if (flow <= .75) return this.colors[4]
+      if (flow <= .90) return this.colors[6]
+      // console.log(flow)
+      else return this.colors[6]
+    },
+    roomSelect(path) { // Select the room needed
       let roomName = path.id.substr(1)
-      if (!this.getBldg()[roomName]) {
-        this.currRoom.remove();
-        this.currRoom = null
-        this.roomLabel = ""
-      }
-      else {
-        if (this.currRoom != null) 
-          this.currRoom.remove();
-        this.currRoom = path
-        this.roomLabel = path.id.substr(1)
+      if (this.getBldg()[roomName]) {
+        if (this.roomSVG != null) this.roomSVG.remove();
+        this.roomSVG = path
+        this.global.room = roomName
         const clonedPath = path.cloneNode(true);
         path.parentNode.appendChild(clonedPath);
-        this.currRoom = clonedPath;
+        this.roomSVG = clonedPath;
         setTimeout(() => {
           clonedPath.setAttribute("id", "selected");
           let border = tinycolor(path.getAttribute("fill")).darken(30).toString();
           clonedPath.style.stroke = border
         }, 10);
       }
-      this.global.room = this.roomLabel
+      else {
+        if (this.roomSVG != null) this.roomSVG.remove()
+        this.roomSVG = null
+        this.global.room = ""
+      }
     },
-    applyRoomColors() {
+    getColorVal(name) {
+        const rootStyles = getComputedStyle(document.documentElement);
+        return rootStyles.getPropertyValue(`--${name}`)
+    },
+    applyRoomColors() { // Apply the room color to the popup
       const svgComponent = this.$refs.svgComponent
 
       if (svgComponent && svgComponent.$el) {
         const paths = svgComponent.$el.querySelectorAll("path")
+        let floorColor = this.getFloorColor(this.getBldg().meta.flow)
 
         paths.forEach((path) => {
           let roomID = path.getAttribute("id");
           let roomName = roomID.substr(1);
           let roomInfo = this.getBldg()[roomName];
           
-          if (roomID != 'floor' && !roomID.includes('excavated')) {
+          if (roomID == 'floor') {
+              path.style.stroke = tinycolor.mix(this.getColorVal("buildbord"), floorColor, 40).toString();
+              let fill = tinycolor.mix(this.getColorVal("roomfill"), floorColor, 30).lighten(8).toString();
+              path.setAttribute("fill", fill);
+          }
+          else if (!roomID.includes('excavated')) {
             if (roomInfo)
               path.addEventListener("mouseover", () => { this.$emit('room-hover', [roomName, true]) })
             else path.addEventListener("mouseover", () => { this.$emit('room-hover', [roomName, false]) })
@@ -111,45 +136,46 @@ export default {
           if (roomInfo) {
             if (roomInfo.meta.cur) {
               path.setAttribute("fill", "#fc4e58");
-              let border = tinycolor("#fc4e58").darken(20).toString()
-              path.style.stroke = border
+              path.style.stroke = tinycolor("#fc4e58").darken(20).toString()
               path.setAttribute("cursor", "pointer")
             }
             else if (!roomInfo.meta.next) { // weekends
+              path.style.stroke = tinycolor("#0eeb6f").darken(20).toString()
               path.setAttribute("fill", "#0eeb6f");
-              let border = tinycolor("#0eeb6f").darken(20).toString()
-              path.style.stroke = border
               path.setAttribute("cursor", "pointer")
             }
             else {
-              const initial = moment(this.global.time, 'e:HHmm')
-              const final = roomInfo.meta.next[2]
-              const next = moment.duration(final.diff(initial)).asMinutes()
-              let fill = this.getColor(next)
+              let initial = moment(this.global.time, 'e:HHmm'), final = roomInfo.meta.next[2]
+              let next = moment.duration(final.diff(initial)).asMinutes()
+              let fill = this.getRoomColor(next)
+              path.style.stroke = tinycolor(fill).darken(25).toString();
               path.setAttribute("fill", fill);
-              let border = tinycolor(fill).darken(25).toString();
-              path.style.stroke = border
               path.setAttribute("cursor", "pointer")
             }
           }
           else { // !roomInfo
             path.setAttribute("cursor","not-allowed")
             if (roomID.includes('excavated')) path.setAttribute("fill", "var(--hardborder)")
-            if (roomID != 'floor') // rooms w/o classes:
-              path.setAttribute("fill", "var(--unusedfill)")
+            else if (roomID != 'floor') { // rooms w/o classes:
+              path.style.stroke = tinycolor.mix(this.getColorVal("buildbord"), floorColor, 30).toString();
+              let fill = tinycolor.mix(this.getColorVal("unusedfill"), floorColor, 15).lighten(1).toString();
+              path.setAttribute("fill", fill);
+            }
           }
           path.setAttribute("pointer-events", "all");
           path.addEventListener("click", () => { this.roomSelect(path); })
+          // Room already requested (search, routing):
+          if (this.global.room && this.global.room == path.id.substr(1)) this.roomSelect(path)
         })
       }
     }
   }
 }
 </script>
-  
+
 <style>
 #svgFloor {
-  fill: var(--roomfill);
+  /* fill: var(--roomfill); */
   stroke: var(--buildbord);
   stroke-width: 9px;
   will-change: transform;
