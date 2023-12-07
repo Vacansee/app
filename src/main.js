@@ -44,12 +44,12 @@ Promise.all([
 	  if (!resp.ok) throw new Error(`failed on 'byCRN.json': ${resp.status}`)
 	  return resp.json()
 	}),
-	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/dept_to_CRN.json').then(resp => {
-	  if (!resp.ok) throw new Error(`failed on 'dept_to_CRN.json': ${resp.status}`)
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/deptToCRN.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'deptToCRN.json': ${resp.status}`)
 	  return resp.json()
 	}),
-	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/title_to_CRN.json').then(resp => {
-	  if (!resp.ok) throw new Error(`failed on 'title_to_CRN.json': ${resp.status}`)
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/titleToCRN.json').then(resp => {
+	  if (!resp.ok) throw new Error(`failed on 'titleToCRN.json': ${resp.status}`)
 	  return resp.json()
 	}),
   ])
