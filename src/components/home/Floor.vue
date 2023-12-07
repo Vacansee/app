@@ -11,9 +11,9 @@ import tinycolor from "tinycolor2";
 </template>
   
 <script>
-const getFloorSVG = async (floor) => {
+const getFloorSVG = async (floorName) => {
   try {
-    const module = await import(`../../assets/floors/${floor}.svg`)
+    const module = await import(`../../assets/floors/${floorName}.svg`)
     return module.default
   }
   catch { console.error(`Map not yet implemented!`) }
@@ -22,7 +22,7 @@ const getFloorSVG = async (floor) => {
 export default {
   // Get references to global
   inject: ["global"],
-  props: ["floor"],
+  props: ["floorName"],
   data() {
     return { // Local variables
       floorSVG: null,
@@ -39,10 +39,9 @@ export default {
     }
   },
   watch: {
-    floor: {
-      // When floor changes, run this code
-      async handler(floor) {
-        if (floor == "") {
+    "floorName": {
+      async handler(floorName) {
+        if (floorName == "") {
           this.floorSVG = null;
           if (this.roomSVG != null)
             this.roomSVG.removeAttribute("id", "selected");
@@ -50,7 +49,7 @@ export default {
           this.global.room = ""
         }
         else {
-          this.floorSVG = await getFloorSVG(floor)
+          this.floorSVG = await getFloorSVG(floorName)
           if (!this.floorSVG) this.$showToast({title: 'Map not yet implemented!'})
         }
       },
@@ -87,16 +86,10 @@ export default {
     },
     roomSelect(path) { // Select the room needed
       let roomName = path.id.substr(1)
-      if (!this.getBldg()[roomName]) {
-        if (this.roomSVG != null) this.roomSVG.remove()
-        this.roomSVG = null
-        this.global.room = ""
-      }
-      else {
-        if (this.roomSVG != null) 
-          this.roomSVG.remove();
+      if (this.getBldg()[roomName]) {
+        if (this.roomSVG != null) this.roomSVG.remove();
         this.roomSVG = path
-        this.global.room = path.id.substr(1)
+        this.global.room = roomName
         const clonedPath = path.cloneNode(true);
         path.parentNode.appendChild(clonedPath);
         this.roomSVG = clonedPath;
@@ -105,6 +98,11 @@ export default {
           let border = tinycolor(path.getAttribute("fill")).darken(30).toString();
           clonedPath.style.stroke = border
         }, 10);
+      }
+      else {
+        if (this.roomSVG != null) this.roomSVG.remove()
+        this.roomSVG = null
+        this.global.room = ""
       }
     },
     getColorVal(name) {
@@ -166,6 +164,8 @@ export default {
           }
           path.setAttribute("pointer-events", "all");
           path.addEventListener("click", () => { this.roomSelect(path); })
+          // Room already requested (search, routing):
+          if (this.global.room && this.global.room == path.id.substr(1)) this.roomSelect(path)
         })
       }
     }
