@@ -1,9 +1,6 @@
-<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3199.3 1199.6">
-  <path  d="M3199 0v1200H0V0Z" id="floor"/>
-  <path  d="M1461 695v505H0V695Z" id="_403"/>
-  <path  d="M3199 0v505h-433v180H0V0Z" id="_402"/>
-  <path  d="M3199 695v505H1738V695h872v155h173V695Z" id="_401"/>
-  <!--<path  d="M3199 515v170h-422V515Z" id="_excavated_stair7"/>
-  <path  d="M2769 710v113h-146V710z" id="_excavated_ele4"/>
-  <path  d="M1725 850v350h-250V850Z" id="_excavated_stair8"/>-->
+<svg version="1.1" id="svg1" viewBox="0 0 3199.3 1199.6" xmlns="http://www.w3.org/2000/svg">
+  <path d="M3199 0v1200H0V0Z" id="floor"/>
+  <path d="M1461 688v512H0V688Z" id="_403"/>
+  <path d="M3199 0v505h-433v180H0V0Z" id="_402"/>
+  <path d="M3199 688v512H1738V688h872v157h173V688Z" id="_401"/>
 </svg>
