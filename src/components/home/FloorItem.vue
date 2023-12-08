@@ -81,10 +81,10 @@ export default {
         // Highest floor: limit
         if (this.getBldg() && this.global.floor == this.getBldg().meta.floors[0])
           this.btnUp = false 
-        else this.btnUp = true
+        else if (this.global.floor) this.btnUp = true
         //  Lowest floor: limit
         if (this.global.floor == 1) this.btnDown = false
-        else this.btnDown = true
+        else if (this.global.floor) this.btnDown = true
       }
     },
     // When button up changes
