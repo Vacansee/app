@@ -2,6 +2,8 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
+import PollIcon from '@/assets/icons/poll.svg?component'
+import GHIcon from '@/assets/icons/github.svg?component'
 import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
 import Toast from 'primevue/toast'
@@ -21,10 +23,10 @@ import Toast from 'primevue/toast'
 
         <div id="right-nav">
         <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
-            <img src="./assets/icons/poll.svg" height="25" width="25"/>
+            <PollIcon height="25" width="25"/>
         </Button></a>
         <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
-            <img src="./assets/icons/github.svg" height="25" width="25"/>
+            <GHIcon height="25" width="25"/>
         </Button></a>
       </div>
   </header>
@@ -132,6 +134,7 @@ header {
 }
 
 .nav-btn {
+  fill: #205C5B;
   margin: .5rem;
   width: 3.25rem;
   height: 3.25rem;
@@ -140,6 +143,11 @@ header {
   border: 2px solid var(--buildbord);
   box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
   pointer-events: all;
+}
+
+.nav-btn:hover,
+.nav-btn:active {
+  fill: white;
 }
 
 #left-nav {
