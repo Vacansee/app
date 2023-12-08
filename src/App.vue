@@ -17,7 +17,7 @@ import Toast from 'primevue/toast'
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
         </RouterLink>
         <div class="search">
-          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo"></AutoComplete>
+          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
         </div>
       </div>
 
@@ -71,6 +71,10 @@ export default {
     changeEx() {
       const ex = this.exs.shift()
       this.ex = `Try ${ex}`; this.exs.push(ex)
+    },
+    searchFocus(is) {
+      this.global.sFocus = is
+      // console.log("sFocus:", is)
     },
     filterRes(event) { 
       // Case & whitespace insensitive, ignore some characters:

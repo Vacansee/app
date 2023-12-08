@@ -32,6 +32,7 @@ const global = reactive({ // The global reactive object!
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm'), // Test time
 	firstCalc: false,
+	sFocus: false
 })
 
 // On page load, fetch building/room and search data from Vacansee/data:
