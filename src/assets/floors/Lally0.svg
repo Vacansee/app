@@ -1,0 +1,18 @@
+<svg version="1.1" id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816">
+  <path d="M53 170v416h415v54h236v-54h343V170Z" id="floor"/>
+  <path d="M290 186v158h69V185h-69z" id="_006"/>
+  <path d="M363 186v97h57v-97z" id="_005"/>
+  <path d="M424 186v158h197V186Z" id="_004"/>
+  <path d="M625 186v158h211V185H625Z" id="_003"/>
+  <path d="M731 411v158h105V411H731Z" id="_001A"/>
+  <path d="M623 411v158h104V411H623Z" id="_001B"/>
+  <path d="M481 574v53h41v-53h-41z" id="_014"/>
+  <path d="M420 411v158h102V411z" id="_013"/>
+  <path d="M211 411v158h105V411H211Z" id="_009A"/>
+  <path d="M363 287v57h57v-57Z" id="_005A"/>
+  <path d="M361 411v159h55V411Z" id="_012"/>
+  <path d="M170 348v27H69v194h139V349h-38z" id="_009"/>
+  <path d="M69 185v186h97v-27h41v-31h-27V186H69Z" id="_008"/>
+  <path d="M184 186v123h62v35h40V185H184Z" id="_007"/>
+  <path d="M839 185v384h193V186H839Z" id="_02"/>
+</svg>
