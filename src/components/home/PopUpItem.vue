@@ -2,6 +2,8 @@
 import moment from 'moment-timezone'
 import { average } from 'color.js'
 import Tag from 'primevue/tag';
+
+import InfoIcon from '@/assets/icons/info.svg?component'
 </script>
 
 <template>
@@ -15,7 +17,8 @@ import Tag from 'primevue/tag';
         <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
                 <div id="photoBox">
-                    <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo">
+                    <!-- <img :src="'src/assets/photos/' + global.bldg + '.jpg'" id="photo"> -->
+                    <img :src="imgPath" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
                 <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat*100 }}%)</p>
@@ -23,7 +26,7 @@ import Tag from 'primevue/tag';
                 <p id="flow" v-if="interpretFlow()">+ {{ interpretFlow() }} (~{{ getBldg().meta.flow.toFixed(2)*100 }}%)&emsp;</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>
                 <span v-if="getHist()"> 
-                    <img class="info" src="../../assets/icons/info.svg" />
+                    <InfoIcon class="info"/>
                     <a :href="'https://archives.rpi.edu/institute-history/building-histories/' + getHist()">
                         <em> Get historical info&emsp;</em>
                     </a>
@@ -32,7 +35,7 @@ import Tag from 'primevue/tag';
             </div>
             <div v-if="getDining()" class="block"> <!-- Block: dining -->
                 <b>Dining&emsp;</b>
-                <img class="info" src="../../assets/icons/info.svg" />
+                <InfoIcon class="info"/>
                 <a :href="'https://rpi.sodexomyway.com/dining-near-me/' + getDining().url">
                     <em> More info</em>
                 </a>
@@ -89,6 +92,9 @@ import Tag from 'primevue/tag';
 export default {
     // Gets reference to global
     inject: ['global'],
+    data() {
+        return { imgPath: "" }
+    },
     watch: {
         'global.aspectRatio': {
             handler() {
@@ -112,10 +118,11 @@ export default {
         'global.bldg': {
             handler() {
                 if (this.global.bldg) {
-                    average(`src/assets/photos/${this.global.bldg}.jpg`, { format: 'hex' })
+                    this.imgPath = new URL(`../../assets/photos/${this.global.bldg}.jpg`, import.meta.url).href
+                    average(this.imgPath, { format: 'hex' })
                     .then(color => { 
-                        photoBox.style.backgroundColor = `${color}10`
-                        photoBox.style.outlineColor = `${color}20`
+                        photoBox.style.backgroundColor = `${color}20`
+                        photoBox.style.outlineColor = `${color}40`
                     })
                 }
             }
@@ -329,6 +336,7 @@ tr:nth-child(even) {
 }
 
 .info {
+    fill: #1e3050;
     margin: 0 4px -4px 0;
     height: 20px;
     width: 20px;

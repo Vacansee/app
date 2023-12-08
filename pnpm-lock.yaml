@@ -74,7 +74,7 @@ packages:
       chalk: 2.4.2
     dev: true
 
-  /@babel/compat-data@7.22.20:
+  /@babel/compat-data@7.22.20:  
     resolution: {integrity: sha512-BQYjKbpXjoXwFW5jGqiizJQQT/aC7pFm9Ok1OWssonuguICi264lbgMzRp2ZMmRSlfkX6DsWDDcsrctK8Rwfiw==}
     engines: {node: '>=6.9.0'}
     dev: true
