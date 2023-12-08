@@ -7,7 +7,7 @@ import Floor from './Floor.vue'
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
   <div id='floorBox'>
-    <Floor @room-hover="onRoomHover" :floor="floor" />
+    <Floor @room-hover="onRoomHover" :floorName="floorName" />
   </div>
 
   <div id='buttonBox'>
@@ -31,8 +31,20 @@ export default {
   // Get reference to global
   inject: ["global"],
   emits: ["roomHover"],
-  components: {
-    Floor
+  components: { Floor },
+  data() {
+    // Local variables
+    return {
+      threshold: 1,
+      doResize: "",
+      btnUp: true,
+      btnDown: true,
+      onPopup: false,
+      dragging: false,
+      dsHist: 0,
+      floorName: "",
+      zoom:0,
+    }
   },
   watch: {
     'global.aspectRatio': {
@@ -44,16 +56,17 @@ export default {
       handler() {
         if (this.global.bldg) { // selected
           if (this.getBldg()) {
-            this.floorNum = this.getBldg().meta.floors[2]
-            this.floor = this.global.bldg + this.getBldg().meta.floors[2]
-            this.global.floor = this.getBldg().meta.floors[2]
+            if (!this.global.floor) this.global.floor = this.getBldg().meta.floors[1]
+            // else: floor already requested (search, routing)
+            this.floorName = this.global.bldg + this.global.floor
           }
           floorBox.style.opacity = 1;
           up.style.opacity = down.style.opacity = 1;
           buttonBox.style.pointerEvents = "auto";
           down.style.transform = "rotate(180deg)";
         } else { // unselected
-          this.floor = ""
+          this.floorName = ""
+          this.global.floor = null
           floorBox.style.opacity = 0;
           up.style.opacity = down.style.opacity = 0;
           buttonBox.style.pointerEvents = "none";
@@ -62,12 +75,17 @@ export default {
       
     },
     // When floor num changes
-    floorNum(newVar) {
-      if (this.getBldg() && newVar == this.getBldg().meta.floors[1])
-        this.btnUp = false 
-      else this.btnUp = true
-      if (newVar == 1) this.btnDown = false
-      else this.btnDown = true
+    'global.floor': {
+      handler() {
+        // console.log(this.global.floor)
+        // Highest floor: limit
+        if (this.getBldg() && this.global.floor == this.getBldg().meta.floors[0])
+          this.btnUp = false 
+        else if (this.global.floor) this.btnUp = true
+        //  Lowest floor: limit
+        if (this.global.floor == 1) this.btnDown = false
+        else if (this.global.floor) this.btnDown = true
+      }
     },
     // When button up changes
     btnUp(newVar) {
@@ -80,27 +98,12 @@ export default {
       else        down.style.opacity = 0.6;
     },
   },
-  data() {
-    // Local variables
-    return {
-      threshold: 1,
-      doResize: "",
-      floorNum: 1,
-      btnUp: true,
-      btnDown: true,
-      onPopup: false,
-      dragging: false,
-      dsHist: 0,
-      floor: "",
-      zoom:0,
-    }
-  },
   mounted() {
     // On load, set floorBox transition
     setTimeout(() => floorBox.style.transition = "transform .2s, width .4s", 500);
     this.moveMap();
-    popup.addEventListener("mouseleave", () => { this.onPopup = false; console.log(this.onPopup) })
-    popup.addEventListener("mouseenter", () => { this.onPopup = true; console.log(this.onPopup) })
+    popup.addEventListener("mouseleave", () => { this.onPopup = false })
+    popup.addEventListener("mouseenter", () => { this.onPopup = true })
     window.addEventListener("wheel", this.onMouseScroll);
     window.addEventListener("mousedown", () => {
       window.addEventListener("mousemove", this.onMouseDrag);
@@ -171,7 +174,7 @@ export default {
       }
     },
     onMouseDrag({movementX, movementY}) {
-      if (this.global.bldg) {
+      if (!this.onPopup && this.global.bldg) {
         // console.log(floorBox.offsetLeft, floorBox.offsetTop)
         let changeX = (movementX*((this.zoom+100)/100));
         let changeY = (movementY*((this.zoom+100)/100));
@@ -198,19 +201,19 @@ export default {
     },
     // Increases the floor
     increaseFloor() {
-      if (this.getBldg() && this.floorNum < this.getBldg().meta.floors[1]) {
-        this.floorNum++;
-        this.global.floor = this.floorNum;
-        this.floor = this.global.bldg + this.floorNum
+      if (this.getBldg() && this.global.floor < this.getBldg().meta.floors[0]) {
+        this.global.floor++;
+        this.global.floor = this.global.floor;
+        this.floorName = this.global.bldg + this.global.floor
         this.global.room = ""
       }
     },
     // Decreases the floor
     decreaseFloor() {
-      if (this.floorNum != 1) {
-        this.floorNum--;
-        this.global.floor = this.floorNum;
-        this.floor = this.global.bldg + this.floorNum
+      if (this.global.floor != 1) {
+        this.global.floor--;
+        this.global.floor = this.global.floor;
+        this.floorName = this.global.bldg + this.global.floor
         this.global.room = ""
       }
     }
@@ -239,7 +242,7 @@ export default {
   justify-content: center;
   align-items: right;
   right: 4vw;
-  bottom: 5vh;
+  bottom: 3vw;
   width: 60px;
   height: 150px;
   display: flex;
