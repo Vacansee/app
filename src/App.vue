@@ -15,11 +15,11 @@ import Toast from 'primevue/toast'
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
         </RouterLink>
         <div class="search">
-          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete>
+          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo"></AutoComplete>
         </div>
       </div>
 
-      <div id="right-nav">
+        <div id="right-nav">
         <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
             <img src="./assets/icons/poll.svg" height="25" width="25"/>
         </Button></a>
@@ -37,7 +37,14 @@ import Toast from 'primevue/toast'
 export default {
   data() {
     return {
-      filteredResults: [],
+      exs: [
+        "a building:  Russell Sage",
+        "a dept. code:  CSCI 1200",
+        "a room:  DCC 308",
+        "a CRN:  80385"
+      ],
+      ex: "",
+      suggest: [],
       selection: ""
     }
   },
@@ -54,29 +61,57 @@ export default {
       }
     }
   },
+  mounted() {
+    this.changeEx()
+    setInterval(this.changeEx, 5000);
+  },
   methods: {
-    filterResults(event) {
-      // filter buildings and classes
-      setTimeout(() => {
-        this.filteredResults = [];
-        Object.keys(this.global.data).map((bid) => {
-          this.filteredResults.push(bid.toString() + " (" + this.global.data[bid].meta.name.toString() + ")");
-        })
-        this.filteredResults.sort();
-        this.filteredResults = this.filteredResults.map((bid) => {
-            return bid.replace(/_/g, ' ');
-        })
-        .filter((result) => {
-            return result.toLowerCase().includes(event.query.toLowerCase());
-        });
-      }, 250);
+    changeEx() {
+      const ex = this.exs.shift()
+      this.ex = `Try ${ex}`; this.exs.push(ex)
     },
-    searchFunc() {
-      // Select any floor, room, or building directly:
-      // this.global.floor = 1
-      // this.global.room = "174"
-      this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
-      this.selection = "";
+    filterRes(event) { 
+      // Case & whitespace insensitive, ignore some characters:
+      const query = event.query.toLowerCase().replace(/\s{2,}/g, ' ').replace(/["#]/g, '')
+      setTimeout(() => {
+        this.suggest = []
+        // Transform, sort, filter global.data + global.searchData:
+        this.suggest = Object.keys(this.global.data).concat(this.global.searchData.flatMap(Object.keys))
+        .map(key => {
+          if (key in this.global.data) return `${key.toString()} (${this.global.data[key].meta.name.toString()})`
+          else return key
+        })
+        .filter(s => s.toLowerCase().includes(query))
+        .sort()
+        .map(s => s.replace(/_/g, ' '));
+      }, 100);
+    },
+    goTo() {
+      const abbrev = this.selection.substring(0, this.selection.indexOf("(") - 1)
+      if (abbrev in this.global.data) {
+        this.global.bldg = abbrev, this.selection = ""
+        console.log(`Building "${abbrev}" selected`)
+        return
+      }
+      else if (this.selection in this.global.searchData[2]) { // toRoom
+        const [bldg, room] = this.selection.split(" ")
+        this.global.floor = parseInt(room[0]) // TODO: non-numerical room #s
+        this.global.room = room, this.global.bldg = bldg 
+        console.log(`Room "${this.selection}" selected`)
+        this.selection = ""
+        return
+      }
+      let CRN = ""
+      if (this.selection in this.global.searchData[1]) { // deptToCRN
+        CRN = this.global.searchData[1][this.selection]
+        console.log(`Using dept code "${this.selection}"`)
+      }
+      else if (this.selection in this.global.searchData[0]) CRN = this.selection // byCRN
+      // TODO: show all locations (pins), calc time 'til begin/end
+      const [bldg, room] = Object.keys(this.global.searchData[0][CRN])[0].split(" ")
+      this.global.floor = parseInt(room[0])
+      this.global.room = room, this.global.bldg = bldg, this.selection = ""
+      console.log(`Room w/ CRN #${CRN} selected`)
     }
   }
 }
