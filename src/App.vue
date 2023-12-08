@@ -2,19 +2,31 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
+import AutoComplete from 'primevue/autocomplete'
+import Button from "primevue/button"
+import Toast from 'primevue/toast'
 </script>
 
 <template>
+  <Toast/>
   <!-- HTML For Header -->
-  <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    <Logo class="logo" width="75" height="75" />
+  <header id="header">
+      <div id="left-nav">
+        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
+        </RouterLink>
+        <div class="search">
+          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo"></AutoComplete>
+        </div>
+      </div>
 
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+        <div id="right-nav">
+        <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
+            <img src="./assets/icons/poll.svg" height="25" width="25"/>
+        </Button></a>
+        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
+            <img src="./assets/icons/github.svg" height="25" width="25"/>
+        </Button></a>
+      </div>
   </header>
 
 
@@ -23,18 +35,83 @@ import Logo from '@/assets/logo.svg?component'
 
 <script>
 export default {
+  data() {
+    return {
+      exs: [
+        "a building:  Russell Sage",
+        "a dept. code:  CSCI 1200",
+        "a room:  DCC 308",
+        "a CRN:  80385"
+      ],
+      ex: "",
+      suggest: [],
+      selection: ""
+    }
+  },
   inject: ["global"],
   watch: {
     'global.bldg': {
-      deep: true,
       handler() {
+        this.$clearToasts()
         // Only shows header when a building is not selected
         if (this.global.bldg)
           document.getElementById("header").style.opacity = "0";
         else
           document.getElementById("header").style.opacity = "1";
-
       }
+    }
+  },
+  mounted() {
+    this.changeEx()
+    setInterval(this.changeEx, 5000);
+  },
+  methods: {
+    changeEx() {
+      const ex = this.exs.shift()
+      this.ex = `Try ${ex}`; this.exs.push(ex)
+    },
+    filterRes(event) { 
+      // Case & whitespace insensitive, ignore some characters:
+      const query = event.query.toLowerCase().replace(/\s{2,}/g, ' ').replace(/["#]/g, '')
+      setTimeout(() => {
+        this.suggest = []
+        // Transform, sort, filter global.data + global.searchData:
+        this.suggest = Object.keys(this.global.data).concat(this.global.searchData.flatMap(Object.keys))
+        .map(key => {
+          if (key in this.global.data) return `${key.toString()} (${this.global.data[key].meta.name.toString()})`
+          else return key
+        })
+        .filter(s => s.toLowerCase().includes(query))
+        .sort()
+        .map(s => s.replace(/_/g, ' '));
+      }, 100);
+    },
+    goTo() {
+      const abbrev = this.selection.substring(0, this.selection.indexOf("(") - 1)
+      if (abbrev in this.global.data) {
+        this.global.bldg = abbrev, this.selection = ""
+        console.log(`Building "${abbrev}" selected`)
+        return
+      }
+      else if (this.selection in this.global.searchData[2]) { // toRoom
+        const [bldg, room] = this.selection.split(" ")
+        this.global.floor = parseInt(room[0]) // TODO: non-numerical room #s
+        this.global.room = room, this.global.bldg = bldg 
+        console.log(`Room "${this.selection}" selected`)
+        this.selection = ""
+        return
+      }
+      let CRN = ""
+      if (this.selection in this.global.searchData[1]) { // deptToCRN
+        CRN = this.global.searchData[1][this.selection]
+        console.log(`Using dept code "${this.selection}"`)
+      }
+      else if (this.selection in this.global.searchData[0]) CRN = this.selection // byCRN
+      // TODO: show all locations (pins), calc time 'til begin/end
+      const [bldg, room] = Object.keys(this.global.searchData[0][CRN])[0].split(" ")
+      this.global.floor = parseInt(room[0])
+      this.global.room = room, this.global.bldg = bldg, this.selection = ""
+      console.log(`Room w/ CRN #${CRN} selected`)
     }
   }
 }
@@ -42,41 +119,47 @@ export default {
 <style scoped>
 @import './assets/main.css';
 /* Everything from here on in the file is  basic css */
-.homePageLogo {
-  position: absolute;
-}
 
 header {
-  z-index: 7;
-  display: flex;
-  padding: 1rem;
   pointer-events: none;
+  position: absolute;
+  z-index: 6;
 }
 
 .logo {
-  display: block;
-  margin: 0 1rem 0 0;
-}
-
-nav {
-  line-height: 2;
-  font-size: 1rem;
-  text-align: left;
+  margin-right: 1rem; 
   pointer-events: all;
-  margin: 1.25rem;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.nav-btn {
+  margin: .5rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  justify-content: center;
+  background-color: var(--unusedfill);
+  border: 2px solid var(--buildbord);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  pointer-events: all;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: none;
+#left-nav {
+  display: flex;
+  padding: .5rem 1rem;
 }
 
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+.search {
+  width: 250px;
+  border: 2px solid var(--walkpath);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  border-radius: 10px;
+  align-self: center;
+  pointer-events: all;
+}
+
+#right-nav {
+  position: fixed;
+  padding: .8rem 1rem;
+  top: 0;
+  right: 0;
 }
 </style>
