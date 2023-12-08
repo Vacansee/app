@@ -45,12 +45,16 @@ Promise.all([
 	  return resp.json()
 	}),
 	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/deptToCRN.json').then(resp => {
-	  if (!resp.ok) throw new Error(`failed on 'deptToCRN.json': ${resp.status}`)
-	  return resp.json()
+		if (!resp.ok) throw new Error(`failed on 'deptToCRN.json': ${resp.status}`)
+		return resp.json()
 	}),
-	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/titleToCRN.json').then(resp => {
-	  if (!resp.ok) throw new Error(`failed on 'titleToCRN.json': ${resp.status}`)
-	  return resp.json()
+	// fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/titleToCRN.json').then(resp => {
+	// 	if (!resp.ok) throw new Error(`failed on 'titleToCRN.json': ${resp.status}`)
+	// 	return resp.json()
+	// }),
+	fetch('https://raw.githubusercontent.com/Vacansee/data/main/data/search/toRoom.json').then(resp => {
+		if (!resp.ok) throw new Error(`failed on 'deptToCRN.json': ${resp.status}`)
+		return resp.json()
 	}),
   ])
   .then(data => { // data is an array of the resolved values from promises
