@@ -2,28 +2,29 @@
 // Basic Imports
 import { RouterLink, RouterView } from 'vue-router'
 import Logo from '@/assets/logo.svg?component'
-import AutoComplete from 'primevue/autocomplete';
+import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
-
+import Toast from 'primevue/toast'
 </script>
 
 <template>
+  <Toast/>
   <!-- HTML For Header -->
-  <header id="header" v-bind:class="{ 'homePageLogo': $route.path == '/' }">
-    
-      <div class="left-nav">
-        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/> </RouterLink>
+  <header id="header">
+      <div id="left-nav">
+        <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
+        </RouterLink>
         <div class="search">
-          <AutoComplete placeholder="Search for a class..."></AutoComplete> 
+          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" placeholder="Search for a building or class..." :suggestions="filteredResults" @complete="filterResults" @item-select="searchFunc"></AutoComplete>
         </div>
       </div>
 
-      <div class="right-nav">
-        <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
-            <img src="./assets/icons/poll.svg" height="30" width="30" />
+      <div id="right-nav">
+        <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
+            <img src="./assets/icons/poll.svg" height="25" width="25"/>
         </Button></a>
-        <a href="https://github.com/Vacansee"><Button class="nav-btn">
-            <img src="./assets/icons/github.svg" height="30" width="30"/>
+        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
+            <img src="./assets/icons/github.svg" height="25" width="25"/>
         </Button></a>
       </div>
   </header>
@@ -34,17 +35,48 @@ import Button from "primevue/button"
 
 <script>
 export default {
+  data() {
+    return {
+      filteredResults: [],
+      selection: ""
+    }
+  },
   inject: ["global"],
   watch: {
     'global.bldg': {
       handler() {
+        this.$clearToasts()
         // Only shows header when a building is not selected
         if (this.global.bldg)
           document.getElementById("header").style.opacity = "0";
         else
           document.getElementById("header").style.opacity = "1";
-
       }
+    }
+  },
+  methods: {
+    filterResults(event) {
+      // filter buildings and classes
+      setTimeout(() => {
+        this.filteredResults = [];
+        Object.keys(this.global.data).map((bid) => {
+          this.filteredResults.push(bid.toString() + " (" + this.global.data[bid].meta.name.toString() + ")");
+        })
+        this.filteredResults.sort();
+        this.filteredResults = this.filteredResults.map((bid) => {
+            return bid.replace(/_/g, ' ');
+        })
+        .filter((result) => {
+            return result.toLowerCase().includes(event.query.toLowerCase());
+        });
+      }, 250);
+    },
+    searchFunc() {
+      // Select any floor, room, or building directly:
+      // this.global.floor = 1
+      // this.global.room = "174"
+      this.global.bldg = this.selection.substring(0, this.selection.indexOf("(") - 1);
+      this.selection = "";
     }
   }
 }
@@ -52,44 +84,45 @@ export default {
 <style scoped>
 @import './assets/main.css';
 /* Everything from here on in the file is  basic css */
-.homePageLogo {
-  position: absolute;
-}
 
 header {
-  z-index: 7;
-  display: flex;
-  padding: 1rem;
+  pointer-events: none;
+  position: absolute;
+  z-index: 6;
 }
 
 .logo {
-  display: block;
-  margin: 0 1rem 0 0;
+  margin-right: 1rem; 
   pointer-events: all;
 }
 
 .nav-btn {
   margin: .5rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  justify-content: center;
+  background-color: var(--unusedfill);
+  border: 2px solid var(--buildbord);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
   pointer-events: all;
 }
 
-.left-nav {
-  position: fixed;
+#left-nav {
   display: flex;
-  pointer-events: none;
   padding: .5rem 1rem;
-  top: 0;
-  left: 0;
 }
 
 .search {
+  width: 250px;
+  border: 2px solid var(--walkpath);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  border-radius: 10px;
   align-self: center;
   pointer-events: all;
 }
 
-.right-nav {
+#right-nav {
   position: fixed;
-  pointer-events: none;
   padding: .8rem 1rem;
   top: 0;
   right: 0;
