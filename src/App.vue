@@ -16,12 +16,9 @@ import Toast from 'primevue/toast'
       <div id="left-nav">
         <RouterLink to="/"> <Logo class="logo" height="75" width="75"/>
         </RouterLink>
-        <div class="search">
-          <AutoComplete :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
-        </div>
       </div>
 
-        <div id="right-nav">
+      <div id="right-nav">
         <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
             <PollIcon height="25" width="25"/>
         </Button></a>
@@ -29,8 +26,12 @@ import Toast from 'primevue/toast'
             <GHIcon height="25" width="25"/>
         </Button></a>
       </div>
-  </header>
-
+    </header>
+    <div id="mobile-nav">
+        <Teleport to="#left-nav" :disabled="global.aspectRatio > 1.5">
+          <AutoComplete class="search" :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
+        </Teleport>
+    </div>
 
   <RouterView />
 </template>
@@ -135,6 +136,7 @@ header {
 .logo {
   margin-right: 1rem; 
   pointer-events: all;
+  filter: drop-shadow(0px 5px 20px white);
 }
 
 .nav-btn {
@@ -145,7 +147,7 @@ header {
   justify-content: center;
   background-color: var(--unusedfill);
   border: 2px solid var(--buildbord);
-  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.08);
   pointer-events: all;
 }
 
@@ -160,9 +162,9 @@ header {
 }
 
 .search {
-  width: 250px;
+  width: 250px !important;
   border: 2px solid var(--walkpath);
-  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.05);
+  box-shadow: 0px 5px 25px rgba(0, 10, 20, 0.08);
   border-radius: 10px;
   align-self: center;
   pointer-events: all;
@@ -174,4 +176,15 @@ header {
   top: 0;
   right: 0;
 }
+
+#mobile-nav {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  bottom: 2vh;
+  z-index: 6;
+}
+
 </style>
