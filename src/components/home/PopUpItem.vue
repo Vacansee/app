@@ -21,7 +21,7 @@ import InfoIcon from '@/assets/icons/info.svg?component'
                     <img :src="imgPath" id="photo">
                     <span>{{ getBldg().meta.name }}</span>
                 </div>
-                <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat*100 }}%)</p>
+                <p id="heat" v-if="interpretHeat()"><b style="color:var(--heatColor);">{{ interpretHeat() }}</b> (~{{ getBldg().meta.heat.toFixed(2)*100 }}%)</p>
                 <p id="heat" v-else><b>N/A</b></p>
                 <p id="flow" v-if="interpretFlow()">+ {{ interpretFlow() }} (~{{ getBldg().meta.flow.toFixed(2)*100 }}%)&emsp;</p>
                 <p id="time" ref="mySpan">{{ getRealTime(global.time) }}</p>

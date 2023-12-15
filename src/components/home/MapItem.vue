@@ -287,7 +287,6 @@ export default {
     // Check for resizing of window
     window.addEventListener("resize", this.windowResizeTimeout)
     // Allow for the scroll wheel to zoom the map
-    let portraitMode = false;
     window.addEventListener("wheel", this.onMouseScroll);
     // Handles changes to the window
     this.windowEventHandler()
@@ -300,7 +299,7 @@ export default {
   },
   methods: {
     onMouseScroll({deltaX,deltaY}) {
-      if (!this.global.bldg){
+      if (!this.global.sFocus && !this.global.bldg){
         let dirwheel = 0;
         if (deltaY>0) {
           dirwheel = -1;

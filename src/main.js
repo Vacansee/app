@@ -11,7 +11,6 @@ import App from './App.vue'
 import Router from './router'
 // Imports ability to check time
 import Moment from 'moment-timezone'
-// useFetch is used to fetch data (fitting name)
 // Basic CSS
 import './assets/main.css'
 
@@ -21,7 +20,7 @@ import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
 const global = reactive({ // The global reactive object!
-	// Any changes to its members will trigger reactivity in components that reference it: 
+	// Any changes to its members will trigger reactivity in components that 
 	data: null,
 	searchData: null,
 	bldg: '',
@@ -32,6 +31,7 @@ const global = reactive({ // The global reactive object!
 	time: Moment.tz('America/New_York').format('e:HHmm'),
 	// time: Moment.tz('2023-11-29 11:55', 'America/New_York').format('e:HHmm'), // Test time
 	firstCalc: false,
+	sFocus: false
 })
 
 // On page load, fetch building/room and search data from Vacansee/data:
@@ -150,8 +150,8 @@ setInterval(() => { // Update current time every second
 	// let seconds = Number(Moment.tz('2023-11-28 11:55', 'America/New_York').format('ss')) // Test time
 	// Every 5 minutes, check data for buildings (update heat and room availability)
 	if (!(global.time.split(':')[1] % 5) && !seconds) { // update states every 5m (on the dot)
-		// checkActive()
-		// console.log(`Updating states @ ${global.time}:${seconds}`)
+		checkActive()
+		console.log(`Updating states @ ${global.time}:${seconds}`)
 	}
 	// else console.log(`${global.time}:${seconds}`)
 }, 1000)
