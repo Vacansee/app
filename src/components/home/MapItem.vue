@@ -372,7 +372,7 @@ export default {
         else                    fill = colors[0]
 
         b.style.fill = fill
-        document.documentElement.style.setProperty('--heatColor', tinycolor(fill).darken(50).toString());
+        document.documentElement.style.setProperty('--heatColor', tinycolor(fill).darken(25).toString());
         let border = tinycolor(fill).darken(25).toString()
         b.style.stroke = border
 

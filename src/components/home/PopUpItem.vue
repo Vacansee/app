@@ -14,6 +14,7 @@ import InfoIcon from '@/assets/icons/info.svg?component'
             <span v-if="global.bldg"> > Floor {{ global.floor }}</span>
             <span v-if="!noneSelected()"> > Room {{ global.room }}</span>
         </div>
+        <div id="fadeout"></div>
         <div v-if="global.bldg && getBldg()" class="body">
             <div class="block">
                 <div id="photoBox">
@@ -245,18 +246,35 @@ export default {
     border: 3px solid var(--softborder);
     border-bottom-style: none;
     box-shadow: 0px -2px 40px rgba(0, 0, 0, 0.20);
+    background-color: var(--soft-bg);
     border-radius: 15px 15px 0 0;
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-color: var(--hardborder) transparent;
-    scroll-snap-stop: always;
 }
 
 #breadcrumbs {
     padding: 10px 0px 0px 20px;
     color: rgb(0, 0, 0);
-    font-weight: 600;
     font-size: x-large;
+    font-weight: 600;
+    height: 50px;
+    border-radius: 12px 12px 0 0;
+    background-color: white;
+}
+
+#fadeout {
+    background-image: linear-gradient(white, transparent);
+    position:relative;
+    z-index: 1;
+    height: 25px;
+}
+
+.body {
+    position: absolute;
+    top: 50px;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: var(--hardborder) transparent;
+    scroll-snap-stop: always;
 }
 
 #photo {
@@ -333,6 +351,7 @@ tr:nth-child(even) {
     border-radius: 10px;
     border: 1px solid var(--softborder);
     box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.05);
+    background-color: white;
 }
 
 .info {
