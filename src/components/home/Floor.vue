@@ -180,7 +180,7 @@ export default {
   stroke-width: 9px;
   will-change: transform;
   transition: width linear 2s, height linear 2s, opacity .8s;
-  width: 1920px;
+  width: 50px;
   background: none;
   pointer-events: none;
 }

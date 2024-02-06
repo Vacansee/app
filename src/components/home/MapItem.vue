@@ -421,7 +421,7 @@ export default {
   /* startup properties (replaced): */
   opacity: 0;
   transition: width linear 2s, height linear 2s, opacity .8s;
-  width: 1920px;
+  width: 50px;
   will-change: transform;
 }
 
