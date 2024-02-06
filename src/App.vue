@@ -20,6 +20,8 @@ import Toast from 'primevue/toast'
       </div>
 
       <div class="right-nav">
+        <a><Button class="nav-btn"  @click="darkMode">DARK MODE</Button></a>
+
         <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
             <img src="./assets/icons/poll.svg" height="30" width="30" />
         </Button></a>
@@ -60,6 +62,9 @@ export default {
     }
   },
   methods: {
+    darkMode() {
+      console.log("Dark Mode actived");
+    },
     filterResults(event) {
       // filter buildings and classes
       setTimeout(() => {
