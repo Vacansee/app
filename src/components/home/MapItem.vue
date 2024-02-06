@@ -396,10 +396,10 @@ export default {
       let y = window.innerHeight;
       let ratio = x / y;
       if (ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y/50+this.zoom})` + `rotate(90deg)`
+        map.style.transform = `scale(${(y/50+this.zoom) * 0.04629629629})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x/50+this.zoom})`
+        map.style.transform = `scale(${(x/50+this.zoom) * 0.04629629629})`
     }
   }
 }
