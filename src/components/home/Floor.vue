@@ -181,7 +181,7 @@ export default {
   will-change: transform;
   transition: width linear 2s, height linear 2s, opacity .8s;
   width: 1080px;
-  transform: scale(50/1080);
+  transform: scale(0.04629629629);
   background: none;
   pointer-events: none;
 }
