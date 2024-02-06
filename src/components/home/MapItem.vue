@@ -421,7 +421,9 @@ export default {
   /* startup properties (replaced): */
   opacity: 0;
   transition: width linear 2s, height linear 2s, opacity .8s;
-  width: 50px;
+  width: 1080px;
+  /* Band aid scaling fix for svg devices */
+  transform: scale(0.04629629629);
   will-change: transform;
 }
 
