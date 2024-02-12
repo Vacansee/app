@@ -7,6 +7,7 @@ import GHIcon from '@/assets/icons/github.svg?component'
 import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
 import Toast from 'primevue/toast'
+import MapItem from '../src/components/home/MapItem.vue';
 </script>
 
 <template>
@@ -98,6 +99,7 @@ export default {
       if (abbrev in this.global.data) {
         this.global.bldg = abbrev, this.selection = ""
         console.log(`Building "${abbrev}" selected`)
+        router.push({ name: 'building', params: { name: abbrev } });
         return
       }
       else if (this.selection in this.global.searchData[2]) { // toRoom

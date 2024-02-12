@@ -9,6 +9,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import MapItem from '../components/home/MapItem.vue'
 // import About from '../views/About.vue' // currently unused, could be a settings page
 
 const router = createRouter({
@@ -19,12 +20,14 @@ const router = createRouter({
       name: 'home',
       component: Home
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   component: About // lazy-loaded
-    // }
+    // Add a dynamic route for buildings
+    {
+      path: '/building/:name',
+      name: 'building',
+      component: MapItem 
+    }
+    // ... other routes, TODO: floors/rooms
   ]
-})
+});
 
 export default router
