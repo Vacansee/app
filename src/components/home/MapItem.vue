@@ -246,7 +246,7 @@ export default {
       handler() {
         if (this.bldgSVG) { // selected
           this.bringToFront(this.bldgSVG);
-          this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+          this.$refs.blurRef.setAttribute('stdDeviation', 3.456);
         } else { // unselected
           setTimeout(this.windowEventHandler, 800);
           this.$refs.blurRef.setAttribute('stdDeviation', 0);

@@ -126,11 +126,11 @@ export default {
         && (this.global.aspectRatio >= 0.5)) {
           floorBox.style.transform = 
           `translate(calc(${popupWidth} + (${window.innerWidth}px - ${popupWidth}) * 0.45 - 550px), 
-      calc(65vh - 500px)) scale(calc(${window.innerHeight * 0.9 / 50 + this.zoom}))` + `rotate(90deg)`;
+      calc(60vh - 500px)) scale(calc(${window.innerHeight * 0.9 / 50 + this.zoom}))` + `rotate(90deg)`;
       // If wide landscape
         } else if (this.global.aspectRatio <= this.global.flipScreen) {
           floorBox.style.transform = 
-          `translate(calc(60vw - 450px), calc(60vh - 500px)) 
+          `translate(calc(60vw - 450px), calc(60vh - 450px)) 
           scale(${(window.innerWidth) * 0.57 / 50 + this.zoom})`;
       // If portrait wide mode
         } else if (this.global.aspectRatio <= 1.85) {
