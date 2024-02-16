@@ -3,6 +3,7 @@
 import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
+import { useThrottledRefHistory } from '@vueuse/core';
 </script>
 
 <template>
@@ -34,6 +35,9 @@ export default {
       switch: 0,
       bldgSVG: "",
       label: '',
+      clicked: 0,
+      mouseX: 0,
+      mouseY: 0,
     }
   },
   watch: {
@@ -64,11 +68,16 @@ export default {
   mounted() {
     // addEventListeners allow the file to call a function when 
     // an action occurs
+    window.addEventListener("mousemove", () => {
+      this.mouseX = c.clientX;
+      this.mouseY = c.clientY;
+    })
     mask.addEventListener("click", this.buildingDeselect)
+    window.addEventListener("click", () => {this.moveScreen, this.clicked = 1})
     window.addEventListener("mousemove", this.nameTagMove)
     Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
       btn.addEventListener("mouseover", () => { this.nameTagAppear(btn) })
-      btn.addEventListener("mouseleave", this.nameTagDisappear)
+      btn.addEventListener("mouseleave", () => {this.nameTagDisappear, this.clicked = 0})
     })
 
     for (const b of buildings.children) {
@@ -148,6 +157,10 @@ export default {
         this.ntVisible = 0
         nametag.style.fontSize = '14px'
       }
+    },
+    moveScreen(c) {
+      let x = this.mouseX;
+      let y = this.mouseY;
     },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
