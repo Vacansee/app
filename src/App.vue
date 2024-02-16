@@ -20,7 +20,7 @@ import Toast from 'primevue/toast'
       </div>
 
       <div class="right-nav">
-        <a><Button class="nav-btn"  @click="darkMode">DARK MODE</Button></a>
+        <a><Button class="nav-btn"  @click="()=>{this.global.darkMode = !this.global.darkMode; }">DARK MODE</Button></a>
 
         <a href="mailto:rpi.vacansee@gmail.com"><Button class="nav-btn">
             <img src="./assets/icons/poll.svg" height="30" width="30" />
@@ -59,12 +59,15 @@ export default {
       handler() {
         if (this.global.error) this.$showToast({title: 'Failed to load data', body: this.global.error})
       }
+    },
+    'global.darkMode': {
+      handler() {
+        if (this.global.darkMode) {console.log("Dark mode activated")}
+        if (!this.global.darkMode) {console.log("Dark mode de-activated")}
+      }
     }
   },
   methods: {
-    darkMode() {
-      console.log("Dark Mode actived");
-    },
     filterResults(event) {
       // filter buildings and classes
       setTimeout(() => {
