@@ -93,6 +93,17 @@ export default {
                     buttonBox.style.bottom = "52vh"
                 }
             }
+        },
+        'global.darkMode': {
+            handler() {
+                if (this.global.darkMode) {
+                    popup.style.background = "black";
+                    breadcrumbs.style.color = "white";
+                } else {
+                    popup.style.background ="white";
+                    breadcrumbs.style.color = "black";
+                }
+            }
         }
     },
     mounted() {
@@ -217,6 +228,7 @@ export default {
     font-size: larger;
     line-height: 0;
     text-align: center;
+    color:black;
 }
 
 #time {
