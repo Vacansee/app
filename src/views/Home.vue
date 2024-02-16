@@ -43,10 +43,10 @@ export default {
         // If landscape mode
         // Fixes issue where transitions when unselected would show the popup for a split second
         popup.style.transition = "transform .0s"
-        if (!this.global.bldg && this.global.aspectRatio < 1.2) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
-        } else if (!this.global.bldg){
+        } else if (!this.bldgSVG){
           popup.style.transform = "TranslateY(50vh)"
         }
       }
@@ -66,6 +66,10 @@ export default {
     // an action occurs
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mousemove", this.nameTagMove)
+    Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
+      btn.addEventListener("mouseover", () => { this.nameTagAppear(btn) })
+      btn.addEventListener("mouseleave", this.nameTagDisappear)
+    })
 
     for (const b of buildings.children) {
       b.addEventListener("mouseover", () => { this.nameTagAppear(b) })
@@ -83,10 +87,10 @@ export default {
     // If landscape mode
     // Fixes issue where transitions when unselected would show the popup for a split second
     popup.style.transition = "transform .0s"
-    if (!this.global.bldg && this.global.aspectRatio < 1.2) {
-      popup.style.transform = "TranslateX(-33vw)"
+    if (!this.bldgSVG && this.global.aspectRatio < this.global.flipScreen) {
+      popup.style.transform = "TranslateX(-50vw)"
     // If portrait mode
-    } else if (!this.global.bldg){
+    } else if (!this.bldgSVG){
       popup.style.transform = "TranslateY(50vh)"
     }
   },
@@ -107,9 +111,10 @@ export default {
     // Make the name tag pop up
     nameTagAppear(b) {
       // Only show nametag on unselected buildings
-      if (!this.global.bldg) {
+      if (this.global.data && !this.bldgSVG) {
         this.ntVisible = 1
-        if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
+        if (b.ariaLabel) this.label = b.ariaLabel
+        else if(this.global.data[b.id] != undefined) this.label = this.global.data[b.id].meta.name
         else this.label = b.id.replace(/_/g, ' ')
       }
     },
@@ -121,7 +126,9 @@ export default {
     nameTagMove(c) {
       let clickX = c.clientX
       let clickY = c.clientY
-      this.mouseTop = clickY - 50
+      if (this.label == "GitHub" || this.label == "Feedback")
+        this.mouseTop = clickY + 30
+      else this.mouseTop = clickY - 50
 
       let tagWidth = 20
       if (this.ntVisible == 1)
@@ -144,7 +151,7 @@ export default {
     },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
-      if (!this.global.bldg) {
+      if (this.global.data && !this.bldgSVG) {
         // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
@@ -174,8 +181,8 @@ export default {
         popup.style.transition = "transform .5s"
         popup.style.minWidth = "unset"
         // Landscape mode
-        if (this.global.aspectRatio <= 1.2) {
-          popup.style.transform = "TranslateX(-33vw)"
+        if (this.global.aspectRatio <= this.global.flipScreen) {
+          popup.style.transform = "TranslateX(-50vw)"
         // If portrait mode
         } else {
           popup.style.transform = "TranslateY(50vh)"
@@ -199,7 +206,7 @@ export default {
 }
 
 #nametag {
-  z-index: 6;
+  z-index: 10;
   color: black;
   font-size: 14px;
   position: absolute;
