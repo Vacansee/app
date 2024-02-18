@@ -9,24 +9,35 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import MapItem from '../components/home/MapItem.vue'
 // import About from '../views/About.vue' // currently unused, could be a settings page
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Route for overall map
     {
       path: '/',
       name: 'home',
       component: Home
     },
-    // Add a dynamic route for buildings
+    // Dynamic route for buildings, floors, rooms
     {
-      path: '/building/:name',
-      name: 'building',
-      component: MapItem 
+      path: '/:building/:floor/',
+      name: 'buildingAndFloor',
+      component: Home,
+      children: [
+        {
+          path: '/:building/:room/',
+          name: 'buildingAndRoom',
+          component: Home
+        }
+      ]
+    },
+   // Catch all redirect to home page
+    { 
+      path: '/:pathMatch(.*)*', 
+      redirect: '/' 
     }
-    // ... other routes, TODO: floors/rooms
   ]
 });
 

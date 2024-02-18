@@ -3,6 +3,7 @@
 import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
+import router from '../router/index.js'
 </script>
 
 <template>
@@ -152,7 +153,6 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.global.data && !this.bldgSVG) {
-        // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
         let boxCenterY = bBox.y + bBox.height / 2
@@ -172,6 +172,7 @@ export default {
     },
     // On deselection of a building (when clicked off)
     buildingDeselect() {
+      router.push({ name: 'home' })
       try {
         this.bldgSVG = ""
         this.global.bldg = ""

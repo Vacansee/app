@@ -99,7 +99,6 @@ export default {
       if (abbrev in this.global.data) {
         this.global.bldg = abbrev, this.selection = ""
         console.log(`Building "${abbrev}" selected`)
-        router.push({ name: 'building', params: { name: abbrev } });
         return
       }
       else if (this.selection in this.global.searchData[2]) { // toRoom
