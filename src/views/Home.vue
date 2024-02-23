@@ -35,9 +35,12 @@ export default {
       switch: 0,
       bldgSVG: "",
       label: '',
-      clicked: 0,
       mouseX: 0,
       mouseY: 0,
+      initMouseX: 0,
+      initMouseY: 0,
+      clicked: false,
+      buildingSelected: false,
     }
   },
   watch: {
@@ -68,18 +71,19 @@ export default {
   mounted() {
     // addEventListeners allow the file to call a function when 
     // an action occurs
-    window.addEventListener("mousemove", () => {
-      this.mouseX = c.clientX;
-      this.mouseY = c.clientY;
+    window.addEventListener("mousemove", (window) => {
+      this.mouseX = window.clientX;
+      this.mouseY = window.clientY;
+      this.moveScreen()
     })
     mask.addEventListener("click", this.buildingDeselect)
-    window.addEventListener("click", () => {this.moveScreen, this.clicked = 1})
-    window.addEventListener("mousemove", this.nameTagMove)
+    window.addEventListener("mouseup", () => {this.clicked = false})
+    window.addEventListener("mousedown", this.getInitMouse)
+    window.addEventListener("mousemove", () => {this.nameTagMove})
     Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
       btn.addEventListener("mouseover", () => { this.nameTagAppear(btn) })
-      btn.addEventListener("mouseleave", () => {this.nameTagDisappear, this.clicked = 0})
+      btn.addEventListener("mouseleave", () => {this.nameTagDisappear})
     })
-
     for (const b of buildings.children) {
       b.addEventListener("mouseover", () => { this.nameTagAppear(b) })
       b.addEventListener("mouseleave", this.nameTagDisappear)
@@ -116,6 +120,21 @@ export default {
       // for (const o of other.children) {
       //   if (!(o.id in this.global.data)) console.log(o.id)
       // }
+    },
+    moveScreen(c) {
+      if (!this.buildingSelected && this.clicked) {
+        var xChange =  this.initMouseX - this.mouseX 
+        var yChange = this.initMouseY - this.mouseY
+        var xPos = -1.5*window.innerWidth/100 - xChange*1
+        var yPos = -4.95*window.innerHeight/100 - yChange*1.0
+        console.log(xChange)
+        mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
+      }
+    },
+    getInitMouse() {
+      this.initMouseX = this.mouseX
+      this.initMouseY = this.mouseY
+      this.clicked = true
     },
     // Make the name tag pop up
     nameTagAppear(b) {
@@ -158,13 +177,10 @@ export default {
         nametag.style.fontSize = '14px'
       }
     },
-    moveScreen(c) {
-      let x = this.mouseX;
-      let y = this.mouseY;
-    },
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.global.data && !this.bldgSVG) {
+        buildingSelected = true
         // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
@@ -186,9 +202,10 @@ export default {
     // On deselection of a building (when clicked off)
     buildingDeselect() {
       try {
+        buildingSelected = false
         this.bldgSVG = ""
         this.global.bldg = ""
-        mapBox.style.transform = "scale(1) translate(-50%, -50%)"
+        mapBox.style.transform = `scale(1) translate(-1.5vh, -4.95vh)`
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
