@@ -45,6 +45,8 @@ export default {
       curMoveX: 0,
       totalDisplacementY: 0,
       curMoveY: 0,
+      maxX: 750,
+      maxY: 300,
     }
   },
   watch: {
@@ -126,15 +128,15 @@ export default {
       // }
     },
     moveInBounds() {
-      if (this.totalDisplacementX > 1000) {
-        this.totalDisplacementX = 750
-      } else if (this.totalDisplacementX < -1000) {
-        this.totalDisplacementX = -750
+      if (this.totalDisplacementX > this.maxX) {
+        this.totalDisplacementX = this.maxX
+      } else if (this.totalDisplacementX < -this.maxX) {
+        this.totalDisplacementX = -this.maxX
       }
-      if (this.totalDisplacementY > 1000) {
-        this.totalDisplacementY = 500
-      } else if (this.totalDisplacementY < -1000) {
-        this.totalDisplacementY = -500
+      if (this.totalDisplacementY > this.maxY) {
+        this.totalDisplacementY = this.maxY
+      } else if (this.totalDisplacementY < -this.maxY) {
+        this.totalDisplacementY = -this.maxY
       }
       var xPos = -1.5*window.innerWidth/100 - this.totalDisplacementX
       var yPos = -4.95*window.innerHeight/100 - this.totalDisplacementY
@@ -147,6 +149,17 @@ export default {
         this.curMoveY = this.initMouseY - this.mouseY
         var xPos = -1.5*window.innerWidth/100 - (this.totalDisplacementX + this.curMoveX)
         var yPos = -4.95*window.innerHeight/100 - (this.totalDisplacementY + this.curMoveY)
+        var pushbackScale = 7
+        if (this.curMoveX + this.totalDisplacementX > this.maxX) {
+          xPos = -1.5*window.innerWidth/100 - (this.maxX + pushbackScale*Math.sqrt(this.totalDisplacementX + this.curMoveX-this.maxX))
+        } else if (this.curMoveX + this.totalDisplacementX < -this.maxX) {
+          xPos = -1.5*window.innerWidth/100 + (this.maxX + pushbackScale*Math.sqrt(-this.totalDisplacementX - this.curMoveX-this.maxX))
+        }
+        if (this.curMoveY + this.totalDisplacementY > this.maxY) {
+          var yPos = -4.95*window.innerHeight/100 - (this.maxY + pushbackScale*Math.sqrt(this.totalDisplacementY + this.curMoveY-this.maxY))
+        } else if (this.curMoveY + this.totalDisplacementY < -this.maxY) {
+          var yPos = -4.95*window.innerHeight/100 + (this.maxY + pushbackScale*Math.sqrt(-this.totalDisplacementY - this.curMoveY-this.maxY))
+        }
         mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
       }
     },
