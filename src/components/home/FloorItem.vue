@@ -85,6 +85,16 @@ export default {
         //  Lowest floor: limit
         if (this.global.floor == 1) this.btnDown = false
         else if (this.global.floor) this.btnDown = true
+      },
+      'global.darkMode': {
+        handler() {
+          console.log(this.global.darkMode);
+          if (this.global.darkMode) {
+            console.log("buttonbox.floor-button.color");
+          } else {
+            console.log("buttonbox.floor-button.color");
+          }
+        }
       }
     },
     // When button up changes

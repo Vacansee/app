@@ -132,10 +132,14 @@ export default {
             handler() {
                 if (this.global.darkMode) {
                     popup.style.background = "black";
+                    breadcrumbs.style.background = "black";
                     breadcrumbs.style.color = "white";
+                    // photo.style.color = "black";
                 } else {
                     popup.style.background ="white";
+                    breadcrumbs.style.background = "white";
                     breadcrumbs.style.color = "black";
+                    // photo.style.color = "white";
                 }
             }
         }
@@ -271,12 +275,12 @@ export default {
     background-color: white;
 }
 
-#fadeout {
+/* #fadeout {
     background-image: linear-gradient(white, transparent);
     position:relative;
     z-index: 1;
     height: 25px;
-}
+} */
 
 .body {
     position: absolute;
