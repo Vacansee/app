@@ -266,7 +266,40 @@ export default {
           this.applyBuildingColors();
         }
       }
-    }
+    },
+    'global.darkMode': {
+            handler() {
+                if (this.global.darkMode) {
+                  this.colors = [
+                    "#00f5de", // >0%
+                    "#00f6c0", // >10%
+                    "#00eea4", // >20%
+                    "#00d884", // >30%
+                    "#00c675", // >40%
+                    "#00ad60", // >50%
+                    "#009a57", // >60%
+                    "#007948", // >70%
+                    "#006045", // >80%
+                    "#00434b", // >90%
+                  ];
+                  this.applyBuildingColors();
+                } else {
+                  this.colors = [
+                    "#eff5de", // >0%
+                    "#fef6c0", // >10%
+                    "#feeea4", // >20%
+                    "#fdd884", // >30%
+                    "#fdc675", // >40%
+                    "#fcad60", // >50%
+                    "#f99a57", // >60%
+                    "#f57948", // >70%
+                    "#eb6045", // >80%
+                    "#d7434b", // >90%
+                  ];
+                  this.applyBuildingColors();
+                }
+            }
+        }
   },
   // General local variables
   data() {
@@ -275,6 +308,18 @@ export default {
       doResize: "",
       zoom: 0,
       pinned: true,
+      colors: [
+        "#eff5de", // >0%
+        "#fef6c0", // >10%
+        "#feeea4", // >20%
+        "#fdd884", // >30%
+        "#fdc675", // >40%
+        "#fcad60", // >50%
+        "#f99a57", // >60%
+        "#f57948", // >70%
+        "#eb6045", // >80%
+        "#d7434b", // >90%
+      ]
     }
   },
   updated() {
@@ -350,33 +395,21 @@ export default {
     },
     // Applys the color of the building based on availability
     applyBuildingColors() {
-      let colors = [
-        "#eff5de", // >0%
-        "#fef6c0", // >10%
-        "#feeea4", // >20%
-        "#fdd884", // >30%
-        "#fdc675", // >40%
-        "#fcad60", // >50%
-        "#f99a57", // >60%
-        "#f57948", // >70%
-        "#eb6045", // >80%
-        "#d7434b", // >90%
-      ]
       for (const b of buildings.children) {
         let bldgHeat = 0, fill = ''
         try {
           bldgHeat = this.global.data[b.id].meta.heat
         } catch { console.warn(`Can't color buildings w/o classes`) }
-        if (bldgHeat >= .9)      fill = colors[9]
-        else if (bldgHeat >= .8) fill = colors[8]
-        else if (bldgHeat >= .7) fill = colors[7]
-        else if (bldgHeat >= .6) fill = colors[6]
-        else if (bldgHeat >= .5) fill = colors[5]
-        else if (bldgHeat >= .4) fill = colors[4]
-        else if (bldgHeat >= .3) fill = colors[3]
-        else if (bldgHeat >= .2) fill = colors[2]
-        else if (bldgHeat >= .1) fill = colors[1]
-        else                    fill = colors[0]
+        if (bldgHeat >= .9)      fill = this.colors[9]
+        else if (bldgHeat >= .8) fill = this.colors[8]
+        else if (bldgHeat >= .7) fill = this.colors[7]
+        else if (bldgHeat >= .6) fill = this.colors[6]
+        else if (bldgHeat >= .5) fill = this.colors[5]
+        else if (bldgHeat >= .4) fill = this.colors[4]
+        else if (bldgHeat >= .3) fill = this.colors[3]
+        else if (bldgHeat >= .2) fill = this.colors[2]
+        else if (bldgHeat >= .1) fill = this.colors[1]
+        else                     fill = this.colors[0]
 
         b.style.fill = fill
         document.documentElement.style.setProperty('--heatColor', tinycolor(fill).darken(25).toString());

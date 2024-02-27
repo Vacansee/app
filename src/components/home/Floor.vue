@@ -55,6 +55,33 @@ export default {
       },
       immediate: true,
     },
+    'global.darkMode': {
+            handler() {
+                if (this.global.darkMode) {
+                  this.colors = [
+                    "#00e099",
+                    "#00ea77",
+                    "#00ed80",
+                    "#00e68e",
+                    "#00c675",
+                    "#009a57",
+                    "#004e58",
+                  ];
+                  this.applyRoomColors();
+                } else {
+                  this.colors = [
+                    "#66e099",
+                    "#aeea77",
+                    "#d8ed80",
+                    "#fce68e",
+                    "#fdc675",
+                    "#f99a57",
+                    "#fc4e58",
+                  ];
+                  this.applyRoomColors();
+                }
+            }
+        }
   },
   updated() {
     this.$nextTick(() => {
@@ -66,6 +93,7 @@ export default {
     getBldg() { return this.global.data[this.global.bldg] },
     // get room color corresponding to room availability
     getRoomColor(minutes) {
+      console.log(this.colors);
       if (minutes >= 240) return this.colors[0]
       if (minutes >= 120) return this.colors[1]
       if (minutes >=  60) return this.colors[2]
