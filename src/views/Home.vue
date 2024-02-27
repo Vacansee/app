@@ -143,13 +143,12 @@ export default {
       mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
     },
     moveScreen(c) {
-      console.log(this.totalDisplacementX, this.totalDisplacementY)
       if (!this.buildingSelected && this.clicked) {
         this.curMoveX =  this.initMouseX - this.mouseX 
         this.curMoveY = this.initMouseY - this.mouseY
         var xPos = -1.5*window.innerWidth/100 - (this.totalDisplacementX + this.curMoveX)
         var yPos = -4.95*window.innerHeight/100 - (this.totalDisplacementY + this.curMoveY)
-        var pushbackScale = 7
+        var pushbackScale = 10
         if (this.curMoveX + this.totalDisplacementX > this.maxX) {
           xPos = -1.5*window.innerWidth/100 - (this.maxX + pushbackScale*Math.sqrt(this.totalDisplacementX + this.curMoveX-this.maxX))
         } else if (this.curMoveX + this.totalDisplacementX < -this.maxX) {
@@ -212,7 +211,7 @@ export default {
     // On selection of a building (when clicked on)
     buildingSelect(b) {
       if (this.global.data && !this.bldgSVG) {
-        buildingSelected = true
+        this.buildingSelected = true
         // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
         let boxCenterX = bBox.x + bBox.width / 2
@@ -224,7 +223,7 @@ export default {
 
         mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
-        mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
+        mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX+this.totalDisplacementX}px, ${window.innerHeight / 2 - boxCenterY - 50+this.totalDisplacementY}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
@@ -234,10 +233,10 @@ export default {
     // On deselection of a building (when clicked off)
     buildingDeselect() {
       try {
-        buildingSelected = false
+        this.buildingSelected = false
         this.bldgSVG = ""
         this.global.bldg = ""
-        mapBox.style.transform = `scale(1) translate(-1.5vh, -4.95vh)`
+        this.moveInBounds()
         mask.style.pointerEvents = "none"
         mask.style.opacity = 0
         popup.style.transition = "transform .5s"
