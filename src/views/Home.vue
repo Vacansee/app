@@ -41,6 +41,10 @@ export default {
       initMouseY: 0,
       clicked: false,
       buildingSelected: false,
+      totalDisplacementX: 0,
+      curMoveX: 0,
+      totalDisplacementY: 0,
+      curMoveY: 0,
     }
   },
   watch: {
@@ -77,7 +81,7 @@ export default {
       this.moveScreen()
     })
     mask.addEventListener("click", this.buildingDeselect)
-    window.addEventListener("mouseup", () => {this.clicked = false})
+    window.addEventListener("mouseup", () => {this.clicked = false, this.totalDisplacementX += this.curMoveX,  this.totalDisplacementY += this.curMoveY, this.moveInBounds()})
     window.addEventListener("mousedown", this.getInitMouse)
     window.addEventListener("mousemove", () => {this.nameTagMove})
     Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
@@ -121,13 +125,28 @@ export default {
       //   if (!(o.id in this.global.data)) console.log(o.id)
       // }
     },
+    moveInBounds() {
+      if (this.totalDisplacementX > 1000) {
+        this.totalDisplacementX = 750
+      } else if (this.totalDisplacementX < -1000) {
+        this.totalDisplacementX = -750
+      }
+      if (this.totalDisplacementY > 1000) {
+        this.totalDisplacementY = 500
+      } else if (this.totalDisplacementY < -1000) {
+        this.totalDisplacementY = -500
+      }
+      var xPos = -1.5*window.innerWidth/100 - this.totalDisplacementX
+      var yPos = -4.95*window.innerHeight/100 - this.totalDisplacementY
+      mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
+    },
     moveScreen(c) {
+      console.log(this.totalDisplacementX, this.totalDisplacementY)
       if (!this.buildingSelected && this.clicked) {
-        var xChange =  this.initMouseX - this.mouseX 
-        var yChange = this.initMouseY - this.mouseY
-        var xPos = -1.5*window.innerWidth/100 - xChange*1
-        var yPos = -4.95*window.innerHeight/100 - yChange*1.0
-        console.log(xChange)
+        this.curMoveX =  this.initMouseX - this.mouseX 
+        this.curMoveY = this.initMouseY - this.mouseY
+        var xPos = -1.5*window.innerWidth/100 - (this.totalDisplacementX + this.curMoveX)
+        var yPos = -4.95*window.innerHeight/100 - (this.totalDisplacementY + this.curMoveY)
         mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
       }
     },
