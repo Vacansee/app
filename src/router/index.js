@@ -9,10 +9,8 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import { inject } from 'vue';
+// import { global } from '../main.js'
 // import About from '../views/About.vue' // currently unused, could be a settings page
-
-const global = inject('global');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,27 +47,42 @@ router.beforeEach((to, from, next) => {
   const pathBuilding = pathComponents[0]
   const pathFloorOrRooms = pathComponents[1]
 
-  console.log(pathBuilding, pathFloorOrRooms, global.bldg)
-  
-  if (pathBuilding != "get global building implemented in file") {
-    if (pathFloorOrRooms <= 7) {
-      console.log("Floor path entered")
-      if (pathFloorOrRooms != "global floor value") {
-        // Navigate to requested floor
-      }
-    }
-    else {
-      console.log("Room path entered")
-      if (pathFloorOrRooms != "global room value") {
-        // Navigate to requested room
-      }
-    }
+  console.log(pathBuilding, pathFloorOrRooms)
+
+  // if (pathBuilding != global.bldg && pathFloorOrRooms <= 7) {
+  //   console.log("Floor path entered")
+  //   if (pathFloorOrRooms !=  global.floor) {
+  //     console.log("floor changed")
+  //     global.floor = pathFloorOrRooms
+  //   }
+  // }
+  // else if (pathBuilding != global.bldg && pathFloorOrRooms > 7) {
+  //   console.log("Room path entered")
+  //   if (pathFloorOrRooms != "global room value") {
+  //     // Navigate to requested room
+  //   }
+  // }
+  // else if (pathBuilding != global.bldg) {
+
+  // }
+
+  // if (pathFloorOrRooms <= 7 && pathFloorOrRooms != global.floor) {
+  //   console.log("Floor mismatch")
+  //   resetGlobalValues()
+  //   global.bldg = pathBuilding
+  //   global.floor = pathFloorOrRooms
+  // }
+
+  if (pathBuilding != global.bldg) {s
+    global.bldg = pathBuilding
+  }
+  if (pathFloorOrRooms <= 7 && pathFloorOrRooms != global.floor) {
+    global.floor = pathFloorOrRooms
+  }
+  if (pathFloorOrRooms > 7 && pathFloorOrRooms != global.room) {
+    global.room = pathFloorOrRooms
   }
 
-  // console.log(to.path)
-  // console.log(global.room)
-  // console.log(1 == 1)
-  
   next();
 });
 

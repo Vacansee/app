@@ -19,7 +19,7 @@ import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
-const global = reactive({ // The global reactive object!
+export const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that 
 	data: null,
 	searchData: null,
