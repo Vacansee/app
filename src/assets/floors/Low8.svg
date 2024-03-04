@@ -1,0 +1,47 @@
+<svg version="1.1" id="svg1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1056 816">
+  <path d="M115 726h80l55-96v-11h44v9h596v-64h-10v-35h62l-1-275h-61v-35h10v-64l-595-1-1 11-44-1-1-77h-82l-1 261-26 45v44l-26 45z" id="floor"/>
+  <path d="M194 657h-77v62h77z" id="_8025"/>
+  <path d="M194 655v-39l-77 1v38z" id="_8023"/>
+  <path d="M194 572v43l-77-1v-42Z" id="_8021"/>
+  <path d="M194 527v43h-77v-43z" id="_8019"/>
+  <path d="M194 437v88h-77v-42l27-46z" id="_8017"/>
+  <path d="M194 435v-87h-25l-26 45v42z" id="_8013"/>
+  <path d="M251 346v-43h-82v43z" id="_8009"/>
+  <path d="M196 348v55h25v-6h30v-49z" id="_8011"/>
+  <path d="M169 212v89h82v-89z" id="_8005"/>
+  <path d="M938 393v37h-80v-37z" id="_8313"/>
+  <path d="M858 348v43h80v-43z" id="_8311"/>
+  <path d="M938 303v43h-80v-43z" id="_8309"/>
+  <path d="M938 301h-80v-37h25v-7h55z" id="_8307"/>
+  <path d="M399 220h-37v-63h37z" id="_8107"/>
+  <path d="M401 157v63h75v-62z" id="_8111"/>
+  <path d="M478 220h36v-63h-36z" id="_8113"/>
+  <path d="M251 210v-43h-5V90h-75v120z" id="_8003"/>
+  <path d="M516 220v-63h75v63z" id="_8117"/>
+  <path d="M593 220h36v-63h-36z" id="_8119"/>
+  <path d="M706 220h-75l1-63h74z" id="_8123"/>
+  <path d="M745 157v63h-37v-63z" id="_8125"/>
+  <path d="M747 157v63h75v-63z" id="_8129"/>
+  <path d="M196 717V405h27v-6h22v6h6v28l-36-1 1 9h35v122h41l-1 53h-44l1 13z" id="_8015"/>
+  <path d="M253 217v-50h63v50z" id="_8103"/>
+  <path d="M300 315h25v9h28v51h-60l1-22h6z" id="_8012"/>
+  <path d="M353 253v60h-53v-38h-4v-22z" id="_8104"/>
+  <path d="M361 253v121h122V253z" id="_8108"/>
+  <path d="M485 253h63v121h-63z" id="_8114"/>
+  <path d="M550 253h106v121H550z" id="_8118"/>
+  <path d="M658 253h114v121H658z" id="_8124"/>
+  <path d="M774 253h50v121h-50z" id="_8130"/>
+  <path d="M361 409h122v121H361z" id="_8208"/>
+  <path d="M485 409h63v121h-63z" id="_8214"/>
+  <path d="M550 409h139v121H550Z" id="_8218"/>
+  <path d="M691 409h133v121H691Z" id="_8226"/>
+  <path d="M848 563v4l39 1v58h-60v-63z" id="_8231"/>
+  <path d="m821 563 1 63h-56v-63z" id="_8229"/>
+  <path d="M708 563h56v63h-56z" id="_8225"/>
+  <path d="M706 563h-55v63h55z" id="_8223"/>
+  <path d="M649 563v63h-56v-63z" id="_8219"/>
+  <path d="M591 563h-55l-1 63h56z" id="_8217"/>
+  <path d="M534 563v63h-56v-63z" id="_8213"/>
+  <path d="M476 563h-56v63h56z" id="_8211"/>
+  <path d="M418 563v63h-56v-63z" id="_8207"/>
+</svg>
