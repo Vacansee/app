@@ -140,6 +140,7 @@ export default {
       }
       var xPos = -1.5*window.innerWidth/100 - this.totalDisplacementX
       var yPos = -4.95*window.innerHeight/100 - this.totalDisplacementY
+      mapBox.style.transition = "800ms ease all"
       mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
     },
     moveScreen(c) {
@@ -159,6 +160,7 @@ export default {
         } else if (this.curMoveY + this.totalDisplacementY < -this.maxY) {
           var yPos = -4.95*window.innerHeight/100 + (this.maxY + pushbackScale*Math.sqrt(-this.totalDisplacementY - this.curMoveY-this.maxY))
         }
+        mapBox.style.transition = "0ms ease all"
         mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
       }
     },
@@ -214,8 +216,8 @@ export default {
         this.buildingSelected = true
         // this.$router.push({ name: 'home', params: { bldg } });
         let bBox = b.getBoundingClientRect()
-        let boxCenterX = bBox.x + bBox.width / 2
-        let boxCenterY = bBox.y + bBox.height / 2
+        let boxCenterX = bBox.x + this.totalDisplacementX + bBox.width / 2
+        let boxCenterY = bBox.y + this.totalDisplacementY + bBox.height / 2
 
         this.bldgSVG = b
         this.global.bldg = b.id
@@ -223,7 +225,8 @@ export default {
 
         mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
-        mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX+this.totalDisplacementX}px, ${window.innerHeight / 2 - boxCenterY - 50+this.totalDisplacementY}px)`
+        mapBox.style.transition = "800ms ease all"
+        mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"
