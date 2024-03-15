@@ -1,11 +1,13 @@
 @import './base.css';
 
+body {
+  /* font-family: 'Roboto'; */
+}
+
 .on-top {
   position: absolute;
   width: 100%;
   height: 100%;
-  user-select: none;
-  pointer-events: none;
 }
 
 a,
@@ -13,7 +15,7 @@ a,
   text-decoration: none;
   color: #489991;
   transition: 0.4s;
-  font-weight: 500;
+  /* font-weight: 500; */
 }
 
 @media (hover: hover) {
