@@ -19,18 +19,32 @@ import Toast from 'primevue/toast'
       </div>
 
       <div id="right-nav">
+
         <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
             <PollIcon height="25" width="25"/>
+
         </Button></a>
+
         <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
             <GHIcon height="25" width="25"/>
         </Button></a>
+
+        
+        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
+            <GHIcon height="500" width="500"/>
+        
+        </Button></a>
+
       </div>
+
     </header>
+
     <div id="mobile-nav">
+
         <Teleport to="#left-nav" :disabled="global.aspectRatio > 1.5">
           <AutoComplete class="search" :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
         </Teleport>
+
     </div>
 
   <RouterView />
