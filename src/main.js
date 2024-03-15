@@ -13,13 +13,15 @@ import Router from './router'
 import Moment from 'moment-timezone'
 // Basic CSS
 import './assets/main.css'
+// Import function for manually loading based on URL path
+import {Routing} from "@/router";
 
 // Primevue resources
 import PrimeVue from 'primevue/config';
 import ToastService from 'primevue/toastservice';
 import './assets/themes/theme.css';
 
-export const global = reactive({ // The global reactive object!
+const global = reactive({ // The global reactive object!
 	// Any changes to its members will trigger reactivity in components that 
 	data: null,
 	searchData: null,
@@ -65,6 +67,7 @@ Promise.all([
 		console.log('Data loaded!')
 		checkActive()
 		global.firstCalc = true
+	  	Routing(global)
 	})
   .catch(error => { this.$showToast({title: 'Failed to load data', body: error}) })
 
