@@ -30,10 +30,10 @@ import Toast from 'primevue/toast'
         </Button></a>
 
         
-        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
-            <GHIcon height="500" width="500"/>
+        <!-- <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
+            <GHIcon height="25" width="25"/>
         
-        </Button></a>
+        </Button></a> -->
 
       </div>
 
