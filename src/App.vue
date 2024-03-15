@@ -9,6 +9,9 @@ import Button from "primevue/button"
 import Toast from 'primevue/toast'
 </script>
 
+
+
+
 <template>
   <Toast/>
   <!-- HTML For Header -->
@@ -48,6 +51,13 @@ import Toast from 'primevue/toast'
     </div>
 
   <RouterView />
+
+  <!-- Added by Jos, experimenting with adding the timeTravel Slider -->
+  <div id="app">
+    <TimeSlider />
+  </div>
+  <!-- ********************end ****************************************** -->
+
 </template>
 
 <script>
