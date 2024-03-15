@@ -167,6 +167,8 @@ export default {
     getInitMouse() {
       this.initMouseX = this.mouseX
       this.initMouseY = this.mouseY
+      this.curMoveX = 0
+      this.curMoveY = 0
       this.clicked = true
     },
     // Make the name tag pop up
@@ -226,6 +228,11 @@ export default {
         mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
         mapBox.style.transition = "800ms ease all"
+        console.log(window.innerWidth / 2 - boxCenterX + this.totalDisplacementX);
+        console.log(window.innerHeight / 2 - boxCenterY - 50);
+        console.log(boxCenterX, boxCenterY);
+        console.log(this.totalDisplacementX, this.totalDisplacementY)
+
         mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
