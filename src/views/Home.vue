@@ -163,7 +163,10 @@ export default {
 
         mask.style.opacity = 0.65
         mask.style.pointerEvents = "inherit"
-        mapBox.style.transform = `scale(3) translate(${window.innerWidth / 2 - boxCenterX}px, ${window.innerHeight / 2 - boxCenterY - 50}px)`
+        let moveX = 0.8
+        let moveY = 0.3
+        mapBox.style.transform = `scale(3) translate(${(window.innerWidth / 2) * moveX - boxCenterX}px, ${(window.innerHeight / 2) * moveY - boxCenterY - 50}px)`
+   //     mapBox.style.transform = `scale(5) translate(${window.innerWidth / 2.5 - boxCenterX}px, ${window.innerHeight / 7 - boxCenterY}px)`
         // Bring the popup to 0,0
         popup.style.transition = "transform .5s"
         popup.style.transform = "translateY(0vh)"

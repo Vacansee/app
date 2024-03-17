@@ -246,7 +246,7 @@ export default {
       handler() {
         if (this.bldgSVG) { // selected
           this.bringToFront(this.bldgSVG);
-          this.$refs.blurRef.setAttribute('stdDeviation', 0.16);
+          this.$refs.blurRef.setAttribute('stdDeviation', 3.456);
         } else { // unselected
           setTimeout(this.windowEventHandler, 800);
           this.$refs.blurRef.setAttribute('stdDeviation', 0);
@@ -396,10 +396,10 @@ export default {
       let y = window.innerHeight;
       let ratio = x / y;
       if (ratio < this.threshold) { // portrait mode
-        map.style.transform = `scale(${y/50+this.zoom})` + `rotate(90deg)`
+        map.style.transform = `scale(${(y/50+this.zoom) * 0.04629629629})` + `rotate(90deg)`
       }
       else // landscape mode
-        map.style.transform = `scale(${x/50+this.zoom})`
+        map.style.transform = `scale(${(x/50+this.zoom) * 0.04629629629})`
     }
   }
 }
@@ -421,7 +421,9 @@ export default {
   /* startup properties (replaced): */
   opacity: 0;
   transition: width linear 2s, height linear 2s, opacity .8s;
-  width: 50px;
+  width: 1080px;
+  /* Band aid scaling fix for svg devices */
+  transform: scale(0.04629629629);
   will-change: transform;
 }
 
