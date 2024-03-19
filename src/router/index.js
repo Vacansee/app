@@ -16,7 +16,8 @@ import {reactive} from "vue";
 const global = reactive({
   pathBuilding: '',
   pathFloor: null,
-  pathRoom: ''
+  pathRoom: '',
+  firstLoad: true
 })
 
 const router = createRouter({
@@ -51,16 +52,18 @@ const router = createRouter({
 
 // Stores URL path values after each page reload
 router.beforeResolve((to, from, next) => {
-  const pathComponents = to.path.split('/').filter(component => component !== '');
-  if (!isNaN(pathComponents[1]) && pathComponents[0] !== "") {
-    global.pathBuilding = pathComponents[0]
-    if (pathComponents[1] <= 7) {
-      global.pathFloor = Number(pathComponents[1])
-    } else {
-      global.pathRoom = pathComponents[1]
+  if (global.firstLoad) {
+    const pathComponents = to.path.split('/').filter(component => component !== '');
+    if (!isNaN(pathComponents[1]) && pathComponents[0] !== "") {
+      global.pathBuilding = pathComponents[0]
+      if (pathComponents[1] <= 7) {
+        global.pathFloor = Number(pathComponents[1])
+      } else {
+        global.pathRoom = pathComponents[1]
+      }
     }
+    global.firstLoad = false
   }
-
   next();
 });
 
