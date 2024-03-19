@@ -128,20 +128,22 @@ export default {
       // }
     },
     moveInBounds() {
-      if (this.totalDisplacementX > this.maxX) {
-        this.totalDisplacementX = this.maxX
-      } else if (this.totalDisplacementX < -this.maxX) {
-        this.totalDisplacementX = -this.maxX
-      }
-      if (this.totalDisplacementY > this.maxY) {
-        this.totalDisplacementY = this.maxY
-      } else if (this.totalDisplacementY < -this.maxY) {
-        this.totalDisplacementY = -this.maxY
-      }
-      var xPos = -1.5*window.innerWidth/100 - this.totalDisplacementX
-      var yPos = -4.95*window.innerHeight/100 - this.totalDisplacementY
-      mapBox.style.transition = "800ms ease all"
-      mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
+      if (!this.buildingSelected) {
+        if (this.totalDisplacementX > this.maxX) {
+          this.totalDisplacementX = this.maxX
+        } else if (this.totalDisplacementX < -this.maxX) {
+          this.totalDisplacementX = -this.maxX
+        }
+        if (this.totalDisplacementY > this.maxY) {
+          this.totalDisplacementY = this.maxY
+        } else if (this.totalDisplacementY < -this.maxY) {
+          this.totalDisplacementY = -this.maxY
+        }
+        var xPos = -1.5*window.innerWidth/100 - this.totalDisplacementX
+        var yPos = -4.95*window.innerHeight/100 - this.totalDisplacementY
+        mapBox.style.transition = "800ms ease all"
+        mapBox.style.transform = `scale(1) translate(${xPos}px, ${yPos}px)`
+    }
     },
     moveScreen(c) {
       if (!this.buildingSelected && this.clicked) {
