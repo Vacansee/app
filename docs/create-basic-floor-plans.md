@@ -57,11 +57,29 @@ Here's the first pittsburgh floor as an example next to the pdf floorplan from q
 
 Lastly, make sure to open the XML Editor again and delete every attribute from each of the paths except for `id` and `d` (this gets rid of the coloring and extra attributes).
 
-Some rooms also look weird/don't fit perfectly so it's generally better to slighty fudge the walls to make them look more together, here is an example, the top one is the original and the bottom one was fixed to look a bit better. 
+After you have created the rooms you will see that some of the shapes are wacky looking and the spacing might be bigger than it should be. So change the shapes slightly to make it look more nice/clean when it gets put on the website as smoothness looks a lot better than weird accuracy. 
 ![](.embed/create-basic-floor-plans-14.png)
 ![](.embed/create-basic-floor-plans-15.png)
 
-## 4. Export SVG and Clean it up
+
+## 4. Resize the SVG 
+
+You would think that you are done at this point but not yet, this floorplan will currently work, however it is a lot smaller than other floorplans on the website and that makes the line width on the edges look a lot bigger than they should be. To fix this we need to increase the size of all of the rooms that we just created, here is how we do this.
+
+First we want to center the drawing, to do this go into document properties.
+![](.embed/create-basic-floor-plans-16.png)
+
+Then resize to fit the current size of your svg. This will adjust the entire canvas to just hold your objects.
+![](.embed/create-basic-floor-plans-17.png)
+
+Next we want to increase the size, the best way to do this is to click on the lock width/height button next to the width and height and then add 1000~ units to the width to to make it bigger, press enter and then it should scale both the width and height by that amount.
+![](.embed/create-basic-floor-plans-18.png)
+
+Then select all your objects and while pressing control (to keep width/height ratio) increase the size to try to match the new size, then resize again to fit it correctly and then you are done with this step.  
+![](.embed/create-basic-floor-plans-19.png)
+
+
+## 5. Export SVG and Clean it up
 Once finished with the floor plan, make sure to delete the first layer with the pdf to leave the paths we created. Right click on the layer with our paths, click `Convert to group`, then right click again and click `Ungroup` to get rid of the outer shell and leave just our paths.
 
 Then, press `Shift + Ctrl + E` or `File -> Export`, make sure it is exported as an SVG, and rename it as `abbrev#` where the abbreviation is established in `data\convert.py`. Before clicking `Export`, make sure your size/scale is correct (see `Step 2: Open the image` for more info).
