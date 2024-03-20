@@ -57,6 +57,10 @@ Here's the first pittsburgh floor as an example next to the pdf floorplan from q
 
 Lastly, make sure to open the XML Editor again and delete every attribute from each of the paths except for `id` and `d` (this gets rid of the coloring and extra attributes).
 
+Some rooms also look weird/don't fit perfectly so it's generally better to slighty fudge the walls to make them look more together, here is an example, the top one is the original and the bottom one was fixed to look a bit better. 
+![](.embed/create-basic-floor-plans-14.png)
+![](.embed/create-basic-floor-plans-15.png)
+
 ## 4. Export SVG and Clean it up
 Once finished with the floor plan, make sure to delete the first layer with the pdf to leave the paths we created. Right click on the layer with our paths, click `Convert to group`, then right click again and click `Ungroup` to get rid of the outer shell and leave just our paths.
 
