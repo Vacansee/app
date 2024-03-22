@@ -13,11 +13,13 @@ import {reactive} from "vue";
 // import About from '../views/About.vue' // currently unused, could be a settings page
 
 // URL path values
-const global = reactive({
+export const router_info = reactive({
   pathBuilding: '',
   pathFloor: null,
   pathRoom: '',
-  firstLoad: true
+  firstLoad: true,
+  manualPath: false,
+  invalidPath: false
 })
 
 const router = createRouter({
@@ -52,27 +54,28 @@ const router = createRouter({
 
 // Stores URL path values after each page reload
 router.beforeResolve((to, from, next) => {
-  if (global.firstLoad) {
+  if (router_info.firstLoad) {
     const pathComponents = to.path.split('/').filter(component => component !== '');
     if (!isNaN(pathComponents[1]) && pathComponents[0] !== "") {
-      global.pathBuilding = pathComponents[0]
+      router_info.pathBuilding = pathComponents[0]
       if (pathComponents[1] <= 7) {
-        global.pathFloor = Number(pathComponents[1])
+        router_info.pathFloor = Number(pathComponents[1])
       } else {
-        global.pathRoom = pathComponents[1]
+        router_info.pathRoom = pathComponents[1]
       }
     }
-    global.firstLoad = false
+    router_info.firstLoad = false
+    router_info.manualPath = true
   }
   next();
 });
 
 // Sets global variables to user inputted URL path values
 export function Routing(mainGlobal) {
-  if (global.pathBuilding) {
-    mainGlobal.bldg = global.pathBuilding
-    mainGlobal.floor = global.pathFloor
-    mainGlobal.room = global.pathRoom
+  if (router_info.pathBuilding) {
+    mainGlobal.bldg = router_info.pathBuilding
+    mainGlobal.floor = router_info.pathFloor
+    mainGlobal.room = router_info.pathRoom
   }
 }
 

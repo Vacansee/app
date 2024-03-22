@@ -3,6 +3,7 @@
 import moment from 'moment-timezone'
 import tinycolor from "tinycolor2";
 import router from '../../router';
+import {router_info} from "@/router";
 </script>
 
 <template>
@@ -12,6 +13,8 @@ import router from '../../router';
 </template>
   
 <script>
+import {router_info} from "@/router";
+
 const getFloorSVG = async (floorName) => {
   try {
     const module = await import(`../../assets/floors/${floorName}.svg`)
@@ -52,7 +55,18 @@ export default {
         else {
           this.floorSVG = await getFloorSVG(floorName)
           router.push({ name: 'buildingAndFloor', params: { building: this.global.bldg, floor: this.global.floor } })
-          if (!this.floorSVG) this.$showToast({title: 'Map not yet implemented!'})
+          if (!this.floorSVG) {
+            this.$showToast({title: 'Map not yet implemented!'})
+            if (router_info.manualPath) {
+              console.log("invalid path entered, going to home")
+              router_info.manualPath = false
+              router_info.invalidPath = true
+              // this.global.bldg = ""
+              // this.global.floor = null
+              // this.global.room = ""
+            }
+          }
+          router_info.manualPath = false
         }
       },
       immediate: true,
