@@ -3,7 +3,6 @@
 import MapItem from '../components/home/MapItem.vue'
 import PopUpItem from '../components/home/PopUpItem.vue'
 import FloorItem from '../components/home/FloorItem.vue'
-import { useThrottledRefHistory } from '@vueuse/core';
 </script>
 
 <template>
@@ -85,7 +84,7 @@ export default {
     mask.addEventListener("click", this.buildingDeselect)
     window.addEventListener("mouseup", () => {this.clicked = false, this.totalDisplacementX += this.curMoveX,  this.totalDisplacementY += this.curMoveY, this.moveInBounds()})
     window.addEventListener("mousedown", this.getInitMouse)
-    window.addEventListener("mousemove", () => {this.nameTagMove})
+    window.addEventListener("mousemove", this.nameTagMove)
     Array.from(document.getElementsByClassName("nav-btn")).forEach((btn) => {
       btn.addEventListener("mouseover", () => { this.nameTagAppear(btn) })
       btn.addEventListener("mouseleave", () => {this.nameTagDisappear})
