@@ -3,7 +3,7 @@
 <!-- HTML scripts -->
 <template>
   <div v-if="isPinned" class = "map-overlays-icons" >
-    <p id="test" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
+    <p id="pin" style=" position:absolute; color:rgb(255, 255, 255); font-weight:1000;"><span class="map-overlays-icons">📌</span></p>
   </div>
 </template>
 
