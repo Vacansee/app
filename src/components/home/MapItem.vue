@@ -275,7 +275,6 @@ export default {
       threshold: 1,
       doResize: "",
       zoom: 0,
-      //pinned: true,
       pins: [{name: "DCC", x:460, y:820, pinned: false}, {name: "Low", x:498, y:820, pinned: false}, {name:"JEC", x: 370, y: 800, pinned: false}, {name:"JROWL", x:384, y:880, pinned: false}, {name:"CBIS", x: 520, y:915, pinned: false}, {name:"Academy",x:540, y: 996, pinned: false},{name:"Robinson", x:635, y:925, pinned: false},{name:"Armory", x:660, y:872, pinned: false},{name:"Mueller", x:660, y:835, pinned: false}, 
       {name:"Commons", x:865, y:855, pinned: false}, {name: "Union", x:650, y:715, pinned: false}, {name:"Sage Dinning", x:530, y:750, pinned: false},{name:"'87 Gym", x:475, y: 660, pinned: false}, {name:"Ricketts", x:395, y:655, pinned: false}, {name:"Troy", x:330, y:655, pinned: false},{name:"Sage", x:245, y:685, pinned: false}, {name:"Walker", x:175, y: 700, pinned: false}, {name:"Pittsburgh", x:110, y: 680, pinned: false}, 
       {name:"West", x:115, y:  620, pinned: false}, {name:"Winslow", x:45, y:715, pinned: false}, {name:"Carnegie", x:137, y: 750, pinned: false}, {name:"Amos_Eaton", x:190, y:770, pinned: false}, {name:"Lally", x:245, y:770, pinned: false}, {name:"Greene", x:300, y:768, pinned: false}, {name:"Folsom", x:200, y:855, pinned: false}, {name:"VCC", x:260, y:855, pinned: false},{name:"EMPAC", x:120, y:925, pinned: false}, {name:"MRC", x:205, y:950, pinned: false}, 
@@ -310,6 +309,16 @@ export default {
     });
   },
   methods: {
+    modifyPin(name)
+    {
+      for(pin in this.pins)
+      {
+        if(pin.name == name)
+        {
+          pin.pinned = true
+        }
+      }
+    },
     onMouseScroll({deltaX,deltaY}) {
       if (!this.global.sFocus && !this.global.bldg){
         let dirwheel = 0;
