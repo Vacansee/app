@@ -9,7 +9,7 @@
 
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import {reactive} from "vue";
+import {reactive, inject} from "vue";
 // import About from '../views/About.vue' // currently unused, could be a settings page
 
 // URL path values
@@ -17,7 +17,8 @@ export const router_info = reactive({
   pathBuilding: '',
   pathFloor: null,
   pathRoom: '',
-  firstLoad: true
+  firstLoad: true,
+  invalidLoad: false
 })
 
 const router = createRouter({
@@ -65,6 +66,19 @@ router.beforeResolve((to, from, next) => {
   }
   next();
 });
+
+router.afterEach((to, from) => {
+  console.log("afterEach()")
+  const globalState = inject('global');
+  console.log(globalState.bldg)
+  if (router_info.invalidLoad) {
+    console.log("invalid load change")
+    globalState.bldg = ""
+    globalState.floor = null
+    globalState.room = ""
+    router_info.invalidLoad = false
+  }
+})
 
 // Sets global variables to user inputted URL path values
 export function Routing(mainGlobal) {
