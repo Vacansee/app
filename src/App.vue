@@ -205,6 +205,14 @@ footer{
   pointer-events: all;
 }
 
+.bot-right-nav {
+  position: fixed;
+  pointer-events: none;
+  padding: .8rem 1rem;
+  bottom: 0;
+  right: 0;
+}
+
 #right-nav {
   position: fixed;
   padding: .8rem 1rem;
@@ -221,5 +229,7 @@ footer{
   bottom: 2vh;
   z-index: 6;
 }
+
+
 
 </style>
