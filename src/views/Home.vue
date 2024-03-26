@@ -46,6 +46,8 @@ export default {
       curMoveY: 0,
       maxX: 750,
       maxY: 300,
+      zoom: 0,
+      threshold: 1,
     }
   },
   watch: {
@@ -101,6 +103,8 @@ export default {
       o.addEventListener("click", () => {
         this.$showToast({type: 'info', title: 'Unavailable', body: "This isn\'t a public facility", lasts: 2000}) })
     }
+    // Allow for the scroll wheel to zoom the map
+    window.addEventListener("wheel", this.onMouseScroll);
 
     // If landscape mode
     // Fixes issue where transitions when unselected would show the popup for a split second
@@ -260,7 +264,42 @@ export default {
           popup.style.transform = "TranslateY(50vh)"
         }
       } catch { /* pass */ }
-    }
+    },
+    onMouseScroll({deltaX,deltaY}) {
+      this.nameTagDisappear();
+      if (!this.global.sFocus && !this.global.bldg){
+        let dirwheel = 0;
+        if (deltaY>0) {
+          dirwheel = -1;
+        } else if (deltaY<0) {
+          dirwheel = 1;
+        }
+
+        let x = window.innerWidth;
+        let y = window.innerHeight;
+        let ratio = x / y;
+        let portraitMode = false;
+        if (ratio < this.threshold) {
+          portraitMode = true;
+        }
+        let tempZoom=0;
+        if (portraitMode) {
+          tempZoom = y/50+this.zoom+dirwheel*10;
+        } else {
+          tempZoom = x/50+this.zoom+dirwheel*10;
+        }
+        
+        
+        this.zoom +=dirwheel*10;
+        if (dirwheel == -1 && this.zoom <= 40) this.zoom  = 37.5 - (40 - this.zoom)*0.75;
+        if (dirwheel == 1 && this.zoom >= 60) this.zoom  = 62.5 + (this.zoom - 60)*0.75;
+      if (ratio < this.threshold) { // portrait mode
+        mapBox.style.transform = `scale(${1*this.zoom})` + `rotate(90deg)`
+      }
+      else // landscape mode
+        mapBox.style.transform = `scale(${1*this.zoom})`
+      }
+    },
   }
 }
 </script>
