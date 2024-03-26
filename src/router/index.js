@@ -17,9 +17,7 @@ export const router_info = reactive({
   pathBuilding: '',
   pathFloor: null,
   pathRoom: '',
-  firstLoad: true,
-  manualPath: false,
-  invalidPath: false
+  firstLoad: true
 })
 
 const router = createRouter({
@@ -64,8 +62,6 @@ router.beforeResolve((to, from, next) => {
         router_info.pathRoom = pathComponents[1]
       }
     }
-    router_info.firstLoad = false
-    router_info.manualPath = true
   }
   next();
 });

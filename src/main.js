@@ -8,7 +8,7 @@ import { createApp, reactive, watch } from 'vue'
 // App.vue is general information about the app
 import App from './App.vue'
 // Imports file used for page routing
-import Router, {router_info} from './router'
+import Router from './router'
 // Imports ability to check time
 import Moment from 'moment-timezone'
 // Basic CSS
@@ -68,14 +68,6 @@ Promise.all([
 		checkActive()
 		global.firstCalc = true
 	  	Routing(global)
-	  	if (router_info.invalidPath) {
-			  console.log("triggered")
-			global.bldg = ""
-			global.floor = null
-			global.room = ""
-			router_info.invalidPath = false
-		}
-		console.log(global.bldg)
 	})
   .catch(error => { this.$showToast({title: 'Failed to load data', body: error}) })
 
