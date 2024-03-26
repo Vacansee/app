@@ -7,6 +7,7 @@ import GHIcon from '@/assets/icons/github.svg?component'
 import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
 import Toast from 'primevue/toast'
+import footer from '@/components/footer.vue';
 
 </script>
 
@@ -34,8 +35,6 @@ import Toast from 'primevue/toast'
         </Button></a>
 
 
-
-
       </div>
 
     </header>
@@ -48,13 +47,19 @@ import Toast from 'primevue/toast'
 
     </div>
 
+  <footer id="footer">
+
+    <Teleport to="#left-nav" :disabled="global.aspectRatio > 1.5">
+          <AutoComplete class="search" :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
+        </Teleport>
+
+  </footer>
+
   <RouterView />
 
-  <!-- Added by Jos, experimenting with adding the timeTravel Slider -->
-  <div id="app">
-    <TimeSlider />
-  </div>
-  <!-- ********************end ****************************************** -->
+
+
+
 
 </template>
 
@@ -153,6 +158,14 @@ header {
   pointer-events: none;
   position: absolute;
   z-index: 6;
+}
+
+footer{
+  pointer-events: none;
+  position: absolute;
+  /* x-index: 5;
+  y-index: 5; */
+  z-index: 5;
 }
 
 .logo {
