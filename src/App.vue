@@ -47,16 +47,25 @@ import footer from '@/components/footer.vue';
 
     </div>
 
-  <footer id="footer">
+    <!-- <div class="bot-right-nav">
+        <Button class="nav-btn" @click="getLocation">
+            <img src="./assets/icons/location.svg" height="30" width="30"/>
+        </Button>
+      </div> -->
+
+  <!-- <footer id="footer">
 
     <Teleport to="#left-nav" :disabled="global.aspectRatio > 1.5">
           <AutoComplete class="search" :style="{'width':'100%'}" :input-style="{'width': '100%'}" v-model="selection" :placeholder="ex" :suggestions="suggest" @complete="filterRes" @item-select="goTo" @focus.native="searchFocus(true)" @blur.native="searchFocus(false)"></AutoComplete>
         </Teleport>
 
-  </footer>
+  </footer> -->
 
   <RouterView />
 
+  <div id="app">
+    <TimeSlider />
+  </div>
 
 
 
@@ -160,16 +169,16 @@ header {
   z-index: 6;
 }
 
-footer{
+/* footer{
   pointer-events: none;
   position: absolute;
-  /* x-index: 5;
-  y-index: 5; */
+  x-index: 5;
+  y-index: 5;
   z-index: 5;
-}
+}  */
 
 .logo {
-  margin-right: 1rem; 
+  margin-right: 1rem;
   pointer-events: all;
   filter: drop-shadow(0px 5px 20px white);
 }
@@ -205,13 +214,13 @@ footer{
   pointer-events: all;
 }
 
-.bot-right-nav {
+/* .bot-right-nav {
   position: fixed;
   pointer-events: none;
   padding: .8rem 1rem;
   bottom: 0;
   right: 0;
-}
+} */
 
 #right-nav {
   position: fixed;
