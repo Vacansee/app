@@ -82,6 +82,15 @@ import InfoIcon from '@/assets/icons/info.svg?component'
                         <p>Color: {{p[3]}}&emsp;&emsp;Duplex: {{p[4]}}</p>
                     </div>
                 </div>
+                <div v-if="getLibraryReservations()" class="block"> <!-- Block: library study room -->
+                    <b>Reserved Times</b>
+                    <table> <!-- UI needs to consider varying times unlike class times -->
+                        <tr v-for="item in getTodaysClasses()">
+                            {{ item[0] }}
+                            <td>{{ item[1] }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div v-else-if="global.bldg" class="block warn">No classes here!</div>
@@ -222,6 +231,17 @@ export default {
             let hist = this.getBldg().meta.hist
             if (hist === "") hist = this.getBldg().meta.name.toLowerCase().replace(/ /g, "-")
             return hist // for case: false
+        },
+        getLibraryReservations() {
+            // get busy times from room data and return list of times (using class time data for testing)
+            if (this.getBldg().meta.name == "Darrin Communications Center") { //test building
+                let classes = []
+                let roomData = this.getRoom() 
+                for (let time in roomData) {
+                    if (time.split(':')[0] == this.global.time.split(':')[0])
+                        classes.push([roomData[time][0], this.getRealTime(time)])
+                } return classes
+            }
         }
     }
 }
