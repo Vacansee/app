@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueform/slider": "^2.1.10",
     "@vueuse/core": "^9.13.0",
     "color.js": "^1.2.0",
     "moment": "^2.29.4",

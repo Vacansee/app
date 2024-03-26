@@ -7,6 +7,7 @@ import GHIcon from '@/assets/icons/github.svg?component'
 import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
 import Toast from 'primevue/toast'
+import Slider from '@vueform/slider'
 </script>
 
 <template>
@@ -22,10 +23,24 @@ import Toast from 'primevue/toast'
         <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
             <PollIcon height="25" width="25"/>
         </Button></a>
+
         <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
             <GHIcon height="25" width="25"/>
         </Button></a>
+
       </div>
+
+      <div id="bot-right-nav">
+        <a href="https://forms.gle/Tu5xSSjK1MkZDXK69" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="Feedback" >
+            <PollIcon height="25" width="25"/>
+        </Button></a>
+
+        <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
+            <GHIcon height="25" width="25"/>
+        </Button></a>
+        
+      </div>
+
     </header>
     <div id="mobile-nav">
         <Teleport to="#left-nav" :disabled="global.aspectRatio > 1.5">
@@ -33,17 +48,12 @@ import Toast from 'primevue/toast'
         </Teleport>
     </div>
 
-    <div class="bot-right-nav">
+    <!-- <div id="bot-right-nav">
         <Button class="nav-btn" @click="getLocation">
             <img src="./assets/icons/location.svg" height="30" width="30"/>
         </Button>
-      </div>
+      </div> -->
 
-      <div class="bot-right-nav">
-        <Button class="nav-btn" @click="getLocation">
-            <img src="./assets/icons/location.svg" height="30" width="30"/>
-        </Button>
-      </div>
 
   <RouterView />
 </template>
@@ -135,6 +145,11 @@ export default {
   }
 }
 </script>
+
+
+
+
+
 <style scoped>
 @import './assets/main.css';
 /* Everything from here on in the file is  basic css */
@@ -182,6 +197,13 @@ header {
   pointer-events: all;
 }
 
+#bot-right-nav {
+  position: fixed;
+  /* padding: .8rem 1rem; */
+  top: 100;
+  right: 500;
+}
+
 #right-nav {
   position: fixed;
   padding: .8rem 1rem;
@@ -199,12 +221,12 @@ header {
   z-index: 6;
 }
 
-.bot-right-nav {
+/* #bot-right-nav {
   position: fixed;
   pointer-events: none;
   padding: .8rem 1rem;
   bottom: 0;
   right: 0;
-}
+} */
 
 </style>
