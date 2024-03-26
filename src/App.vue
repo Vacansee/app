@@ -7,6 +7,7 @@ import GHIcon from '@/assets/icons/github.svg?component'
 import AutoComplete from 'primevue/autocomplete'
 import Button from "primevue/button"
 import Toast from 'primevue/toast'
+
 </script>
 
 
@@ -32,11 +33,8 @@ import Toast from 'primevue/toast'
             <GHIcon height="25" width="25"/>
         </Button></a>
 
-        
-        <!-- <a href="https://github.com/Vacansee/app" target="_blank" rel="noopener noreferrer"><Button class="nav-btn" aria-label="GitHub" >
-            <GHIcon height="25" width="25"/>
-        
-        </Button></a> -->
+
+
 
       </div>
 
