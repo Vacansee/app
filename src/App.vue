@@ -193,4 +193,12 @@ header {
   z-index: 6;
 }
 
+.bot-right-nav {
+  position: fixed;
+  pointer-events: none;
+  padding: .8rem 1rem;
+  bottom: 0;
+  right: 0;
+}
+
 </style>
