@@ -39,6 +39,12 @@ import Toast from 'primevue/toast'
         </Button>
       </div>
 
+      <div class="bot-right-nav">
+        <Button class="nav-btn" @click="getLocation">
+            <img src="./assets/icons/location.svg" height="30" width="30"/>
+        </Button>
+      </div>
+
   <RouterView />
 </template>
 
