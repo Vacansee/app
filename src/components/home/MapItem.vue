@@ -214,7 +214,7 @@ import tinycolor from "tinycolor2";
         <path id="Winslow" d="m42.6 768.6 12 .5 1.6-41-12.2-.4-1.4 41Z" />
         <path id="Lally" d="m234.4 812 30.5.5v-2l.3-11.3-15.3-.3-15.3-.2-.2 13.3Z" />
         <path id="Union"
-          d="m626.5 768.2 3.2.3 2.1.1-.1 10 9.1.2 5.5.1v1.9l.6 1.6 1.2 2 1.1 1.1 1.3.8 1.3.6 10.5.3 1.8-.2 2-1.1 1.5-1.5 1.2-1.8.7-2.3-.2-8.4 4.7.2h1.6l13.3.7.2-56.2-40.5-1.7-17.2-.7-.5 7.8H628l-1.6 46.2Z" />
+          d="m626.5 768.2 3.2.3 2.1.1-.1 10 9.1.2 5.5.1v1.9l.6 1.6 1.2 2 1.1 1.1 1.3.8 1.3.6 10.5.3 1.8-.2 2-1.1 1.5-1.5 1.2-1.8.7-2.3-.2-8.4 4.7.2h1.6l13.3.7.2-56.2-40.5-1.7-17.2-.7-.5 7.8H628l-1.6 46.2Z" /> 
         <!-- PIN PLACEHOLDER -->
         <foreignObject style="pointer-events: none;" x="460" y="825" width="100%" height="100%" v-if="pinned">
           <div class = "map-overlays-icons">
@@ -455,6 +455,7 @@ export default {
   justify-content: center;
   align-items: center;
   transition: 800ms ease all;
+  /* fill:red; */
 }
 
 #map {
@@ -463,6 +464,7 @@ export default {
   transition: width linear 2s, height linear 2s, opacity .8s;
   width: 50px;
   will-change: transform;
+  /* fill:red; */
 }
 
 #buildings path {
@@ -473,54 +475,65 @@ export default {
   transition-duration: .2s;
   transition: fill 0.5s;
   will-change: transform;
+  /* fill:red; */
 }
 
 #other path {
   fill: var(--buildfill);
   stroke: var(--buildbord);
   stroke-width: 1px;
+  /* fill:red; */
 }
 
 #bg {
   fill: none;
+  /* fill:red; */
 }
 
 #roadlarge {
   stroke: var(--carroad);
   stroke-width: 9px;
+  /* fill:red; */
 }
 
 #roadmed path {
   stroke: var(--carroad);
   stroke-width: 4px;
+  /* fill:red; */
 }
 
 #roadsmall path {
   stroke: var(--carroad);
   stroke-width: 3px;
+  /* fill:red; */
+  
 }
 
 #roadtop path {
   fill: none;
   stroke: var(--carroad);
   stroke-width: 3px;
+  /* fill:red; */
 }
 
 #walktop path {
   fill: none;
   stroke: var(--walkpath);
   stroke-width: 1px;
+  /* fill:red; */
 }
 
 #walk path {
   stroke: var(--walkpath);
   stroke-width: 1.5px;
+  /* fill:red; */
 }
 
 #stair path {
   stroke: var(--walkpath);
   stroke-width: 3px;
   stroke-dasharray: 1px;
+  /* fill:red; */
 }
 
 </style>
